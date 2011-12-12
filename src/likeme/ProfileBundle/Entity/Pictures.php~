@@ -1,0 +1,27 @@
+<?php
+
+namespace likeme\ProfileBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * likeme\ProfileBundle\Entity\Pictures
+ */
+class Pictures
+{
+    /**
+     * @var integer $id
+     */
+    private $id;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

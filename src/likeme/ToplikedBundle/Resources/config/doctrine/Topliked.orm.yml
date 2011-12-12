@@ -1,0 +1,10 @@
+likeme\ToplikedBundle\Entity\Topliked:
+  type: entity
+  table: null
+  fields:
+    id:
+      type: integer
+      id: true
+      generator:
+        strategy: AUTO
+  lifecycleCallbacks: {  }

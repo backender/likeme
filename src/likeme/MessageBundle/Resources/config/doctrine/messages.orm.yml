@@ -1,0 +1,28 @@
+likeme\MessageBundle\Entity\messages:
+  type: entity
+  table: messages
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+    profileIdTo:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      column: profile_id_to
+    profileIdFrom:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      column: profile_id_from
+    timestamp:
+      type: datetime
+      nullable: false
+    message:
+      type: text
+      nullable: false
+  lifecycleCallbacks: {  }
