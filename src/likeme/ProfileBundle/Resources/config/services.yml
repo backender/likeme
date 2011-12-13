@@ -1,0 +1,7 @@
+parameters:
+#    likeme_profile.example.class: likeme\ProfileBundle\Example
+
+services:
+#    likeme_profile.example:
+#        class: %likeme_profile.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

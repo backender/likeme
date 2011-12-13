@@ -1,0 +1,50 @@
+likeme\ProfileBundle\Entity\Profile:
+  type: entity
+  table: profile
+  fields:
+    id:
+      id: true
+      type: integer
+      unsigned: false
+      nullable: false
+      generator:
+        strategy: IDENTITY
+    name:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+    prename:
+      type: string
+      length: 50
+      fixed: false
+      nullable: true
+    gender:
+      type: integer
+      unsigned: false
+      nullable: true
+    age:
+      type: datetime
+      nullable: false
+    username:
+      type: string
+      length: 50
+      fixed: false
+      nullable: false
+    password:
+      type: string
+      length: 50
+      fixed: false
+      nullable: false
+    email:
+      type: string
+      length: 100
+      fixed: false
+      nullable: false
+    aboutme:
+      type: text
+      nullable: true
+    timestamp:
+      type: datetime
+      nullable: false
+  lifecycleCallbacks: {  }

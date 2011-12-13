@@ -1,0 +1,7 @@
+likemeSpamBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: likemeSpamBundle:Default:index }
+
+_newSpam:
+    pattern: /newSpam/
+    defaults: { _controller: likemeSpamBundle:Default:newSpam }
