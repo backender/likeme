@@ -28,11 +28,7 @@ class DefaultController extends Controller
      	$validator = $this->get('validator');
      	$errors = $validator->validate($spam);
      	
-     	if (count($errors) > 0) {
-     		return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView(), 'errors' => $errors));
-     	} else {
-     		return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
-     	}
+     	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView(), 'errors' => $errors));
      	
         //return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('name' => $name));
     }
