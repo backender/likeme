@@ -29,12 +29,11 @@ class DefaultController extends Controller
      	$errors = $validator->validate($spam);
      	
      	if (count($errors) > 0) {
-     		return print_r($errors, true);
+     		return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView(), 'errors' => $errors));
      	} else {
-     		return new Response('The reason is valid! Yes!');
+     		return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
      	}
      	
-     	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
         //return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('name' => $name));
     }
 }
