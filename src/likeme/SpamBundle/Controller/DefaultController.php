@@ -29,9 +29,9 @@ class DefaultController extends Controller
      	$errors = $validator->validate($spam);
      	
      	if (count($errors) > 0) {
-     		return new Response(print_r($errors, true));
+     		return print_r($errors, true);
      	} else {
-     		return new Response('The reason is valid! Yes!');
+     		return 'The reason is valid! Yes!';
      	}
      	
      	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
