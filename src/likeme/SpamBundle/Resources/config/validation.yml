@@ -1,4 +1,4 @@
 likeme\SpamBundle\Entity\Spam:
-	properties:
-		reason:
-			- NotBlank: ~
+  properties:
+    reason:
+      - NotBlank: ~
