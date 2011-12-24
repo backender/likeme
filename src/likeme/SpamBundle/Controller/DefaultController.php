@@ -31,7 +31,7 @@ class DefaultController extends Controller
      	if (count($errors) > 0) {
      		return print_r($errors, true);
      	} else {
-     		return 'The reason is valid! Yes!';
+     		return new Response('The reason is valid! Yes!');
      	}
      	
      	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
