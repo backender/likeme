@@ -2,3 +2,9 @@ likeme\SpamBundle\Entity\Spam:
   properties:
     reason:
       - NotBlank: ~
+       
+    profileIdFrom:
+      - NotBlank: ~
+      
+    profileIdTo:
+      - NotBlank: ~ 

@@ -1,7 +1,6 @@
 <?php
 
 namespace likeme\SpamBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use likeme\SpamBundle\Entity\Spam;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +13,7 @@ class DefaultController extends Controller
         return $this->render('likemeSpamBundle:Default:index.html.twig', array('name' => $name));
     }
 	
-	public function newSpamAction()
+	public function newSpamAction(Request $request)
     {
     	$spam = new Spam();
     	$spam->setprofileIdFrom('1');
@@ -25,11 +24,22 @@ class DefaultController extends Controller
      		->add('profileIdTo', 'text')
      		->add('reason', 'text')
      		->getForm();
+     	
      	$validator = $this->get('validator');
      	$errors = $validator->validate($spam);
      	
-     	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView(), 'errors' => $errors));
+     	if ($request->getMethod() == 'POST') {
+     		$form->bindRequest($request);
      	
-        //return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('name' => $name));
+     		if ($form->isValid()) {
+     			$em = $this->getDoctrine()->getEntityManager();
+   				$em->persist($spam);
+    			$em->flush();
+
+    			return new Response('Eintrag mit ID #'.$spam->getId().'<br />'.$spam->getReason());
+     			//return $this->redirect($this->generateUrl('task_success'));
+     		}
+     	}
+     	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
     }
 }
