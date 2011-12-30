@@ -5,3 +5,6 @@ likeme\SpamBundle\Entity\Spam:
        
     profileIdFrom:
       - NotBlank: ~
+      
+    profileIdTo:
+      - NotBlank: ~ 
