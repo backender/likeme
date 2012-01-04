@@ -38,11 +38,23 @@ class DefaultController extends Controller
      			$em = $this->getDoctrine()->getEntityManager();
    				$em->persist($spam);
     			$em->flush();
-
     			return new Response('Eintrag mit ID #'.$spam->getId().'<br />'.$spam->getReason());
      			//return $this->redirect($this->generateUrl('task_success'));
      		}
      	}
      	return $this->render('likemeSpamBundle:Default:newSpam.html.twig', array('form' => $form->createView()));
     }
+    
+    public function listSpamAction()
+    {
+    	$spam = $this->getDoctrine()
+    		->getRepository('likemeSpamBundle:Spam')
+    		->findAll();
+
+    	if (!$spam) {
+    		throw $this->createNotFoundException('No spam found');
+    	}
+    	return $this->render('likemeSpamBundle:Default:listSpam.html.twig', array('spam' => $spam)); 
+    }
+    
 }

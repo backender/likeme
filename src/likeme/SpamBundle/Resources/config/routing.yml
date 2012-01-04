@@ -5,3 +5,7 @@ likemeSpamBundle_homepage:
 _newSpam:
     pattern: /newSpam/
     defaults: { _controller: likemeSpamBundle:Default:newSpam }
+
+_listSpam:
+    pattern: /listSpam/
+    defaults: { _controller: likemeSpamBundle:Default:listSpam }
