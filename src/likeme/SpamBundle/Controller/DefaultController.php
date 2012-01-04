@@ -4,6 +4,8 @@ namespace likeme\SpamBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use likeme\SpamBundle\Entity\Spam;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class DefaultController extends Controller
 {
@@ -18,6 +20,7 @@ class DefaultController extends Controller
     	$spam = new Spam();
     	$spam->setprofileIdFrom('1');
     	$spam->setprofileIdTo('2');
+    	$spam->settimestamp(new \DateTime());
      	
      	$form = $this->createFormBuilder($spam)
      		->add('profileIdFrom', 'text')
