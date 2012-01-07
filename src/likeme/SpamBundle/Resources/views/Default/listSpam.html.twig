@@ -1,6 +1,8 @@
 {% for value in spam %}
 	ID: {{ value.id }}<br />
-	From:{{ value.profileIdFrom }}; To:{{value.profileIdTo }}<br />
-	Rreason: {{ value.reason }}<br />
+	From:{{ value.profileIdFrom }}; To:{{ value.profileIdTo }}<br />
+	Reason: {{ value.reason }}<br />
+	<a href="../modSpam/{{ value.id }}">&Auml;ndern</a><br />
+	<a href="../delSpam/{{ value.id }}">L&ouml;schen</a><br />
 	<br />
 {% endfor %} 

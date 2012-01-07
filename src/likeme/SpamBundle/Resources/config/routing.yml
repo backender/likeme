@@ -9,3 +9,11 @@ _newSpam:
 _listSpam:
     pattern: /listSpam/
     defaults: { _controller: likemeSpamBundle:Default:listSpam }
+    
+_delSpam:
+    pattern: /delSpam/{id}
+    defaults: { _controller: likemeSpamBundle:Default:delSpam }
+    
+_modSpam:
+    pattern: /modSpam/{id}
+    defaults: { _controller: likemeSpamBundle:Default:modSpam }
