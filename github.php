@@ -1,1 +1,1 @@
-<?php `git fetch --all`;
+<?php `git reset origin/master`;
