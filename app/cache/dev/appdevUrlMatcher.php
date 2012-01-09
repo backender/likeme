@@ -181,6 +181,24 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::newSpamAction',  '_route' => '_newSpam',);
         }
 
+        // _listSpam
+        if (rtrim($pathinfo, '/') === '/listSpam') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', '_listSpam');
+            }
+            return array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::listSpamAction',  '_route' => '_listSpam',);
+        }
+
+        // _delSpam
+        if (0 === strpos($pathinfo, '/delSpam') && preg_match('#^/delSpam/(?P<id>[^/]+?)$#xs', $pathinfo, $matches)) {
+            return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::delSpamAction',)), array('_route' => '_delSpam'));
+        }
+
+        // _modSpam
+        if (0 === strpos($pathinfo, '/modSpam') && preg_match('#^/modSpam/(?P<id>[^/]+?)$#xs', $pathinfo, $matches)) {
+            return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::modSpamAction',)), array('_route' => '_modSpam'));
+        }
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

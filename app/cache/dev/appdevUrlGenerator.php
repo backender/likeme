@@ -40,6 +40,9 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
        'likemeProfileBundle_homepage' => true,
        'likemeSpamBundle_homepage' => true,
        '_newSpam' => true,
+       '_listSpam' => true,
+       '_delSpam' => true,
+       '_modSpam' => true,
     );
 
     /**
@@ -196,5 +199,20 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
     private function get_newSpamRouteInfo()
     {
         return array(array (), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::newSpamAction',), array (), array (  0 =>   array (    0 => 'text',    1 => '/newSpam/',  ),));
+    }
+
+    private function get_listSpamRouteInfo()
+    {
+        return array(array (), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::listSpamAction',), array (), array (  0 =>   array (    0 => 'text',    1 => '/listSpam/',  ),));
+    }
+
+    private function get_delSpamRouteInfo()
+    {
+        return array(array (  0 => 'id',), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::delSpamAction',), array (), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'id',  ),  1 =>   array (    0 => 'text',    1 => '/delSpam',  ),));
+    }
+
+    private function get_modSpamRouteInfo()
+    {
+        return array(array (  0 => 'id',), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::modSpamAction',), array (), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'id',  ),  1 =>   array (    0 => 'text',    1 => '/modSpam',  ),));
     }
 }
