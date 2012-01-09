@@ -17,3 +17,7 @@ _delSpam:
 _modSpam:
     pattern: /modSpam/{id}
     defaults: { _controller: likemeSpamBundle:Default:modSpam }
+    
+_home:
+    pattern: /homeSpam
+    defaults: { _controller: likemeSpamBundle:Default:homeSpam  }

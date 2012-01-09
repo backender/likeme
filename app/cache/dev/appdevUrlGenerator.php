@@ -37,12 +37,14 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
        'likemeRandomBundle_homepage' => true,
        'likemeLikingBundle_homepage' => true,
        'likemeMessageBundle_homepage' => true,
+       '_newMessage' => true,
        'likemeProfileBundle_homepage' => true,
        'likemeSpamBundle_homepage' => true,
        '_newSpam' => true,
        '_listSpam' => true,
        '_delSpam' => true,
        '_modSpam' => true,
+       '_home' => true,
     );
 
     /**
@@ -186,6 +188,11 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
         return array(array (  0 => 'name',), array (  '_controller' => 'likeme\\MessageBundle\\Controller\\DefaultController::indexAction',), array (), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'name',  ),  1 =>   array (    0 => 'text',    1 => '/hello',  ),));
     }
 
+    private function get_newMessageRouteInfo()
+    {
+        return array(array (), array (  '_controller' => 'likeme\\MessageBundle\\Controller\\DefaultController::newMessageAction',), array (), array (  0 =>   array (    0 => 'text',    1 => '/newMessage',  ),));
+    }
+
     private function getlikemeProfileBundle_homepageRouteInfo()
     {
         return array(array (  0 => 'name',), array (  '_controller' => 'likeme\\ProfileBundle\\Controller\\DefaultController::indexAction',), array (), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'name',  ),  1 =>   array (    0 => 'text',    1 => '/hello',  ),));
@@ -214,5 +221,10 @@ class appdevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
     private function get_modSpamRouteInfo()
     {
         return array(array (  0 => 'id',), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::modSpamAction',), array (), array (  0 =>   array (    0 => 'variable',    1 => '/',    2 => '[^/]+?',    3 => 'id',  ),  1 =>   array (    0 => 'text',    1 => '/modSpam',  ),));
+    }
+
+    private function get_homeRouteInfo()
+    {
+        return array(array (), array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::homeSpamAction',), array (), array (  0 =>   array (    0 => 'text',    1 => '/homeSpam',  ),));
     }
 }

@@ -15,6 +15,11 @@ class DefaultController extends Controller
         return $this->render('likemeSpamBundle:Default:index.html.twig', array('name' => $name));
     }
 	
+    public function homeAction($name)
+    {
+        return true;
+    }    
+    
 	public function newSpamAction(Request $request)
     {
     	$spam = new Spam();

@@ -163,6 +163,11 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'likeme\\MessageBundle\\Controller\\DefaultController::indexAction',)), array('_route' => 'likemeMessageBundle_homepage'));
         }
 
+        // _newMessage
+        if ($pathinfo === '/newMessage') {
+            return array (  '_controller' => 'likeme\\MessageBundle\\Controller\\DefaultController::newMessageAction',  '_route' => '_newMessage',);
+        }
+
         // likemeProfileBundle_homepage
         if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]+?)$#xs', $pathinfo, $matches)) {
             return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'likeme\\ProfileBundle\\Controller\\DefaultController::indexAction',)), array('_route' => 'likemeProfileBundle_homepage'));
@@ -197,6 +202,11 @@ class appdevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         // _modSpam
         if (0 === strpos($pathinfo, '/modSpam') && preg_match('#^/modSpam/(?P<id>[^/]+?)$#xs', $pathinfo, $matches)) {
             return array_merge($this->mergeDefaults($matches, array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::modSpamAction',)), array('_route' => '_modSpam'));
+        }
+
+        // _home
+        if ($pathinfo === '/homeSpam') {
+            return array (  '_controller' => 'likeme\\SpamBundle\\Controller\\DefaultController::homeSpamAction',  '_route' => '_home',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

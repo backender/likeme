@@ -2,7 +2,7 @@
 {% block newSpam %}
 <a href="../listSpam">Liste</a><br /><br />
 
-<form action="{{ path('_newSpam') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('_newMessage') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
 
     <input type="submit" />

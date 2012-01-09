@@ -7,7 +7,10 @@
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        	<div>{% block newSpam %}{% endblock %}</div>
+        	<div>{% block listSpam %}{% endblock %}</div>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
