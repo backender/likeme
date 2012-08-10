@@ -1,7 +1,0 @@
-parameters:
-#    likeme_topliked.example.class: likeme\ToplikedBundle\Example
-
-services:
-#    likeme_topliked.example:
-#        class: %likeme_topliked.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

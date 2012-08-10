@@ -1,7 +1,0 @@
-parameters:
-#    likeme_message.example.class: likeme\MessageBundle\Example
-
-services:
-#    likeme_message.example:
-#        class: %likeme_message.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

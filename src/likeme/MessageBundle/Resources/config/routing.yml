@@ -1,7 +1,0 @@
-likemeMessageBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: likemeMessageBundle:Default:index }
-
-_newMessage:
-    pattern:  /newMessage
-    defaults: { _controller: likemeMessageBundle:Default:newMessage }

@@ -1,3 +1,0 @@
-likemeProfileBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: likemeProfileBundle:Default:index }
