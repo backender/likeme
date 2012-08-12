@@ -1,10 +1,14 @@
 security:
+    factories:
+        - "%kernel.root_dir%/../vendor/bundles/FOS/FacebookBundle/Resources/config/security_factories.xml"
     providers:
+        # choose the provider name freely
+        my_fos_facebook_provider:
+            id: my.facebook.user
         fos_userbundle:
             id: fos_user.user_manager
-
     encoders:
-        "FOS\UserBundle\Model\UserInterface": sha512
+        FOS\UserBundle\Model\UserInterface: sha512
 
     firewalls:
         main:
@@ -12,7 +16,15 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
-            logout:       true
+            fos_facebook:
+                app_url:    "http://www.facebook.com/apps/application.php?id=100806270069332"
+                server_url: "http://likeme.ch/web/app_dev.php/"
+                login_path: /login
+                check_path: /login_fb_check
+                default_target_path: /
+                provider: my_fos_facebook_provider
+            logout:
+                handlers: ["fos_facebook.logout_handler"]
             anonymous:    true
 
     access_control:

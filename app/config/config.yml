@@ -2,9 +2,17 @@ imports:
     - { resource: parameters.ini }
     - { resource: security.yml }
 
+services:
+    my.facebook.user:
+        class: Likeme\SystemBundle\Security\User\Provider\FacebookProvider
+        arguments:
+            facebook: "@fos_facebook.api"
+            userManager: "@fos_user.user_manager"
+            validator: "@validator"
+            container: "@service_container"       
 framework:
     #esi:             ~
-    translator:      ~
+    translator:      { fallback: %locale% }
     secret:          %secret%
     charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -57,11 +65,17 @@ swiftmailer:
 
 jms_security_extra:
     secure_controllers:  true
-    secure_all_services: false
-    
+    secure_all_services: false 
     
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Likeme\SystemBundle\Entity\User
 
+fos_facebook:
+      file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
+      alias:  facebook
+      app_id: 100806270069332
+      secret: 98c29a3bd105813b3308e24a404d23f1
+      cookie: true
+      permissions: [email, user_birthday, user_location]

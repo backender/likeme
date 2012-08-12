@@ -1,12 +1,13 @@
+_security_check:
+    pattern:  /login_fb_check
+    
+_security_logout:
+    pattern:  /logout
+
 LikemeSystemBundle:
     resource: "@LikemeSystemBundle/Controller/"
     type:     annotation
     prefix:   /
-
-# Internal routing configuration to handle ESI
-#_internal:
-#   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#   prefix:   /_internal
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
@@ -26,3 +27,4 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+    
