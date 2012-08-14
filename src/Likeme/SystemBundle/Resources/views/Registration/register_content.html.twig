@@ -5,4 +5,24 @@
     <div>
         <input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" />
     </div>
+    {{ facebook_login_button({'autologoutlink': true}) }}
 </form>
+{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+
+<script>
+  function goLogIn(){
+      window.location = "{{ path('_security_check') }}";
+  }
+
+  function onFbInit() {
+      if (typeof(FB) != 'undefined' && FB != null ) {
+          FB.Event.subscribe('auth.statusChange', function(response) {
+              if (response.session || response.authResponse) {
+                  setTimeout(goLogIn, 500);
+              } else {
+                  window.location = "{{ path('_security_logout') }}";
+              }
+          });
+      }
+  }
+  </script>

@@ -45,11 +45,11 @@ class User extends BaseUser
 	private $gender;
 	
 	/**
-	 * @var datetime $age
+	 * @var string $birthday
 	 *
-	 * @ORM\Column(name="age", type="datetime", nullable=true)
+	 * @ORM\Column(name="birthday", type="string", nullable=true)
 	 */
-	private $age;
+	private $birthday;
 	
 	/**
 	 * @var text $aboutme
@@ -148,26 +148,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set age
-     *
-     * @param datetime $age
-     */
-    public function setAge($age)
-    {
-        $this->age = $age;
-    }
-
-    /**
-     * Get age
-     *
-     * @return datetime 
-     */
-    public function getAge()
-    {
-        return $this->age;
-    }
-
-    /**
      * Set aboutme
      *
      * @param text $aboutme
@@ -233,6 +213,30 @@ class User extends BaseUser
     	if (isset($fbdata['email'])) {
     		$this->setEmail($fbdata['email']);
     	}
+    	if (isset($fbdata['birthday'])) {
+    		$this->setBirthday($fbdata['birthday']);
+    	}
+    	
     }
     
+
+    /**
+     * Set birthday
+     *
+     * @param string $birthday
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
+
+    /**
+     * Get birthday
+     *
+     * @return string 
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
 }
