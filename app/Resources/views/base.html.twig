@@ -12,15 +12,8 @@
         <h1>{% block head %}{% endblock %}</h1>
         
         {% block navi %}
-        	<a href="{{ path("home") }}">Home</a>
-        	<a href="{{ path("fos_user_profile_show") }}">Profil</a>
-        	<a href="{{ path("fos_user_registration_register") }}">Register</a>
-        	
-        	{% if is_granted("IS_AUTHENTICATED_FULLY")%}
-    			<a href="{{path("fos_user_security_logout")}}">Logout</a>
-			{%else%}
-    			<a href="{{path("fos_user_security_login")}}">Login</a>
-			{%endif%}
+			{{ knp_menu_render('main') }}
+        
 			<br /><br />
         {% endblock %}
         
