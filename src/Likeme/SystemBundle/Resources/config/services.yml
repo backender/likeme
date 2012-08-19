@@ -1,7 +1,8 @@
 services:
     likeme.menu_builder:
         class: Likeme\SystemBundle\Menu\MenuBuilder
-        arguments: ["@knp_menu.factory"]
+        arguments: ["@knp_menu.factory", '@security.context']
+
 
     likeme.menu.main:
         class: Knp\Menu\MenuItem # the service definition requires setting the class
