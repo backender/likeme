@@ -6,8 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-require_once '../vendor/facebook/src/facebook.php';
-
 class PictureController extends Controller
 {
     /**
@@ -36,7 +34,9 @@ class PictureController extends Controller
         	}
         }
         
-        return array('name' => $user_profile['albums']);
+        echo $user_profile['name'];
+        
+        return array('name' => $user_profile['name']);
        
     }
     
