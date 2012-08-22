@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class PictureController extends Controller
 {
     /**
-     * @Route("/pictures", name="pictures")
+     * @Route("/profile/pictures", name="pictures")
      * @Template()
      */
     public function showAction()

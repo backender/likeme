@@ -4,8 +4,6 @@
 {% block head %}Pictures{% endblock %}
 
 {% block fos_user_content %}
-test {{ name }}
-
 
 {#
 //  1	Foto in Originalgrösse
@@ -16,7 +14,8 @@ test {{ name }}
 
 
 {% for photo in photos %}
-	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>
+{# 	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>#}
+	<img src="{{ photo.images.4.source }}" /><br>
 {% endfor %}
 
 	
