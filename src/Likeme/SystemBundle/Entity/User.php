@@ -18,9 +18,9 @@ class User extends BaseUser
 	protected $id;
 	
 	/**
-	 * @var string $active
+	 * @var boolean $active
 	 *
-	 * @ORM\Column(name="active", type="integer", nullable=true)
+	 * @ORM\Column(type="integer")
 	 */
 	protected $active;
 	
@@ -76,7 +76,7 @@ class User extends BaseUser
 	public function __construct()
 	{
 		parent::__construct();
-		// your own logic
+
 	}
 	
 	public function serialize()
@@ -214,6 +214,8 @@ class User extends BaseUser
      */
     public function setFBData($fbdata)
     {
+    	$this->active = true;
+    	
     	if (isset($fbdata['id'])) {
     		$this->setFacebookID($fbdata['id']);
     		$this->addRole('ROLE_FACEBOOK');
@@ -227,18 +229,34 @@ class User extends BaseUser
     	if (isset($fbdata['email'])) {
     		$this->setEmail($fbdata['email']);
     	}
-    	if (isset($fbdata['birthday'])) {
-    		$this->setBirthday($fbdata['birthday']);
+    	if($this->getBirthday() == NULL) {
+	    	if (isset($fbdata['birthday'])) {
+	    		$this->setBirthday($fbdata['birthday']);
+	    	} else {
+	    		$this->active = false;
+	    	}
     	}
-    	if (isset($fbdata['location'])) {
-    		$this->setLocation($fbdata['location']['name']);
+    	if($this->getLocation() == NULL) {
+	    	if (isset($fbdata['location'])) {
+	    		$this->setLocation($fbdata['location']['name']);
+	    	} else {
+	    		$this->active = false;
+	    	}
     	}
-    	if (isset($fbdata['bio'])) {
-    		$this->setAboutme($fbdata['bio']);
-    	}
-    	if (isset($fbdata['gender'])) {
-    		$this->setGender($fbdata['gender']);
-    	}
+	    if($this->getAboutme() == NULL) {	
+	    	if (isset($fbdata['bio'])) {
+	    		$this->setAboutme($fbdata['bio']);
+	    	} else {
+	    		$this->active = false;
+	    	}
+	    }
+		if($this->getGender() == NULL) {    
+	    	if (isset($fbdata['gender'])) {
+	    		$this->setGender($fbdata['gender']);
+	    	} else {
+	    		$this->active = false;
+	    	}
+		}
     }
     
 
@@ -289,8 +307,7 @@ class User extends BaseUser
      */
     public function setActive($active)
     {
-        //$this->active = $active;
-    	$this->active = 0;
+        $this->active = $active;
     }
     
     /**
