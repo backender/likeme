@@ -52,6 +52,13 @@ class User extends BaseUser
 	private $birthday;
 	
 	/**
+	 * @var string $hometown
+	 *
+	 * @ORM\Column(name="hometown", type="string", nullable=true)
+	 */
+	private $hometown;
+	
+	/**
 	 * @var text $aboutme
 	 *
 	 * @ORM\Column(name="aboutme", type="text", nullable=true)
@@ -238,5 +245,25 @@ class User extends BaseUser
     public function getBirthday()
     {
         return $this->birthday;
+    }
+
+    /**
+     * Set hometown
+     *
+     * @param string $hometown
+     */
+    public function setHometown($hometown)
+    {
+        $this->hometown = $hometown;
+    }
+
+    /**
+     * Get hometown
+     *
+     * @return string 
+     */
+    public function getHometown()
+    {
+        return $this->hometown;
     }
 }
