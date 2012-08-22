@@ -52,11 +52,11 @@ class User extends BaseUser
 	private $birthday;
 	
 	/**
-	 * @var string $hometown
+	 * @var string $location
 	 *
-	 * @ORM\Column(name="hometown", type="string", nullable=true)
+	 * @ORM\Column(name="location", type="string", nullable=true)
 	 */
-	private $hometown;
+	private $location;
 	
 	/**
 	 * @var text $aboutme
@@ -223,7 +223,12 @@ class User extends BaseUser
     	if (isset($fbdata['birthday'])) {
     		$this->setBirthday($fbdata['birthday']);
     	}
-    	
+    	if (isset($fbdata['location'])) {
+    		$this->setLocation($fbdata['location']['name']);
+    	}
+    	if (isset($fbdata['bio'])) {
+    		$this->setAboutme($fbdata['bio']);
+    	}
     }
     
 
@@ -248,22 +253,22 @@ class User extends BaseUser
     }
 
     /**
-     * Set hometown
+     * Set location
      *
-     * @param string $hometown
+     * @param string $location
      */
-    public function setHometown($hometown)
+    public function setLocation($location)
     {
-        $this->hometown = $hometown;
+        $this->location = $location;
     }
 
     /**
-     * Get hometown
+     * Get location
      *
      * @return string 
      */
-    public function getHometown()
+    public function getLocation()
     {
-        return $this->hometown;
+        return $this->location;
     }
 }
