@@ -33,9 +33,38 @@ class PictureController extends Controller
         		$user = null;
         	}
         }
-        
-        echo $user_profile['name'];
-        
+
+	
+        $token = $facebook->getAccessToken();     
+          
+     	$extAlbumUrl = "https://graph.facebook.com/".$user_profile['id']."/albums?fields=id,name,type&access_token=".$token."&limit=0";
+       
+    	$albums = json_decode(file_get_contents($extAlbumUrl),true);
+    	$albums = $albums['data'];
+    	
+    	foreach ($albums as $row)
+    	{
+    		//if ($row['type'] == 'normal')
+    		//{
+    			echo '<a href="photos.php?albumid=' . $row['id'] . '">';
+    			echo $row['name'];
+    			echo '</a><br>';
+    			
+    			$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=30");
+    			$photos = json_decode($contents,true);
+    			$photos = $photos['data'];
+    			 
+    			foreach ($photos as $row)
+    			{
+    				echo '<img src="' . $row['images'][1]['source'] . '" /><br>';
+    			}
+    		//}
+    	}
+    	
+    	
+    	var_dump($albums);
+
+    	
         return array('name' => $user_profile['name']);
        
     }
