@@ -15,6 +15,8 @@ class PictureController extends Controller
     public function showAction()
     {
     
+    	//Get User Profile Pictures
+    	
     	// Create our Application instance (replace this with your appId and secret).
 		$facebook = new \Facebook(array(
   			'appId'  => '100806270069332',
@@ -34,37 +36,38 @@ class PictureController extends Controller
         	}
         }
 
-	
+        //Get AccessToken
         $token = $facebook->getAccessToken();     
-          
+        
+        //Receive all albums from user and list with Pictures
      	$extAlbumUrl = "https://graph.facebook.com/".$user_profile['id']."/albums?fields=id,name,type&access_token=".$token."&limit=0";
-       
     	$albums = json_decode(file_get_contents($extAlbumUrl),true);
     	$albums = $albums['data'];
     	
     	foreach ($albums as $row)
     	{
-    		//if ($row['type'] == 'normal')
-    		//{
-    			echo '<a href="photos.php?albumid=' . $row['id'] . '">';
+    		// Only if Album is ProfilePictures
+    		if ($row['type'] == 'profile')
+    		{
     			echo $row['name'];
-    			echo '</a><br>';
+    			echo '<br>';
     			
+    			// Print out the pictures from album
     			$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=30");
     			$photos = json_decode($contents,true);
     			$photos = $photos['data'];
     			 
+    			//  1	Foto in Originalgrösse
+				//	2	Proportional skaliert auf eine Breite von 180 Pixel
+				//	3	Proportional skaliert mit langer Seite auf 130 Pixel
+				//	4	Proportional skaliert auf eine Breite von 75 Pixel
     			foreach ($photos as $row)
     			{
-    				echo '<img src="' . $row['images'][1]['source'] . '" /><br>';
+    				echo '<img src="' . $row['images'][4]['source'] . '" /><br>';
     			}
-    		//}
+    		}
     	}
-    	
-    	
-    	var_dump($albums);
-
-    	
+    	    	
         return array('name' => $user_profile['name']);
        
     }
