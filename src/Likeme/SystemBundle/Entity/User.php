@@ -229,6 +229,9 @@ class User extends BaseUser
     	if (isset($fbdata['bio'])) {
     		$this->setAboutme($fbdata['bio']);
     	}
+    	if (isset($fbdata['gender'])) {
+    		$this->setGender($fbdata['gender']);
+    	}
     }
     
 
