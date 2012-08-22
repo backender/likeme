@@ -18,6 +18,13 @@ class User extends BaseUser
 	protected $id;
 	
 	/**
+	 * @var string $active
+	 *
+	 * @ORM\Column(name="active", type="integer", nullable=true)
+	 */
+	protected $active;
+	
+	/**
 	 * @var string $firstname
 	 *
 	 * @ORM\Column(name="firstname", type="string", length=45, nullable=true)
@@ -229,6 +236,9 @@ class User extends BaseUser
     	if (isset($fbdata['bio'])) {
     		$this->setAboutme($fbdata['bio']);
     	}
+    	if (isset($fbdata['gender'])) {
+    		$this->setGender($fbdata['gender']);
+    	}
     }
     
 
@@ -270,5 +280,26 @@ class User extends BaseUser
     public function getLocation()
     {
         return $this->location;
+    }
+
+    /**
+     * Set active
+     *
+     * @param integer $active
+     */
+    public function setActive($active)
+    {
+        //$this->active = $active;
+    	$this->active = 0;
+    }
+    
+    /**
+     * Get active
+     *
+     * @return integer 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }
