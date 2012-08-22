@@ -22,6 +22,7 @@ class AppKernel extends Kernel
         	new FOS\UserBundle\FOSUserBundle(),
         	new FOS\FacebookBundle\FOSFacebookBundle(),
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+        	new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -5,4 +5,23 @@
 
 {% block fos_user_content %}
 test {{ name }}
+
+
+{#
+//  1	Foto in Originalgrösse
+//	2	Proportional skaliert auf eine Breite von 180 Pixel
+//	3	Proportional skaliert mit langer Seite auf 130 Pixel
+//	4	Proportional skaliert auf eine Breite von 75 Pixel
+#}
+
+{#
+{% for photo in photos %}
+	<img src="{{ photo.images.4.source | apply_filter('my_thumb') }}" /><br>
+{% endfor %}
+#}
+	
+{% image '@LikemeSystemBundle/Resources/public/images/IMG_0614.JPG' %} 
+	<img src="{{ asset_url | apply_filter('my_thumb') }}" alt="Example"/>
+{% endimage %}
+
 {% endblock fos_user_content %}

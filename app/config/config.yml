@@ -79,3 +79,11 @@ fos_facebook:
       secret: 98c29a3bd105813b3308e24a404d23f1
       cookie: true
       permissions: [email, user_birthday, user_location, user_photos, user_about_me, user_location]
+      
+avalanche_imagine:
+    filters:
+        my_thumb:
+            type:    thumbnail
+            options: { size: [120, 90], mode: outbound }
+            
+      

@@ -49,26 +49,15 @@ class PictureController extends Controller
     		// Only if Album is ProfilePictures
     		if ($row['type'] == 'profile')
     		{
-    			echo $row['name'];
-    			echo '<br>';
-    			
     			// Print out the pictures from album
-    			$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=30");
+    			$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=1");
     			$photos = json_decode($contents,true);
     			$photos = $photos['data'];
-    			 
-    			//  1	Foto in Originalgrösse
-				//	2	Proportional skaliert auf eine Breite von 180 Pixel
-				//	3	Proportional skaliert mit langer Seite auf 130 Pixel
-				//	4	Proportional skaliert auf eine Breite von 75 Pixel
-    			foreach ($photos as $row)
-    			{
-    				echo '<img src="' . $row['images'][4]['source'] . '" /><br>';
-    			}
+    			
     		}
     	}
     	    	
-        return array('name' => $user_profile['name']);
+        return array('name' => $user_profile['name'], 'photos' => $photos);
        
     }
     
