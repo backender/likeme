@@ -14,14 +14,14 @@ test {{ name }}
 //	4	Proportional skaliert auf eine Breite von 75 Pixel
 #}
 
-{#
+
 {% for photo in photos %}
-	<img src="{{ photo.images.4.source | apply_filter('my_thumb') }}" /><br>
+	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>
 {% endfor %}
-#}
+
 	
-{% image '@LikemeSystemBundle/Resources/public/images/IMG_0614.JPG' %} 
-	<img src="{{ asset_url | apply_filter('my_thumb') }}" alt="Example"/>
-{% endimage %}
+{# 	<img src="{{ asset('bundles/likemesystem/images/IMG_0614.JPG') | imagine_filter('my_thumb') }}" alt="Example"/>#}
+
+
 
 {% endblock fos_user_content %}
