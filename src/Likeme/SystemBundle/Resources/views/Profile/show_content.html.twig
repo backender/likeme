@@ -1,4 +1,10 @@
 <div class="fos_user_user_show">
+	{% if active == false %}
+    	<p>Inaktiv :(</p>
+    {% else %}
+    	<p>Aktiv, juhu</p>
+	{% endif %}
+
     <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
     <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
     <p>{{ 'profile.show.location'|trans({}, 'FOSUserBundle') }}: {{ user.location }}</p>
