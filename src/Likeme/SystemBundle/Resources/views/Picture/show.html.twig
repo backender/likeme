@@ -5,10 +5,33 @@
 
 {% block fos_user_content %}
 
-{% for photo in photos %}
-	<img src="{{ photo.images.7.source }}" /><br>
+<link type="text/css" rel="stylesheet" href="{{ asset('@LikemeSystemBundle/Resources/public/js/fcbklistselection.css') }}"/>
+<script type="text/javascript" src="{{ asset('@LikemeSystemBundle/Resources/public/js/fcbklistselection.min.js') }}"></script>
 
-{% endfor %}
+<h1>fcbkListSelection demo</h1>
+<form action="test.php" method="post">
+<ul id="fcbklist">
+{% for photo in photos %}
+ 	<li>        
+        <strong>Manuel Mujica Lainez</strong><br /> 
+        <span class="fcbkitem_text"><img src="{{ photo.images.7.source }}" /><br></span>
+        <input type="hidden" name="fcbklist_value[]" value="Manuel Mujica Lainez" />       
+    </li>
+
+
+{% endfor %}   
+</ul>
+<input type="submit" value="Submit" />
+</form>
+
+<script type="text/javascript" language="JavaScript">
+    $(document).ready(function() {
+      //id(ul id),width,height(element height),row(elements in row)        
+      $.fcbkListSelection("#fcbklist","400","50","2");
+    });    
+</script>
+
+
 	
 	<img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/>
 
