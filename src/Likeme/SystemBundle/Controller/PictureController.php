@@ -42,13 +42,12 @@ class PictureController extends Controller
 				parse_str($response, $params);
 				$access_token = $params['access_token'];
 				$facebook->setAccessToken($access_token);
-				echo $access_token;
 			}
 		}
-	
+			
     	// See if there is a user from a cookie
         $user = $facebook->getUser();
-
+        
        if ($user) {
         	try {
         		// Proceed knowing you have a logged in user who's authenticated.
@@ -63,7 +62,7 @@ class PictureController extends Controller
         	echo("<script> top.location.href='" . $dialog_url
         			. "'</script>");
         }
-        
+                
         //Get AccessToken
         $token = $facebook->getAccessToken();    
         

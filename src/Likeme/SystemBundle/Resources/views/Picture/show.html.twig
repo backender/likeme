@@ -14,12 +14,12 @@
 
 
 {% for photo in photos %}
-{# 	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>#}
+ 	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>
 	<img src="{{ photo.images.4.source }}" /><br>
 {% endfor %}
 
 	
-{# 	<img src="{{ asset('bundles/likemesystem/images/IMG_0614.JPG') | imagine_filter('my_thumb') }}" alt="Example"/>#}
+	<img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/>
 
 
 

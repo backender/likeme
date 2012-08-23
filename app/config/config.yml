@@ -81,6 +81,14 @@ fos_facebook:
       permissions: [email, user_birthday, user_location, user_photos, user_about_me, user_location]
       
 liip_imagine:
+    driver:               gd
+    web_root:             %kernel.root_dir%/../web
+    data_root:            %kernel.root_dir%/../web
+    cache_prefix:         /media/cache
+    cache:                web_path
+    data_loader:          filesystem
+    controller_action:    liip_imagine.controller:filterAction
+    formats:              []
     filter_sets:
         my_thumb:
             quality: 75
