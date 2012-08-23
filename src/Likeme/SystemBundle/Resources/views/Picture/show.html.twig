@@ -6,14 +6,10 @@
 {% block fos_user_content %}
 
 {% for photo in photos %}
- 	<img src="{{ photo.images.4.source | imagine_filter('my_thumb') }}" /><br>
 	<img src="{{ photo.images.7.source }}" /><br>
 
 {% endfor %}
-
 	
 	<img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/>
-
-
 
 {% endblock fos_user_content %}
