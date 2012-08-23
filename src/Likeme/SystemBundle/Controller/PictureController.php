@@ -109,7 +109,7 @@ class PictureController extends Controller
         			if ($row['type'] == 'profile')
         			{
         				// Print out the pictures from album
-        				$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=1");
+        				$contents = file_get_contents("https://graph.facebook.com/" . $row['id'] . "/photos?access_token=".$token."&limit=8");
         				$photos = json_decode($contents,true);
         				$photos = $photos['data'];
         			}
