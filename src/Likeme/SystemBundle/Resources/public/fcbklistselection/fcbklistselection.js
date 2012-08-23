@@ -118,7 +118,7 @@ jQuery.fcbkListSelection = function(elem, width, height, row){
     var wrapElements = function(elem, width, height, row){
         elem.children("li").wrapInner('<div class="fcbklist_item"></div>');
         $(".fcbklist_item").css("height", height + "px");
-        var newwidth = Math.ceil((parseInt(width, 10)) / parseInt(row, 10)) - 11;
+        var newwidth = Math.ceil((parseInt(width, 10)) / parseInt(row, 10)) - 15;
         $(".fcbklist_item").css("width", newwidth + "px");
     }
     
@@ -228,6 +228,7 @@ jQuery.fcbkListSelection = function(elem, width, height, row){
     
     createTabs(elem, width);
     wrapElements(elem, width, height, row);
+   
     
     bindEventsOnTabs(elem);
     bindEventsOnItems(elem);
