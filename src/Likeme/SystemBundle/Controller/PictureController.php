@@ -44,16 +44,9 @@ class PictureController extends Controller
 				$facebook->setAccessToken($access_token);
 			}
 		}
-		
-		try {
-			// See if there is a user from a cookie
-			$user = $facebook->getUser();
-		}
-		catch (Exception $e)
-		{
-			echo 'Exception caught: ',  $e->getMessage(), "n";
-		}
-
+			
+    	// See if there is a user from a cookie
+        $user = $facebook->getUser();
         
        if ($user) {
         	try {
@@ -71,9 +64,8 @@ class PictureController extends Controller
         }
                 
         //Get AccessToken
-        $token = $facebook->getAccessToken();
+        $token = $facebook->getAccessToken();    
         
-       
         //Receive a list with all albums from user 
         $extAlbumUrl = "https://graph.facebook.com/".$user_profile['id']."/albums?fields=id,name,type&access_token=".$token."&limit=0";
         
@@ -137,18 +129,21 @@ class PictureController extends Controller
      */
     public function savePicturesAction()
     {
+    	// Get selected pictures
     	$arr = $_POST["fcbklist_values"];
+    	
+    	// Get links of selected pictures
     	$arr = str_replace('"', '', $arr);
+    	$arr = str_replace('{', '', $arr);
+    	$arr = str_replace('}', '', $arr);
     	$arr = explode(',',$arr);
-    	echo '<br><br>';
-    	echo var_dump($arr);
-    	echo '<br><br>';
-    	$arr = explode(':',$arr[0],2);
-    	echo var_dump($arr);
-    	echo '<br><br>';
+    	
+    	// Output all picture links
     	foreach($arr as $key){
-    		echo $key;
+    		$link = explode(':',$key,2); 
+    		echo $link[1];
     	}
+    	
     		    	
 		$response = $this->forward('LikemeSystemBundle:Profile:show', array());
 		// ... further modify the response or return it directly
