@@ -20,6 +20,7 @@ $loader->registerNamespaces(array(
 	'Knp\Menu'   	   => __DIR__.'/../vendor/KnpMenu/src',
 	'Imagine'   	   => __DIR__.'/../vendor/imagine/lib',
 	'Liip'      	   => __DIR__.'/../vendor/bundles',
+	'Gaufrette'		   => __DIR__.'/../vendor/gaufrette/src',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',
