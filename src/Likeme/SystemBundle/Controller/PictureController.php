@@ -44,9 +44,16 @@ class PictureController extends Controller
 				$facebook->setAccessToken($access_token);
 			}
 		}
-			
-    	// See if there is a user from a cookie
-        $user = $facebook->getUser();
+		
+		try {
+			// See if there is a user from a cookie
+			$user = $facebook->getUser();
+		}
+		catch (Exception $e)
+		{
+			echo 'Exception caught: ',  $e->getMessage(), "n";
+		}
+
         
        if ($user) {
         	try {
@@ -64,8 +71,9 @@ class PictureController extends Controller
         }
                 
         //Get AccessToken
-        $token = $facebook->getAccessToken();    
+        $token = $facebook->getAccessToken();
         
+       
         //Receive a list with all albums from user 
         $extAlbumUrl = "https://graph.facebook.com/".$user_profile['id']."/albums?fields=id,name,type&access_token=".$token."&limit=0";
         

@@ -10,9 +10,8 @@
 		<ul id="fcbklist">
 			{% for photo in photos %}
 			 	<li>        
-			        <strong>{{ name }}</strong><br /> 
-			        <span class="fcbkitem_text"><img src="{{ photo.images.7.source }}" /><br></span>
-			        <input type="hidden" name="fcbklist_value[]" value="Manuel Mujica Lainez" />       
+			        <span class="fcbkitem_text"><img src="{{ photo.images.7.source }}" align="middle" /><br></span>
+			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.images.1.source }}" />       
 			    </li>
 			{% endfor %}   
 		</ul>
@@ -40,6 +39,6 @@
 	    });    
 	</script>
 			
-	<img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/>
+	{# <img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/> #}
 
 {% endblock fos_user_content %}
