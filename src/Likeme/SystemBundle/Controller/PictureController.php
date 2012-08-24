@@ -131,4 +131,28 @@ class PictureController extends Controller
        
     }
     
+    /**
+     * @Route("/profile/savepictures", name="save_profile_pictures")
+     * @Template()
+     */
+    public function savePicturesAction()
+    {
+    	$arr = $_POST["fcbklist_values"];
+    	$arr = str_replace('"', '', $arr);
+    	$arr = explode(',',$arr);
+    	echo '<br><br>';
+    	echo var_dump($arr);
+    	echo '<br><br>';
+    	$arr = explode(':',$arr[0],2);
+    	echo var_dump($arr);
+    	echo '<br><br>';
+    	foreach($arr as $key){
+    		echo $key;
+    	}
+    		    	
+		$response = $this->forward('LikemeSystemBundle:Profile:show', array());
+		// ... further modify the response or return it directly
+		return $response;
+    }
+    
 }

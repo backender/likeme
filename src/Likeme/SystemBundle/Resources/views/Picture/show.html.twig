@@ -5,8 +5,10 @@
 
 {% block fos_user_content %}
 
-	<h1>Meine Bilder</h1>
-	<form action="test.php" method="post">
+	<h1>{{ name }}'s Bilder</h1>
+	
+	<form action="{{ path('save_profile_pictures') }}" method="POST">
+	
 		<ul id="fcbklist">
 			{% for photo in photos %}
 			 	<li>        
@@ -15,7 +17,9 @@
 			    </li>
 			{% endfor %}   
 		</ul>
+		
 	<input type="submit" value="Submit" />
+	
 	</form>
 	
 	 {% block javascripts %}
