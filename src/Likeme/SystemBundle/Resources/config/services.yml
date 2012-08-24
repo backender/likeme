@@ -13,8 +13,3 @@ services:
         tags:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
             
-    likeme_user.profile.form.type:
-      class: Likeme\SystemBundle\Form\Type\ProfileFormType
-      arguments: [%fos_user.model.user.class%]
-      tags:
-          - { name: form.type, alias: likeme_user_profile }

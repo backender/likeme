@@ -71,9 +71,7 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Likeme\SystemBundle\Entity\User
-    profile:
-      form:
-        type: likeme_user_profile
+
 
 fos_facebook:
       file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php

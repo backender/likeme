@@ -7,15 +7,17 @@
 
     <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
     <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
-    <p>{{ 'profile.show.location'|trans({}, 'FOSUserBundle') }}: {{ user.location }}</p>
     <p>{{ 'profile.show.firstname'|trans({}, 'FOSUserBundle') }}: {{ user.firstname }}</p>
     <p>{{ 'profile.show.age'|trans({}, 'FOSUserBundle') }}: {{ user.birthday }}</p>
     <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
-    <p>{{ 'profile.show.aboutme'|trans({}, 'FOSUserBundle') }}: {{ user.aboutme }}</p>
+    
+    <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
+    </div>
+	</form>
     
     <a href={{ path('pictures') }}>Bilder</a>
-    
-    
-    {{ form_widget(form) }}
-    
+        
 </div>
