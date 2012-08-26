@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
-class ProfileController extends Controller {
+class ProfileController extends BaseController {
 	
 	
 	public function __construct() {
@@ -48,20 +48,15 @@ class ProfileController extends Controller {
 			return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 		}
 
-		$em = $this->getDoctrine()->getEntityManager();
-		//$em = $this->controller->getDoctrine()->getEntityManager();
+		$em = $this->container->get('doctrine')->getEntityManager();
 		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
-		$profileForm = $this->createForm(new ProfileFormType(), $entity);
-		//$profileForm = $this->controller->createForm(new ProfileFormType(), $entity);
+		$profileForm = $this->container->get('form.factory')->create(new ProfileFormType(), $entity);
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
 				array('form' => $profileForm->createView(),	'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
-				);
+		);
 
 	}
-	
-	public function editAction() {
-		return array();
-	}
+
 
 }
