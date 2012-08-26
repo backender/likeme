@@ -13,3 +13,8 @@ services:
         tags:
             - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
             
+    likeme_user.form.handler.registration:
+        class: Likeme\SystemBundle\Form\Handler\ProfileFormHandler
+        arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer"]
+        scope: request
+        public: false
