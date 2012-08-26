@@ -1,7 +1,7 @@
 <?php
 
 namespace Likeme\SystemBundle\Controller;
-use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use FOS\UserBundle\Controller\ProfileController as BaseController;
 
 use Likeme\SystemBundle\Form\Type\ProfileFormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,6 +13,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
 class ProfileController extends Controller {
+	
+	
+	public function __construct() {
+		$this->controller = new Controller();
+	}
 	
 	public function isActive() {
 		$user = $this->container->get('security.context')->getToken()->getUser();
@@ -44,9 +49,11 @@ class ProfileController extends Controller {
 		}
 
 		$em = $this->getDoctrine()->getEntityManager();
+		//$em = $this->controller->getDoctrine()->getEntityManager();
 		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		$profileForm = $this->createForm(new ProfileFormType(), $entity);
-
+		//$profileForm = $this->controller->createForm(new ProfileFormType(), $entity);
+		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
 				array('form' => $profileForm->createView(),	'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
 				);
