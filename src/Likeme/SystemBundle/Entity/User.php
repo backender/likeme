@@ -3,6 +3,7 @@ namespace Likeme\SystemBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -61,7 +62,8 @@ class User extends BaseUser
 	/**
 	 * @var string $location
 	 *
-	 * @ORM\Column(name="location", type="string", nullable=true)
+	 * @ORM\Column(name="location", type="string", nullable=false)
+	 * @Assert\NotBlank(message="Please enter location.")
 	 */
 	private $location;
 	

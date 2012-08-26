@@ -16,14 +16,16 @@ class ProfileFormHandler extends BaseHandler
     {
     	//TODO: This is just FOS standard, make as we want to have
         $this->form->setData($user);
-
+        
         if ('POST' === $this->request->getMethod()) {
             $this->form->bindRequest($this->request);
-
+            
             if ($this->form->isValid()) {
                 $this->onSuccess($user);
 
                 return true;
+            } else {
+            	echo "falsch";
             }
 
             // Reloads the user to reset its username. This is needed when the

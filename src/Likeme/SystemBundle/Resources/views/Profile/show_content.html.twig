@@ -11,7 +11,7 @@
     <p>{{ 'profile.show.age'|trans({}, 'FOSUserBundle') }}: {{ user.birthday }}</p>
     <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
     
-    <form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    <form action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
     {{ form_widget(form) }}
     <div>
         <input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />

@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 
-class ProfileController extends BaseController {
+class ProfileController extends Controller {
 	
 	
 	public function __construct() {
@@ -36,24 +36,38 @@ class ProfileController extends BaseController {
 		if (!is_object($user) || !$user instanceof UserInterface) {
 			throw new AccessDeniedException('This user does not have access to this section.');
 		}
-
-		//Build form anyway
-		$form = $this->container->get('fos_user.profile.form');
-		$formHandler = $this->container->get('fos_user.profile.form.handler');
-
+		
+		$em = $this->container->get('doctrine')->getEntityManager();
+		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
+		
+		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $entity);
+		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
+		
 		$process = $formHandler->process($user);
 		if ($process) {
 			$this->setFlash('fos_user_success', 'profile.flash.updated');
-
+		
 			return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
-		}
+		}*/
+		
+		
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') {
+			$form->bindRequest($request);
 
-		$em = $this->container->get('doctrine')->getEntityManager();
-		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
-		$profileForm = $this->container->get('form.factory')->create(new ProfileFormType(), $entity);
+			$validator = $this->get('validator');
+			$errors = $validator->validate($user);
+			
+			if ($form->isValid()) {
+				$em = $this->getDoctrine()->getEntityManager();
+				$em->persist($user);
+				$em->flush();
+				//return $this->redirect($this->generateUrl("blog_post_view", array('slug' => $slug)));
+			}			
+		}
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $profileForm->createView(),	'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
+				array('form' => $form->createView(),	'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
 		);
 
 	}
