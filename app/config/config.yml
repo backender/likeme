@@ -9,7 +9,23 @@ services:
             facebook: "@fos_facebook.api"
             userManager: "@fos_user.user_manager"
             validator: "@validator"
-            container: "@service_container"       
+            container: "@service_container"     
+    amazon.s3:
+        class: AmazonS3
+        arguments: 
+            -
+                key:  %amazon_s3.key%
+                secret: %amazon_s3.secret%
+    amazon.s3.adapter:
+        class: Gaufrette\Adapter\AmazonS3
+        arguments: 
+            service: @amazon.s3
+            bucket_name: %amazon_s3.bucket%
+    amazon.fs:
+        class: Gaufrette\Filesystem
+        arguments: 
+            service: @amazon.s3.adapter
+          
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }

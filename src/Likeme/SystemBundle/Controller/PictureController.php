@@ -5,6 +5,8 @@ namespace Likeme\SystemBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Gaufrette\Filesystem;
+
 
 class PictureController extends Controller
 {
@@ -119,16 +121,17 @@ class PictureController extends Controller
         	echo "other error has happened";
         }  
     	    	
-        return array('name' => $user_profile['name'], 'photos' => $photos);
+        return array('name' => $user_profile['name'], 'id' => $user_profile['id'], 'photos' => $photos);
        
     }
     
     /**
      * @Route("/profile/savepictures", name="save_profile_pictures")
      * @Template()
-     */
+     */   
     public function savePicturesAction()
     {
+
     	// Get selected pictures
     	$arr = $_POST["fcbklist_values"];
     	
@@ -138,12 +141,36 @@ class PictureController extends Controller
     	$arr = str_replace('}', '', $arr);
     	$arr = explode(',',$arr);
     	
+    	// Amazone Filesystem erstellen
+    	define("AWS_CERTIFICATE_AUTHORITY", true);
+    	
+        $filesystem = $this->get('amazon.fs');
+     	$s3 =  $this->get('amazon.s3');
+     	
+    	$s3->ssl_verification=false;     	
+    	
+    	// Bilder in Amazon S3 speichern
+    	if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/")) {
+     		$filesystem->write($_POST["fcbk_id"]."/images/profile/","");
+     	}   	
+    	
+     	$i = 1;
     	// Output all picture links
     	foreach($arr as $key){
-    		$link = explode(':',$key,2); 
-    		echo $link[1];
+    		// Get Filename with and without filetype
+    		$link = explode(':',$key,2);
+    		$filenamewithtype = substr(strrchr($link[1], "/"),1);
+    		$filename = strstr($filenamewithtype, '.', true);
+    		
+    		// Save image if not already on amazon
+    		if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/".$filenamewithtype)) {
+    			$content = file_get_contents($link[1]);
+    			$filesystem->write($_POST["fcbk_id"]."/images/profile/".$filenamewithtype, $content);
+    		}
+    		
+    		// Save imagepaths in database
+    		
     	}
-    	
     		    	
 		$response = $this->forward('LikemeSystemBundle:Profile:show', array());
 		// ... further modify the response or return it directly
