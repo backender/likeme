@@ -5,7 +5,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
         	{% stylesheets filter='cssrewrite'
-			'@LikemeSystemBundle/Resources/public/fcbklistselection/fcbklistselection.css'
+			'@LikemeSystemBundle/Resources/public/photoselector/fcbklistselection.css'
 			output='web/bundles/likemesystem/compiled/base.css'
 			%}
 			
@@ -35,7 +35,6 @@
 	    
 	    	{% javascripts 
 	    	'@LikemeSystemBundle/Resources/public/js/jquery-1.8.0.js'
-	    	'@LikemeSystemBundle/Resources/public/fcbklistselection/fcbklistselection.js'
 	    	output='web/bundles/likemesystem/compiled/base.js'
 	    	%}
 	    	

@@ -74,8 +74,8 @@
             }
         },
 
-        hiddenCheck: function(obj){
-            switch (curTab()) {
+        hiddenCheck: function(obj, elem){
+            switch (this.curTab()) {
 	            case "all":
 	                elem.children("li").show();
 	                break;
@@ -97,32 +97,34 @@
             	//deselect item
                 $("#view_selected_count").text(parseInt($("#view_selected_count").text(), 10) - 1);
                 obj.parents("li").removeAttr("addedid");
-                this.removeValue(obj);
+                this.removeValue(obj, this.element);
             }
             else {
             	//select item
                 $("#view_selected_count").text(parseInt($("#view_selected_count").text(), 10) + 1);
                 obj.parents("li").attr("addedid", "tester");
-                this.addValue(obj);
+                this.addValue(obj, this.element);
             }
-            this.hiddenCheck(obj);
+            this.hiddenCheck(obj, this.element);
         },
         
         //bind onmouseover && click event on item
         bindEventsOnItems: function(elem){
+        	var self = this;
+        	var maxSelect = self.options.maxSelect;
             $.each(elem.children("li").children(".fcbklist_item"), function(i, obj){
                 obj = $(obj);
                 if (obj.children("input[checked]").length != 0) {
-                	this.addToSelected(obj);
+                	self.addToSelected(obj);
                     obj.toggleClass("itemselected");
                     obj.parents("li").toggleClass("liselected");
                 }
                 obj.click(function(){
                 	//limit the maximal select
-                	if (parseInt($("#view_selected_count").text(), 10) > this.options.maxSelect -1 && !obj.hasClass("itemselected")) {
+                	if (parseInt($("#view_selected_count").text(), 10) >  maxSelect - 1 && !obj.hasClass("itemselected")) {
                 	}
                 	else {
-                		this.addToSelected(obj);
+                		self.addToSelected(obj);
                 		obj.toggleClass("itemselected");
                 		obj.parents("li").toggleClass("liselected");
                 	}
@@ -138,12 +140,13 @@
         
         //bind onclick event on filters
         bindEventsOnTabs: function(elem){
+        	var self = this;
             $.each($("#selections li"), function(i, obj){
                 obj = $(obj);
                 obj.click(function(){
                     $(".view_on").removeClass("view_on");
                     obj.addClass("view_on");
-                    this.getContent(elem, obj.attr("id").replace("view_", ""));
+                    self.getContent(elem, obj.attr("id").replace("view_", ""));
                 });
             });
         },
@@ -167,7 +170,7 @@
             $(".fcbklist_item").css("width", newwidth + "px");
         },
         
-        addValue: function(obj, value){
+        addValue: function(obj, elem, value){
             //create input
             var inputid = elem.attr('id') + "_values";
             if ($("#" + inputid).length == 0) {
@@ -183,13 +186,13 @@
             else {
                 var input = $("#" + inputid);
             }
-            var randid = "rand_" + randomId();
+            var randid = "rand_" + this.randomId();
             if (!value) {
                 value = obj.find("[type=hidden]").val();
                 obj.find("[type=hidden]").attr("randid", randid);
             }
-            var jsdata = new data(randid, value);
-            var stored = jsToString(jsdata, $(input).val());
+            var jsdata = new this.data(randid, value);
+            var stored = this.jsToString(jsdata, $(input).val());
             $(input).val(stored);
             return input;
         },
@@ -225,7 +228,7 @@
             }
         },
             
-        removeValue: function(obj){
+        removeValue: function(obj, elem){
             var randid = obj.find("[type=hidden]").attr("randid");
             var inputid = elem.attr('id') + "_values";
             if ($("#" + inputid).length != 0) {

@@ -76,6 +76,7 @@ body
 	background-image: url(../../../bundles/likemesystem/images/fcbklistselection/checked.png);
 	background-repeat:no-repeat;
 	background-position:right bottom;	
+	z-index:10;
 }
 #fcbklist strong {
 	color:#222222;
