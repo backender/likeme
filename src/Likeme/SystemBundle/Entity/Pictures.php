@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Pictures
 {
+	public function __construct()
+	{
+		$this->child   = 0;
+	}
+	
     /**
      * @var integer $id
      *
@@ -41,6 +46,13 @@ class Pictures
      * @ORM\Column(name="type", type="string")
      */
     private $type;
+    
+    /**
+     * @var integer child
+     *
+     * @ORM\Column(name="child", type="integer")
+     */
+    private $child;
 
     /**
      * @var datetime $timestamp
@@ -164,5 +176,26 @@ class Pictures
     public function getType()
     {
         return $this->type;
+    }
+
+
+    /**
+     * Set child
+     *
+     * @param integer $child
+     */
+    public function setChild($child)
+    {
+        $this->child = $child;
+    }
+
+    /**
+     * Get child
+     *
+     * @return integer 
+     */
+    public function getChild()
+    {
+        return $this->child;
     }
 }

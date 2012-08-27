@@ -18,6 +18,22 @@ class PictureController extends Controller
      */
     public function showAction()
     {
+    	// Get Users current pictures on Amazon
+    	$user = $this->container->get('security.context')->getToken()->getUser();
+     	$em = $this->container->get('doctrine')->getEntityManager();
+    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
+
+    	// Get Pictures
+    	$query = $em->createQueryBuilder()
+            ->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+            ->select("p")
+            ->where("p.user = :userid AND p.type = :type")
+            ->setParameter('userid', $curUser->getId())
+            ->setParameter('type', 'original');
+    	 
+    	$savedpictures = $query->getQuery()->getResult();
+    	
+    	//Get User Facebook Profile Pictures
     	$app_id = '100806270069332';
     	$app_secret = '98c29a3bd105813b3308e24a404d23f1';
     	$my_url = 'http://likeme.ch/likeme/web/app_dev.php/profile/pictures';
@@ -123,7 +139,7 @@ class PictureController extends Controller
         	echo "other error has happened";
         }  
     	    	
-        return array('name' => $user_profile['name'], 'id' => $user_profile['id'], 'photos' => $photos);
+        return array('name' => $user_profile['name'], 'id' => $user_profile['id'], 'savedpictures' => $savedpictures, 'photos' => $photos);
        
     }
     
@@ -208,7 +224,7 @@ class PictureController extends Controller
     	$em->flush();
 
     	// Forward to Profileview
-		$response = $this->forward('LikemeSystemBundle:Pictures:crop', array());
+		$response = $this->forward('LikemeSystemBundle:Picture:crop', array());
 		// ... further modify the response or return it directly
 		return $response;
     }

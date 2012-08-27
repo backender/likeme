@@ -10,6 +10,18 @@
 	<form action="{{ path('save_profile_pictures') }}" method="POST">
 	
 		<ul id="fcbklist">
+			{# Photos in use #}
+			{% for photo in savedpictures %}
+			 	<li class="selected">        
+			        <span class="fcbkitem_text"><img src="{{ photo.src }}" align="middle" /><br></span>
+			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.src }}" />       
+			    </li>
+			    
+			    	addToSelected(obj);
+            		obj.toggleClass("itemselected");
+            		obj.parents("li").toggleClass("liselected");
+			{% endfor %} 
+			{# Photos on Facebook #}
 			{% for photo in photos %}
 			 	<li>        
 			        <span class="fcbkitem_text"><img src="{{ photo.images.7.source }}" align="middle" /><br></span>
@@ -22,11 +34,14 @@
 	
 	</form>
 	
+
 	 {% block javascripts %}
 	    
 	    	{% javascripts 
 	    	'@LikemeSystemBundle/Resources/public/js/jquery-1.8.0.js'
-	    	'@LikemeSystemBundle/Resources/public/fcbklistselection/fcbklistselection.js'
+	    	'@LikemeSystemBundle/Resources/public/js/jquery-ui-1.8.23.js'
+	    	'@LikemeSystemBundle/Resources/public/fcbklistselection/fcbklistselection_new.js'
+	    	'@LikemeSystemBundle/Resources/public/js/fcbklistselectphotos.js'
 	    	output='web/bundles/likemesystem/compiled/base.js'
 	    	%}
 	    	
@@ -36,12 +51,7 @@
 	    	
 	{% endblock %}
 	
-	<script type="text/javascript" language="JavaScript">
-	    $(document).ready(function() {
-	      //id(ul id),width,height(element height),row(elements in row)        
-	      $.fcbkListSelection("#fcbklist","540","150","4");
-	    });    
-	</script>
+
 			
 	{# <img src="{{ '/bundles/likemesystem/images/IMG_0614.JPG' | imagine_filter('my_thumb') }}" alt="Example"/> #}
 
