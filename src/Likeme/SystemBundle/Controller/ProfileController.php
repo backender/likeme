@@ -16,7 +16,7 @@ class ProfileController extends Controller {
 	
 	
 	public function __construct() {
-		$this->controller = new Controller();
+		$this->fos = new BaseController();
 	}
 	
 	public function isActive() {
@@ -41,6 +41,8 @@ class ProfileController extends Controller {
 		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		
 		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $entity);
+		
+		//FOS Form Handler
 		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
 		
 		$process = $formHandler->process($user);
@@ -50,7 +52,7 @@ class ProfileController extends Controller {
 			return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 		}*/
 		
-		
+		//Embedded Form Handler
 		$request = $this->getRequest();
 		if ($request->getMethod() == 'POST') {
 			$form->bindRequest($request);
@@ -62,7 +64,8 @@ class ProfileController extends Controller {
 				$em = $this->getDoctrine()->getEntityManager();
 				$em->persist($user);
 				$em->flush();
-				//return $this->redirect($this->generateUrl("blog_post_view", array('slug' => $slug)));
+								
+				return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 			}			
 		}
 		

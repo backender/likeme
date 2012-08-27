@@ -70,7 +70,8 @@ class User extends BaseUser
 	/**
 	 * @var text $aboutme
 	 *
-	 * @ORM\Column(name="aboutme", type="text", nullable=true)
+	 * @ORM\Column(name="aboutme", type="text", nullable=false)
+	 * @Assert\NotBlank(message="Please enter aboutme.")
 	 */
 	private $aboutme;
 	
