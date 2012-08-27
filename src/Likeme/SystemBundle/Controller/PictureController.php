@@ -149,7 +149,6 @@ class PictureController extends Controller
      */   
     public function savePicturesAction()
     {
-
     	// Get selected pictures
     	$arr = $_POST["fcbklist_values"];
     	
@@ -182,6 +181,23 @@ class PictureController extends Controller
      	$username = $this->container->get('security.context')->getToken()->getUser();
      	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
      	
+     	// Get timestamp of last update in database
+     	$query = $em->createQueryBuilder()
+     	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+     	->select("p")
+     	->where("p.user = :userid AND p.type = :type")
+     	->setParameter('userid', $curUser->getId())
+     	->setParameter('type', 'original')
+     	->setMaxResults(1);
+     	
+     	$savedpictures = $query->getQuery()->getResult();
+     		    	
+     	if ($savedpictures) {
+     		$lastUpdate = $savedpictures[0]->getTimestamp();
+        }
+    	
+     	$actDateTime = new \DateTime();
+     	
     	// Output all picture links
     	foreach($arr as $key){
     		// Get Facebook ID
@@ -192,29 +208,33 @@ class PictureController extends Controller
     		$filenamewithtype = substr(strrchr($link[1], "/"),1);
     		$filename = strstr($filenamewithtype, '.', true);
     		
+    		// Check if pictrue already defined in database
+    		$result = $em->getRepository('LikemeSystemBundle:Pictures')->findOneBySrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
+
     		// Save image if not already on amazon
     		if ( ! $filesystem->has($userfcbkid."/images/profile/".$filenamewithtype)) {
     			$content = file_get_contents($link[1]);
     			$filesystem->write($userfcbkid."/images/profile/".$filenamewithtype, $content);
     		}
     		
-    		// Check if pictrue already defined in database
-    		$result = $em->getRepository('LikemeSystemBundle:Pictures')->findBySrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
+    		// Make a new picture object
+    		$picture = new Pictures();
     		
     		if (!$result) {
-    			// Make a new picture object
-    			$picture = new Pictures();
-    			
     			// Save values in object
     			$picture->setPosition($i);
     			$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
-    			$picture->setTimestamp(new \DateTime());
+    			$picture->setTimestamp($actDateTime);
     			$picture->setType('original');
     			$picture->setUser($curUser);
-    				
-    			// Persist object
-    			$em->persist($picture);
-    		} 
+    		} else {
+    			// If database entry already exists => Update timestamp
+    			$picture = $result; 
+    			$picture->setTimestamp($actDateTime);
+    		}
+    		
+    		// Persist object
+    		$em->persist($picture);
     		
     		$i++;
     		
@@ -222,17 +242,28 @@ class PictureController extends Controller
 
     	// Save persists in Database
     	$em->flush();
-
+    	
+    	// Delete all old database entries
+    	$result = $em->getRepository('LikemeSystemBundle:Pictures')->findByTimestamp($lastUpdate);
+    	
+    	foreach($result as $oldentry) {
+    		$em->remove($oldentry);
+    	}
+    	
+    	// Save persists in Database
+    	$em->flush();
+    	
     	// Forward to Profileview
 		$response = $this->forward('LikemeSystemBundle:Picture:crop', array());
 		// ... further modify the response or return it directly
 		return $response;
     }
+    
     /**
      * @Route("/profile/crop", name="crop_pictures")
      * @Template()
      */
-    public function crop()
+    public function cropAction()
     {
     	$em = $this->get('doctrine')->getEntityManager();
     	
@@ -240,15 +271,16 @@ class PictureController extends Controller
     	$username = $this->container->get('security.context')->getToken()->getUser();
     	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
     	
-    	// Get all pictures
-    	$allpictures = $em->getRepository('LikemeSystemBundle:Pictures')->findByUser($curUser->getId())->findByType("original");
+    	// Get Pictures
+    	$query = $em->createQueryBuilder()
+    	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+    	->select("p")
+    	->where("p.user = :userid AND p.type = :type")
+    	->setParameter('userid', $curUser->getId())
+    	->setParameter('type', 'original');
     	
-    	// Save values in object
-    	echo $allpictures;
-    		
-    	// Persist object
-    	$em->persist($picture);
+    	$savedpictures = $query->getQuery()->getResult();   		
     	
-    	return $response;
+    	return array('savedpictures' => $savedpictures);
     }
 }
