@@ -61,7 +61,6 @@ class ProfileController extends Controller {
 			$errors = $validator->validate($user);
 			
 			if ($form->isValid()) {
-				$em = $this->getDoctrine()->getEntityManager();
 				$em->persist($user);
 				$em->flush();
 								
@@ -70,7 +69,7 @@ class ProfileController extends Controller {
 		}
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $form->createView(),	'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
+				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
 		);
 
 	}
