@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Controller;
 
+use Likeme\SystemBundle\Entity\Pictures;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -154,24 +156,52 @@ class PictureController extends Controller
      		$filesystem->write($_POST["fcbk_id"]."/images/profile/","");
      	}   	
     	
-     	$i = 1;
+     	// Counter for picture position
+     	$i = 0;
+     	
     	// Output all picture links
     	foreach($arr as $key){
+    		// Get Facebook ID
+    		$userfcbkid = $_POST["fcbk_id"];
+    		
     		// Get Filename with and without filetype
     		$link = explode(':',$key,2);
     		$filenamewithtype = substr(strrchr($link[1], "/"),1);
     		$filename = strstr($filenamewithtype, '.', true);
     		
     		// Save image if not already on amazon
-    		if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/".$filenamewithtype)) {
+    		if ( ! $filesystem->has($userfcbkid."/images/profile/".$filenamewithtype)) {
     			$content = file_get_contents($link[1]);
-    			$filesystem->write($_POST["fcbk_id"]."/images/profile/".$filenamewithtype, $content);
+    			$filesystem->write($userfcbkid."/images/profile/".$filenamewithtype, $content);
     		}
     		
     		// Save imagepaths in database
+    		$em = $this->get('doctrine')->getEntityManager();
+    		
+    		// Make a new picture object
+    		$picture = new Pictures();
+    		
+    		// Get current User object
+    		$username = $this->container->get('security.context')->getToken()->getUser();
+    		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+    		
+    		// Save values in object
+    		$picture->setPosition($i);
+    		$picture->setSrc($userfcbkid."/images/profile/".$filenamewithtype);
+    		$picture->setTimestamp(new \DateTime());
+    		$picture->setUser($curUser);
+			
+    		// Persist object
+    		$em->persist($picture);
+    		
+    		$i++;
     		
     	}
-    		    	
+
+    	// Save persists in Database
+    	$em->flush();
+
+    	// Forward to Profileview
 		$response = $this->forward('LikemeSystemBundle:Profile:show', array());
 		// ... further modify the response or return it directly
 		return $response;

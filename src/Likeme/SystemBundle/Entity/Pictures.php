@@ -118,4 +118,24 @@ class Pictures
     {
         return $this->timestamp;
     }
+
+    /**
+     * Set user
+     *
+     * @param Likeme\SystemBundle\Entity\User $user
+     */
+    public function setUser(\Likeme\SystemBundle\Entity\User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Get user
+     *
+     * @return Likeme\SystemBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
