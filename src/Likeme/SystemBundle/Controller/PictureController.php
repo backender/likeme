@@ -149,7 +149,7 @@ class PictureController extends Controller
         $filesystem = $this->get('amazon.fs');
      	$s3 =  $this->get('amazon.s3');
      	
-    	$s3->ssl_verification=false;     	
+    	$s3->ssl_verification=false;     
     	
     	// Bilder in Amazon S3 speichern
     	if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/")) {
@@ -158,6 +158,13 @@ class PictureController extends Controller
     	
      	// Counter for picture position
      	$i = 0;
+     	
+     	// Save imagepaths in database
+     	$em = $this->get('doctrine')->getEntityManager();
+     	
+     	// Get current User object
+     	$username = $this->container->get('security.context')->getToken()->getUser();
+     	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
      	
     	// Output all picture links
     	foreach($arr as $key){
@@ -175,24 +182,23 @@ class PictureController extends Controller
     			$filesystem->write($userfcbkid."/images/profile/".$filenamewithtype, $content);
     		}
     		
-    		// Save imagepaths in database
-    		$em = $this->get('doctrine')->getEntityManager();
+    		// Check if pictrue already defined in database
+    		$result = $em->getRepository('LikemeSystemBundle:Pictures')->findBySrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
     		
-    		// Make a new picture object
-    		$picture = new Pictures();
-    		
-    		// Get current User object
-    		$username = $this->container->get('security.context')->getToken()->getUser();
-    		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
-    		
-    		// Save values in object
-    		$picture->setPosition($i);
-    		$picture->setSrc($userfcbkid."/images/profile/".$filenamewithtype);
-    		$picture->setTimestamp(new \DateTime());
-    		$picture->setUser($curUser);
-			
-    		// Persist object
-    		$em->persist($picture);
+    		if (!$result) {
+    			// Make a new picture object
+    			$picture = new Pictures();
+    			
+    			// Save values in object
+    			$picture->setPosition($i);
+    			$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
+    			$picture->setTimestamp(new \DateTime());
+    			$picture->setType('original');
+    			$picture->setUser($curUser);
+    				
+    			// Persist object
+    			$em->persist($picture);
+    		} 
     		
     		$i++;
     		
@@ -202,9 +208,31 @@ class PictureController extends Controller
     	$em->flush();
 
     	// Forward to Profileview
-		$response = $this->forward('LikemeSystemBundle:Profile:show', array());
+		$response = $this->forward('LikemeSystemBundle:Pictures:crop', array());
 		// ... further modify the response or return it directly
 		return $response;
     }
-    
+    /**
+     * @Route("/profile/crop", name="crop_pictures")
+     * @Template()
+     */
+    public function crop()
+    {
+    	$em = $this->get('doctrine')->getEntityManager();
+    	
+    	// Get current User object
+    	$username = $this->container->get('security.context')->getToken()->getUser();
+    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+    	
+    	// Get all pictures
+    	$allpictures = $em->getRepository('LikemeSystemBundle:Pictures')->findByUser($curUser->getId())->findByType("original");
+    	
+    	// Save values in object
+    	echo $allpictures;
+    		
+    	// Persist object
+    	$em->persist($picture);
+    	
+    	return $response;
+    }
 }

@@ -34,6 +34,13 @@ class Pictures
      * @ORM\Column(name="position", type="integer")
      */
     private $position;
+    
+    /**
+     * @var string type
+     *
+     * @ORM\Column(name="type", type="string")
+     */
+    private $type;
 
     /**
      * @var datetime $timestamp
@@ -137,5 +144,25 @@ class Pictures
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

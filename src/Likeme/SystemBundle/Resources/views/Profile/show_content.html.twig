@@ -5,6 +5,11 @@
     	<p>Aktiv, juhu</p>
 	{% endif %}
 
+	
+	{% for picture in pictures %}
+		<img src="{{ picture.src }}"/>
+	{% endfor %}
+	
     <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
     <p>{{ 'profile.show.email'|trans({}, 'FOSUserBundle') }}: {{ user.email }}</p>
     <p>{{ 'profile.show.firstname'|trans({}, 'FOSUserBundle') }}: {{ user.firstname }}</p>

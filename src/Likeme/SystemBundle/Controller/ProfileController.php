@@ -38,10 +38,13 @@ class ProfileController extends Controller {
 		}
 		
 		$em = $this->container->get('doctrine')->getEntityManager();
-		$entity = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
+		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		
-		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $entity);
-		
+		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $curUser);
+	
+		// Get Pictures
+		$allpictures = $em->getRepository('LikemeSystemBundle:Pictures')->findByUser($curUser->getId());
+				
 		//FOS Form Handler
 		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
 		
@@ -69,7 +72,7 @@ class ProfileController extends Controller {
 		}
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive())
+				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive(), 'pictures' => $allpictures)
 		);
 
 	}
