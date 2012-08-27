@@ -23,7 +23,8 @@ class AppKernel extends Kernel
         	new FOS\FacebookBundle\FOSFacebookBundle(),
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         	new Liip\ImagineBundle\LiipImagineBundle(),
-        	new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle()
+        	new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+        	new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

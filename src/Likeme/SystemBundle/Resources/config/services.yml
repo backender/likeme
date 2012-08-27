@@ -18,3 +18,8 @@ services:
         arguments: ["@fos_user.registration.form", "@request", "@fos_user.user_manager", "@fos_user.mailer"]
         scope: request
         public: false
+        
+    likeme.twig.extension:
+        class: Likeme\SystemBundle\Extension\TextExtension
+        tags:
+            - { name: twig.extension }
