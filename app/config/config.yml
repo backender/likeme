@@ -89,7 +89,7 @@ fos_user:
     user_class: Likeme\SystemBundle\Entity\User
     profile:
         form:
-            handler: likeme_user.form.handler.registration
+            handler: likeme_user.form.handler.profile
 
 fos_facebook:
       file:   %kernel.root_dir%/../vendor/facebook/src/base_facebook.php
