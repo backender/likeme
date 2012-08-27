@@ -24,84 +24,84 @@ class Location
     /**
      * @var string $countrycode
      *
-     * @ORM\Column(name="countrycode", type="string", length=2)
+     * @ORM\Column(name="countrycode", type="string", length=2, nullable=true)
      */
     private $countrycode;
 
     /**
      * @var string $postalcode
      *
-     * @ORM\Column(name="postalcode", type="string", length=20)
+     * @ORM\Column(name="postalcode", type="string", length=20, nullable=true)
      */
     private $postalcode;
 
     /**
      * @var string $placename
      *
-     * @ORM\Column(name="placename", type="string", length=180)
+     * @ORM\Column(name="placename", type="string", length=180, nullable=true)
      */
     private $placename;
 
     /**
      * @var string $state
      *
-     * @ORM\Column(name="state", type="string", length=100)
+     * @ORM\Column(name="state", type="string", length=100, nullable=true)
      */
     private $state;
 
     /**
      * @var string $statecode
      *
-     * @ORM\Column(name="statecode", type="string", length=20)
+     * @ORM\Column(name="statecode", type="string", length=20, nullable=true)
      */
     private $statecode;
 
     /**
      * @var string $province
      *
-     * @ORM\Column(name="province", type="string", length=100)
+     * @ORM\Column(name="province", type="string", length=100, nullable=true)
      */
     private $province;
 
     /**
      * @var string $provincecode
      *
-     * @ORM\Column(name="provincecode", type="string", length=20)
+     * @ORM\Column(name="provincecode", type="string", length=20, nullable=true)
      */
     private $provincecode;
 
     /**
      * @var string $community
      *
-     * @ORM\Column(name="community", type="string", length=100)
+     * @ORM\Column(name="community", type="string", length=100, nullable=true)
      */
     private $community;
 
     /**
      * @var string $communitycode
      *
-     * @ORM\Column(name="communitycode", type="string", length=20)
+     * @ORM\Column(name="communitycode", type="string", length=20, nullable=true)
      */
     private $communitycode;
 
     /**
      * @var decimal $lat
      *
-     * @ORM\Column(name="lat", type="decimal")
+     * @ORM\Column(name="lat", type="string", length=20, nullable=true)
      */
     private $lat;
 
     /**
      * @var decimal $lon
      *
-     * @ORM\Column(name="lon", type="decimal")
+     * @ORM\Column(name="lon", type="string", length=20, nullable=true)
      */
     private $lon;
 
     /**
      * @var integer $accuracy
      *
-     * @ORM\Column(name="accuracy", type="integer")
+     * @ORM\Column(name="accuracy", type="integer", nullable=true)
      */
     private $accuracy;
 
