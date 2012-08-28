@@ -2,8 +2,9 @@
 
 
 $.widget( "likeme.locationcomplete",  {
-
+	
 	_create: function() {
+		
 		var self = this,
 			select = this.element.hide(),
 			selected = select.children( ":selected" ), value = selected.val() ? selected.text() : "";
@@ -55,7 +56,11 @@ $.widget( "likeme.locationcomplete",  {
 			},
 			success: function( data ) {
 				$.map( data, function( item ) {
-					$("#show_location").val(item.postalcode + " " + item.placename + ", " + item.statecode);
+						//self.element.val(item.postalcode + " " + item.placename + ", " + item.statecode);
+						$("#show_location").val(item.postalcode + " " + item.placename + ", " + item.statecode);
+						/*label: item.postalcode + " " + item.placename + ", " + item.statecode,
+						value: item.postalcode + " " + item.placename + ", " + item.statecode,
+						id: item.id*/
 				});
 			}
 		});
