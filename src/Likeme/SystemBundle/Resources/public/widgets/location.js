@@ -21,7 +21,7 @@ $.widget( "likeme.locationcomplete",  {
 			source: function( request, response ) {
 				$.ajax({
 					/*TODO: Get dynamic link */
-					url: "http://likeme.ch/~marc/likeme/web/app_dev.php/location/getlocation/"+ request.term,
+					url: "http://likeme.ch/~marc/likeme/web/app_dev.php/location/get/"+ request.term,
 					dataType: "json",
 					data: {
 					
@@ -49,7 +49,7 @@ $.widget( "likeme.locationcomplete",  {
 		var self = this;
 		$.ajax({
 			/*TODO: Get dynamic link */
-			url: "http://likeme.ch/~marc/likeme/web/app_dev.php/location/getlocationbyid/"+ id,
+			url: "http://likeme.ch/~marc/likeme/web/app_dev.php/location/id/"+ id,
 			dataType: "json",
 			data: {
 			

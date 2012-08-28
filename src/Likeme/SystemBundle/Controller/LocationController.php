@@ -10,12 +10,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class LocationController extends Controller {
 	
-
+	
+	/**
+	 * @Route("/location/get/{input}", name="location_get")
+	 */
+	public function getLocationAction($input) {
+		if (is_numeric($input)){
+			return self::locationByPostalcodeAction($input);
+		} else {
+			return self::locationByNameAction($input);
+		}
+	}
 
 	/**
-	 * @Route("/location/getlocation/{startlocation}", name="getlocation")
+	 * @Route("/location/name/{name}", name="location_by_name")
 	 */
-	public function placeCompleteAction($startlocation) {
+	public function locationByNameAction($name) {
 		
 		$em = $this->container->get('doctrine')->getEntityManager();
 
@@ -23,8 +33,8 @@ class LocationController extends Controller {
 		$query = $em->createQueryBuilder()
 		->from('Likeme\SystemBundle\Entity\Location', 'l')
 		->select("l.id, l.postalcode, l.placename, l.statecode")
-		->where("l.placename like :startlocation")
-		->setParameter('startlocation', $startlocation.'%');
+		->where("l.placename like :name")
+		->setParameter('name', $name.'%');
 		;
 		
 		$location_complete = $query->getQuery()->getResult();
@@ -35,7 +45,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/getlocationbyid/{id}", name="getlocationbyid")
+	 * @Route("/location/id/{id}", name="location_by_id")
 	 */
 	public function locationByIdAction($id) {
 	
@@ -47,6 +57,27 @@ class LocationController extends Controller {
 		->select("l.id, l.postalcode, l.placename, l.statecode")
 		->where("l.id = :id")
 		->setParameter('id', $id);
+		;
+	
+		$location_complete = $query->getQuery()->getResult();
+	
+		return new Response(json_encode($location_complete));
+	
+	}
+	
+	/**
+	 * @Route("/location/postalcode/{postalcode}", name="location_by_postalcode")
+	 */
+	public function locationByPostalcodeAction($postalcode) {
+	
+		$em = $this->container->get('doctrine')->getEntityManager();
+	
+		// Get saved profile pictures
+		$query = $em->createQueryBuilder()
+		->from('Likeme\SystemBundle\Entity\Location', 'l')
+		->select("l.id, l.postalcode, l.placename, l.statecode")
+		->where("l.postalcode like :postalcode")
+		->setParameter('postalcode', $postalcode.'%');
 		;
 	
 		$location_complete = $query->getQuery()->getResult();
