@@ -23,3 +23,6 @@ services:
         class: Likeme\SystemBundle\Extension\TextExtension
         tags:
             - { name: twig.extension }
+            
+    likeme.facebook.updatetoken:
+        class: Likeme\SystemBundle\Extension\FacebookToken

@@ -23,7 +23,7 @@ class PictureController extends Controller
      	$em = $this->container->get('doctrine')->getEntityManager();
     	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 
-    	// Get Pictures
+    	// Get saved profile pictures
     	$query = $em->createQueryBuilder()
             ->from('Likeme\SystemBundle\Entity\Pictures', 'p')
             ->select("p")
@@ -33,48 +33,34 @@ class PictureController extends Controller
     	 
     	$savedpictures = $query->getQuery()->getResult();
     	
-    	//Get User Facebook Profile Pictures
-    	$app_id = '100806270069332';
-    	$app_secret = '98c29a3bd105813b3308e24a404d23f1';
-    	$my_url = 'http://likeme.ch/likeme/web/app_dev.php/profile/pictures';
     	
     	//Get User Profile Pictures
     	
-    	// Create our Application instance (replace this with your appId and secret).
+    	//Get User Facebook Profile Pictures
+    	$app_id = '100806270069332';
+    	$app_secret = '98c29a3bd105813b3308e24a404d23f1';
+    	
+     	// Create our Application instance (replace this with your appId and secret).
 		$facebook = new \Facebook(array(
   			'appId'  => $app_id,
   			'secret' => $app_secret
 		));
-
-		// If we requested a new access token from Facebbok we get a code
-		if (isset($_REQUEST["code"])) {
-			$code = $_REQUEST["code"];
-			
-			// If we get a code, it means that we have re-authed the user
-			//and can get a valid access_token.
-			if (isset($code)) {
-				$token_url="https://graph.facebook.com/oauth/access_token?client_id="
-				. $app_id . "&redirect_uri=" . urlencode($my_url)
-				. "&client_secret=" . $app_secret
-				. "&code=" . $code . "&display=popup";
-				$response = file_get_contents($token_url);
-				$params = null;
-				parse_str($response, $params);
-				$access_token = $params['access_token'];
-				$facebook->setAccessToken($access_token);
-			}
-		}
-			
+					
     	// See if there is a user from a cookie
         $user = $facebook->getUser();
-        
+              
        if ($user) {
         	try {
         		// Proceed knowing you have a logged in user who's authenticated.
         		$user_profile = $facebook->api('/me');
         	} catch (FacebookApiException $e) {
-        		echo '<pre>'.htmlspecialchars(print_r($e, true)).'</pre>';
-        		$user = null;
+        		$facebooktoken = $this->container->get('likeme.facebook.updatetoken');
+		        if (isset($_REQUEST['code'])) {
+		        	$facebooktoken->update('http://likeme.ch/likeme/web/app_dev.php/profile/pictures', $_REQUEST['code']);
+		        }
+       			$facebooktoken->update('http://likeme.ch/likeme/web/app_dev.php/profile/pictures');
+        	//	echo '<pre>'.htmlspecialchars(print_r($e, true)).'</pre>';
+        	//	$user = null;
         	}
         } else {
         	// Retrieving a valid access token.
@@ -110,12 +96,7 @@ class PictureController extends Controller
         	// Check for errors
         	if (isset($response['error'])) {
         		if ($response['error']['type'] == "OAuthException") {
-        			// Retrieving a valid access token.
-        			$dialog_url= "https://www.facebook.com/dialog/oauth?"
-        			. "client_id=". $app_id
-        			. "&redirect_uri=" . urlencode($my_url);
-        			echo("<script> top.location.href='" . $dialog_url
-        					. "'</script>");
+        		
         		} else {
         			echo "other error has happened";
         		}
@@ -170,9 +151,6 @@ class PictureController extends Controller
     	if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/")) {
      		$filesystem->write($_POST["fcbk_id"]."/images/profile/","");
      	}   	
-    	
-     	// Counter for picture position
-     	$i = 0;
      	
      	// Save imagepaths in database
      	$em = $this->get('doctrine')->getEntityManager();
@@ -222,7 +200,6 @@ class PictureController extends Controller
     		
     		if (!$result) {
     			// Save values in object
-    			$picture->setPosition($i);
     			$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
     			$picture->setTimestamp($actDateTime);
     			$picture->setType('original');
@@ -234,18 +211,17 @@ class PictureController extends Controller
     		}
     		
     		// Persist object
-    		$em->persist($picture);
-    		
-    		$i++;
-    		
+    		$em->persist($picture);    		
     	}
 
     	// Save persists in Database
     	$em->flush();
     	
     	// Delete all old database entries
-    	$result = $em->getRepository('LikemeSystemBundle:Pictures')->findByTimestamp($lastUpdate);
-    	
+    	if ($savedpictures) {
+    		$result = $em->getRepository('LikemeSystemBundle:Pictures')->findByTimestamp($lastUpdate);
+    	}
+
     	foreach($result as $oldentry) {
     		$em->remove($oldentry);
     	}
