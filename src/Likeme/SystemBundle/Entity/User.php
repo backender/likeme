@@ -1,6 +1,8 @@
 <?php
 namespace Likeme\SystemBundle\Entity;
 
+use Likeme\SystemBundle\Controller\LocationController;
+
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,11 +61,16 @@ class User extends BaseUser
 	 */
 	private $birthday;
 	
+	
 	/**
-	 * @var string $location
+	 * @var integer $location
 	 *
-	 * @ORM\Column(name="location", type="string", nullable=true)
+	 * @ORM\Column(name="location", type="integer", nullable=true)
 	 * @Assert\NotBlank(message="Please enter location.")
+	 * @ORM\ManyToOne(targetEntity="Location")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="location", referencedColumnName="id")
+	 * })
 	 */
 	private $location;
 	
@@ -74,7 +81,7 @@ class User extends BaseUser
 	 * @Assert\NotBlank(message="Please enter aboutme.")
 	 */
 	private $aboutme;
-	
+
 
 	public function __construct()
 	{
@@ -241,7 +248,8 @@ class User extends BaseUser
     	}
     	if($this->getLocation() == NULL) {
 	    	if (isset($fbdata['location'])) {
-	    		$this->setLocation($fbdata['location']['name']);
+	    		//$locationController = new LocationController();
+	    		//$this->location = $locationController->locationByFacebookAction($fbdata['location']['name']);
 	    	} else {
 	    		$this->active = false;
 	    	}
