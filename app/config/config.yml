@@ -24,7 +24,14 @@ services:
     amazon.fs:
         class: Gaufrette\Filesystem
         arguments: 
-            service: @amazon.s3.adapter
+            service: @amazon.s3.adapter       
+    likeme.imagine.cache.resolver.amazon_s3:
+        class: Liip\ImagineBundle\Imagine\Cache\Resolver\AmazonS3Resolver
+        arguments:
+            - "@amazon.s3"
+            - "%amazon_s3.bucket%"
+        tags:
+            - { name: 'liip_imagine.cache.resolver', resolver: 's3' }
           
 framework:
     #esi:             ~
