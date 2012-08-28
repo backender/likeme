@@ -15,6 +15,7 @@ class Pictures
 	public function __construct()
 	{
 		$this->child   = 0;
+		$this->position = 0;
 	}
 	
     /**
