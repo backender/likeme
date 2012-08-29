@@ -25,7 +25,7 @@ services:
         class: Gaufrette\Filesystem
         arguments: 
             service: @amazon.s3.adapter       
-    likeme.imagine.cache.resolver.amazon_s3:
+    likeme.imagine.cache.resolver.s3:
         class: Liip\ImagineBundle\Imagine\Cache\Resolver\AmazonS3Resolver
         arguments:
             - "@amazon.s3"
@@ -116,6 +116,12 @@ liip_imagine:
     formats:              []
     filter_sets:
         my_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
+        test:
+            data_loader: media_cache
+            cache: 's3'
             quality: 75
             filters:
                 thumbnail: { size: [120, 90], mode: outbound }

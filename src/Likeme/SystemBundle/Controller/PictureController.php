@@ -271,6 +271,7 @@ class PictureController extends Controller
     	
     	$s3->ssl_verification=false;
     	 
+    	$filesystem = $this->get('likeme.imagine.cache.resolver.s3');
     	
     	return array('savedpictures' => $savedpictures);
     }
