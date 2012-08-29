@@ -220,11 +220,12 @@ class PictureController extends Controller
     	// Delete all old database entries
     	if ($savedpictures) {
     		$result = $em->getRepository('LikemeSystemBundle:Pictures')->findByTimestamp($lastUpdate);
+    		
+    		foreach($result as $oldentry) {
+    			$em->remove($oldentry);
+    		}
     	}
 
-    	foreach($result as $oldentry) {
-    		$em->remove($oldentry);
-    	}
     	
     	// Save persists in Database
     	$em->flush();
@@ -250,12 +251,26 @@ class PictureController extends Controller
     	// Get Pictures
     	$query = $em->createQueryBuilder()
     	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-    	->select("p")
+    	->select("p.src")
     	->where("p.user = :userid AND p.type = :type")
     	->setParameter('userid', $curUser->getId())
     	->setParameter('type', 'original');
     	
-    	$savedpictures = $query->getQuery()->getResult();   		
+    	$savedpictures = $query->getQuery()->getResult();  
+
+    	$i = 0;
+    	
+    	foreach($savedpictures as $picture) {
+    		foreach($picture as $key => $value) {
+    			$savedpictures[$i][$key] = str_replace("http://likeme.s3.amazonaws.com","",$value);
+    		}
+    		$i++;
+    	}
+    	
+    	$s3 =  $this->get('amazon.s3');
+    	
+    	$s3->ssl_verification=false;
+    	 
     	
     	return array('savedpictures' => $savedpictures);
     }
