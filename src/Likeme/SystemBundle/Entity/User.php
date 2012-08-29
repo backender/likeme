@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @ORM\Entity(repositoryClass="Likeme\SystemBundle\Entity\UserRepository")
  */
 class User extends BaseUser
 {
@@ -226,18 +227,26 @@ class User extends BaseUser
     {
     	$this->active = true;
     	
-    	if (isset($fbdata['id'])) {
-    		$this->setFacebookID($fbdata['id']);
-    		$this->addRole('ROLE_FACEBOOK');
+    	if($this->getUsername() == NULL) {
+	    	if (isset($fbdata['id'])) {
+	    		$this->setFacebookID($fbdata['id']);
+	    		$this->addRole('ROLE_FACEBOOK');
+	    	}
     	}
-    	if (isset($fbdata['first_name'])) {
-    		$this->setFirstname($fbdata['first_name']);
+    	if($this->getFirstname() == NULL) {
+	    	if (isset($fbdata['first_name'])) {
+	    		$this->setFirstname($fbdata['first_name']);
+	    	}
     	}
-    	if (isset($fbdata['last_name'])) {
-    		$this->setLastname($fbdata['last_name']);
+    	if($this->getLastname() == NULL) {
+	    	if (isset($fbdata['last_name'])) {
+	    		$this->setLastname($fbdata['last_name']);
+	    	}
     	}
-    	if (isset($fbdata['email'])) {
-    		$this->setEmail($fbdata['email']);
+    	if($this->getEmail() == NULL) {
+	    	if (isset($fbdata['email'])) {
+	    		$this->setEmail($fbdata['email']);
+	    	}
     	}
     	if($this->getBirthday() == NULL) {
 	    	if (isset($fbdata['birthday'])) {
@@ -250,6 +259,7 @@ class User extends BaseUser
 	    	if (isset($fbdata['location'])) {
 	    		//$locationController = new LocationController();
 	    		//$this->location = $locationController->locationByFacebookAction($fbdata['location']['name']);
+	    	
 	    	} else {
 	    		$this->active = false;
 	    	}
