@@ -1,6 +1,8 @@
 <?php
 namespace Likeme\SystemBundle\Entity;
 
+use Likeme\SystemBundle\Controller\LocationController;
+
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -8,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @ORM\Entity(repositoryClass="Likeme\SystemBundle\Entity\UserRepository")
  */
 class User extends BaseUser
 {
@@ -59,11 +62,16 @@ class User extends BaseUser
 	 */
 	private $birthday;
 	
+	
 	/**
-	 * @var string $location
+	 * @var integer $location
 	 *
-	 * @ORM\Column(name="location", type="string", nullable=true)
+	 * @ORM\Column(name="location", type="integer", nullable=true)
 	 * @Assert\NotBlank(message="Please enter location.")
+	 * @ORM\ManyToOne(targetEntity="Location")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="location", referencedColumnName="id")
+	 * })
 	 */
 	private $location;
 	
@@ -74,7 +82,7 @@ class User extends BaseUser
 	 * @Assert\NotBlank(message="Please enter aboutme.")
 	 */
 	private $aboutme;
-	
+
 
 	public function __construct()
 	{
@@ -219,18 +227,26 @@ class User extends BaseUser
     {
     	$this->active = true;
     	
-    	if (isset($fbdata['id'])) {
-    		$this->setFacebookID($fbdata['id']);
-    		$this->addRole('ROLE_FACEBOOK');
+    	if($this->getUsername() == NULL) {
+	    	if (isset($fbdata['id'])) {
+	    		$this->setFacebookID($fbdata['id']);
+	    		$this->addRole('ROLE_FACEBOOK');
+	    	}
     	}
-    	if (isset($fbdata['first_name'])) {
-    		$this->setFirstname($fbdata['first_name']);
+    	if($this->getFirstname() == NULL) {
+	    	if (isset($fbdata['first_name'])) {
+	    		$this->setFirstname($fbdata['first_name']);
+	    	}
     	}
-    	if (isset($fbdata['last_name'])) {
-    		$this->setLastname($fbdata['last_name']);
+    	if($this->getLastname() == NULL) {
+	    	if (isset($fbdata['last_name'])) {
+	    		$this->setLastname($fbdata['last_name']);
+	    	}
     	}
-    	if (isset($fbdata['email'])) {
-    		$this->setEmail($fbdata['email']);
+    	if($this->getEmail() == NULL) {
+	    	if (isset($fbdata['email'])) {
+	    		$this->setEmail($fbdata['email']);
+	    	}
     	}
     	if($this->getBirthday() == NULL) {
 	    	if (isset($fbdata['birthday'])) {
@@ -241,7 +257,9 @@ class User extends BaseUser
     	}
     	if($this->getLocation() == NULL) {
 	    	if (isset($fbdata['location'])) {
-	    		$this->setLocation($fbdata['location']['name']);
+	    		//$locationController = new LocationController();
+	    		//$this->location = $locationController->locationByFacebookAction($fbdata['location']['name']);
+	    	
 	    	} else {
 	    		$this->active = false;
 	    	}
