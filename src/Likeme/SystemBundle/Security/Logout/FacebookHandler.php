@@ -3,7 +3,6 @@ namespace Likeme\SystemBundle\Security\Logout;
 //This is basically extending facebook handler - but dont need to implement this anymore
 //use FOS\FacebookBundle\Security\Logout\FacebookHandler as BaseHandler;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -16,17 +15,14 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
  *
  * This handler will clear the application's Facebook cookie.
  */
-class FacebookHandler implements LogoutHandlerInterface, ContainerAwareInterface {
+class FacebookHandler implements LogoutHandlerInterface {
 
 	private $container;
 
 	private $facebook;
 
-	public function __construct(\BaseFacebook $facebook) {
+	public function __construct(\BaseFacebook $facebook, ContainerInterface $container) {
 		$this->facebook = $facebook;
-	}
-	
-	public function setContainer(ContainerInterface $container = null) {
 		$this->container = $container;
 	}
 	
@@ -34,7 +30,7 @@ class FacebookHandler implements LogoutHandlerInterface, ContainerAwareInterface
 		//Set fbcheck back to 0 before logout, so profile will be checked next login for fbdata
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$em = $this->container->get('doctrine')->getEntityManager();
-		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneById($user);
+		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		$curUser->setFbcheck(1);
 		
 	}
