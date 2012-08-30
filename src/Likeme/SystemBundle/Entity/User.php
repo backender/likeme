@@ -22,11 +22,18 @@ class User extends BaseUser
 	protected $id;
 	
 	/**
-	 * @var boolean $active
+	 * @var integer $active
 	 *
 	 * @ORM\Column(type="integer")
 	 */
 	protected $active;
+	
+	/**
+	 * @var integer $fbcheck
+	 *
+	 * @ORM\Column(type="integer")
+	 */
+	protected $fbcheck;
 	
 	/**
 	 * @var string $firstname
@@ -87,6 +94,7 @@ class User extends BaseUser
 	public function __construct()
 	{
 		parent::__construct();
+		
 
 	}
 	
@@ -255,6 +263,7 @@ class User extends BaseUser
 	    		$this->active = false;
 	    	}
     	}
+    	//facebook data can be empty here
     	if($this->getLocation() == NULL) {
 	    	if (isset($fbdata['location'])) {
 	    		//$locationController = new LocationController();
@@ -264,6 +273,7 @@ class User extends BaseUser
 	    		$this->active = false;
 	    	}
     	}
+    	//facebook data can be empty here
 	    if($this->getAboutme() == NULL) {	
 	    	if (isset($fbdata['bio'])) {
 	    		$this->setAboutme($fbdata['bio']);
@@ -339,5 +349,25 @@ class User extends BaseUser
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Set fbcheck
+     *
+     * @param integer $fbcheck
+     */
+    public function setFbcheck($fbcheck)
+    {
+        $this->fbcheck = $fbcheck;
+    }
+
+    /**
+     * Get fbcheck
+     *
+     * @return integer 
+     */
+    public function getFbcheck()
+    {
+        return $this->fbcheck;
     }
 }

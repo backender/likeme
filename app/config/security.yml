@@ -24,7 +24,8 @@ security:
                 default_target_path: /
                 provider: my_fos_facebook_provider
             logout:
-                handlers: ["fos_facebook.logout_handler"]
+                #handlers: ["fos_facebook.logout_handler"]
+                handlers: ["likeme_facebook.logout_handler"]
             anonymous:    true
 
     access_control:

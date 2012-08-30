@@ -44,7 +44,7 @@ class ProfileController extends Controller {
 	
 		// Get Pictures
 		$allpictures = $em->getRepository('LikemeSystemBundle:Pictures')->findByUser($curUser->getId());
-				
+		
 		//FOS Form Handler
 		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
 		
