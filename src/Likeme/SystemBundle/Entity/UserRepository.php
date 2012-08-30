@@ -14,18 +14,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
-	/*
-	private $locationByFacebook;
-	
-	public function __construct()
-	{
-		parent::__construct();
-	
-		$this->locationByFacebook = new LocationController();
-	}*/
-	
-	public function facebookInit($location) 
-	{
-		//return $this->locationByFacebook->locationByFacebookAction($location);
-	}
 }
