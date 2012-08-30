@@ -266,13 +266,8 @@ class PictureController extends Controller
     		}
     		$i++;
     	}
-    	
-    	$s3 =  $this->get('amazon.s3');
-    	
-    	$s3->ssl_verification=false;
-    	 
-    	$filesystem = $this->get('likeme.imagine.cache.resolver.s3');
-    	
+   	
+     
     	return array('savedpictures' => $savedpictures);
     }
 }
