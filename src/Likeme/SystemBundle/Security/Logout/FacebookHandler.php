@@ -26,18 +26,21 @@ class FacebookHandler implements LogoutHandlerInterface {
 		$this->container = $container;
 	}
 	
-	public function setfbcheck() {
-		//Set fbcheck back to 0 before logout, so profile will be checked next login for fbdata
-		$user = $this->container->get('security.context')->getToken()->getUser();
-		$em = $this->container->get('doctrine')->getEntityManager();
-		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
-		$curUser->setFbcheck(1);
-		
+	public function closeVisited()
+	{
+		$session = $this->container->get('session');
+		$visited = $session->get('visited', array());
+		if(in_array('visited', $visited)) {
+				
+			$visited[] = '';
+			$session->set('visited', $visited);
+			return false;
+				
+		}
 	}
 
 	public function logout(Request $request, Response $response, TokenInterface $token) {
-		self::setfbcheck();
-		
+		self::closeVisited(); //close session var "visited"
 		$response->headers->clearCookie('fbsr_' . $this->facebook->getAppId());
 	}
 

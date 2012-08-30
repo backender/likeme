@@ -29,13 +29,6 @@ class User extends BaseUser
 	protected $active;
 	
 	/**
-	 * @var integer $fbcheck
-	 *
-	 * @ORM\Column(type="integer")
-	 */
-	protected $fbcheck;
-	
-	/**
 	 * @var string $firstname
 	 *
 	 * @ORM\Column(name="firstname", type="string", length=45, nullable=true)
@@ -259,21 +252,15 @@ class User extends BaseUser
     	if($this->getBirthday() == NULL) {
 	    	if (isset($fbdata['birthday'])) {
 	    		$this->setBirthday($fbdata['birthday']);
-	    	} else {
-	    		$this->active = false;
 	    	}
     	}
-    	//facebook data can be empty here
+    	//facebook data could be empty
     	if($this->getLocation() == NULL) {
-	    	if (isset($fbdata['location'])) {
-	    		//$locationController = new LocationController();
-	    		//$this->location = $locationController->locationByFacebookAction($fbdata['location']['name']);
-	    	
-	    	} else {
-	    		$this->active = false;
-	    	}
+    		//already checked on facebook user provider
+	    	$this->active = false;
     	}
-    	//facebook data can be empty here
+    	
+    	//facebook data could be empty
 	    if($this->getAboutme() == NULL) {	
 	    	if (isset($fbdata['bio'])) {
 	    		$this->setAboutme($fbdata['bio']);
@@ -284,8 +271,6 @@ class User extends BaseUser
 		if($this->getGender() == NULL) {    
 	    	if (isset($fbdata['gender'])) {
 	    		$this->setGender($fbdata['gender']);
-	    	} else {
-	    		$this->active = false;
 	    	}
 		}
     }
@@ -351,23 +336,4 @@ class User extends BaseUser
         return $this->active;
     }
 
-    /**
-     * Set fbcheck
-     *
-     * @param integer $fbcheck
-     */
-    public function setFbcheck($fbcheck)
-    {
-        $this->fbcheck = $fbcheck;
-    }
-
-    /**
-     * Get fbcheck
-     *
-     * @return integer 
-     */
-    public function getFbcheck()
-    {
-        return $this->fbcheck;
-    }
 }
