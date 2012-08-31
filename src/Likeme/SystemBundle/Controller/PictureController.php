@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Controller;
 
+use Likeme\SystemBundle\Extension\GetLinksForImagine;
+
 use Likeme\SystemBundle\Entity\Pictures;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -257,17 +259,11 @@ class PictureController extends Controller
     	->setParameter('type', 'original');
     	
     	$savedpictures = $query->getQuery()->getResult();  
-
-    	$i = 0;
     	
-    	foreach($savedpictures as $picture) {
-    		foreach($picture as $key => $value) {
-    			$savedpictures[$i][$key] = str_replace("http://likeme.s3.amazonaws.com","",$value);
-    		}
-    		$i++;
-    	}
+    	// Edit picture links for LiipImagineBundle
+    	$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');	
+		$imaginelinks = $imagineservice->editLinks($savedpictures);
    	
-     
-    	return array('savedpictures' => $savedpictures);
+    	return array('savedpictures' => $imaginelinks);
     }
 }

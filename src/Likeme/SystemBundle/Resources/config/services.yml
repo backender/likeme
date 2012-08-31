@@ -36,4 +36,7 @@ services:
         #class: Likeme\SystemBundle\Security\Logout\FacebookHandler
         public: false
         arguments: ["@fos_facebook.api", "@service_container"]
+   
+    likeme.liipimaginebundle.getlinks:
+        class: Likeme\SystemBundle\Extension\GetLinksForImagine
         

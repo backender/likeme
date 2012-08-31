@@ -8,7 +8,7 @@
 	<h1>Cropping</h1>
 	
 	{% for photo in savedpictures %}
-			 	<img src="{{ photo.src | imagine_filter('test') }}" height="120px" align="middle" /><br></span>
+			 	<img src="{{ photo.src | imagine_filter('thumbnails') }}" align="middle" /><br></span>
 	{% endfor %} 
 	
 	
