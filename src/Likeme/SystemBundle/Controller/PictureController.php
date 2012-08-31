@@ -37,25 +37,18 @@ class PictureController extends Controller
     	
     	
     	//Get User Profile Pictures
+    	    	 
+    	$fosfbservice = $this->container->get('my.facebook.user');
     	
-    	//Get User Facebook Profile Pictures
-    	$app_id = '100806270069332';
-    	$app_secret = '98c29a3bd105813b3308e24a404d23f1';
+    	// Create our Application instance (replace this with your appId and secret).
+    	$facebook = $fosfbservice->getFacebookObj();
+     	$user = $fosfbservice->loadUserByUsername($user->getUsername());
     	
-     	// Create our Application instance (replace this with your appId and secret).
-		$facebook = new \Facebook(array(
-  			'appId'  => $app_id,
-  			'secret' => $app_secret
-		));
-					
-    	// See if there is a user from a cookie
-        $user = $facebook->getUser();
-              
        if ($user) {
         	try {
         		// Proceed knowing you have a logged in user who's authenticated.
         		$user_profile = $facebook->api('/me');
-        	} catch (FacebookApiException $e) {
+        	} catch (\Exception $e) {
         		$facebooktoken = $this->container->get('likeme.facebook.updatetoken');
 		        if (isset($_REQUEST['code'])) {
 		        	$facebooktoken->update('http://likeme.ch/likeme/web/app_dev.php/profile/pictures', $_REQUEST['code']);
@@ -65,15 +58,16 @@ class PictureController extends Controller
         	//	$user = null;
         	}
         } else {
-        	// Retrieving a valid access token.
-        	$dialog_url= "http://likeme.ch/likeme/web/app_dev.php/login";
-        	echo("<script> top.location.href='" . $dialog_url
-        			. "'</script>");
+			$facebooktoken = $this->container->get('likeme.facebook.updatetoken');
+		        if (isset($_REQUEST['code'])) {
+		        	$facebooktoken->update('http://likeme.ch/likeme/web/app_dev.php/profile/pictures', $_REQUEST['code']);
+		        }
+       			$facebooktoken->update('http://likeme.ch/likeme/web/app_dev.php/profile/pictures');
         }
-                
+
         //Get AccessToken
         $token = $facebook->getAccessToken();    
-        
+
         //Receive a list with all albums from user 
         $extAlbumUrl = "https://graph.facebook.com/".$user_profile['id']."/albums?fields=id,name,type&access_token=".$token."&limit=0";
         
@@ -143,9 +137,7 @@ class PictureController extends Controller
     	
     	// Amazone Filesystem erstellen
     	define("AWS_CERTIFICATE_AUTHORITY", true);
-    	
-        $filesystem = $this->get('gaufrette.filesystem.media_cache');
-    	
+    	    	
     	// Bilder in Amazon S3 speichern
     	if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/")) {
      		$filesystem->write($_POST["fcbk_id"]."/images/profile/","");

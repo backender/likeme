@@ -25,6 +25,7 @@ services:
         
     likeme.facebook.updatetoken:
         class: Likeme\SystemBundle\Extension\FacebookToken
+        arguments: ["@service_container"]
         
     likeme.facebook.location:
         class: Likeme\SystemBundle\Extension\FacebookLocation
