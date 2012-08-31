@@ -28,8 +28,29 @@ class FacebookProvider extends BaseProvider implements UserProviderInterface
     $this->userManager = $userManager;
     $this->validator = $validator;
     $this->container = $container;
+    
+    // If access token is expired
+    $this->setAccessToken();
   }
 
+  public function setAccessToken()
+  {
+  	$session = $this->container->get('session');
+  	$access_token = $session->get('access_token');
+  	
+  	if ($access_token !== null) {
+ 	 	$access_token = $session->get('access_token');
+  		$this->facebook->setAccessToken($access_token);
+  	}
+  	return true;
+  }
+  
+  
+  public function getFacebookObj()
+  {
+  	return $this->facebook;
+  }
+  
   public function supportsClass($class)
   {
     return $this->userManager->supportsClass($class);
