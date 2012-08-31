@@ -97,11 +97,13 @@ class FacebookProvider extends BaseProvider implements UserProviderInterface
       }
       
       //Get location for user
-      if(!empty($fbdata['location'])) {
-	      $location = $this->container->get("likeme.facebook.location")->locationByFacebook($fbdata['location']['name']);
-		  if ($location !== false) {
-		  	$user->setLocation($location);
-		  }
+      if($user->getLocation() == null) {
+      	if(!empty($fbdata['location'])) {
+	      	  $location = $this->container->get("likeme.facebook.location")->locationByFacebook($fbdata['location']['name']);
+			  if ($location !== false) {
+			  	$user->setLocation($location);
+			  }
+	      }
       }
       
       // TODO use http://developers.facebook.com/docs/api/realtime
