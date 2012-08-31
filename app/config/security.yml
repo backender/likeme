@@ -18,7 +18,7 @@ security:
                 csrf_provider: form.csrf_provider
             fos_facebook:
                 app_url:    "http://www.facebook.com/apps/application.php?id=100806270069332"
-                server_url: "http://likeme.ch/dev/web/app_dev.php/"
+                server_url: "http://www.likeme.ch/dev/web/"
                 login_path: /login
                 check_path: /login_fb_check
                 default_target_path: /
