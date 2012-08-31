@@ -13,7 +13,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/get/{input}", name="location_get")
+	 * @Route("/location/get/{input}", name="location_get", options={"expose"=true})
 	 */
 	public function getLocationAction($input) {
 		if (is_numeric($input)){
@@ -24,7 +24,7 @@ class LocationController extends Controller {
 	}
 
 	/**
-	 * @Route("/location/name/{name}", name="location_by_name")
+	 * @Route("/location/name/{name}", name="location_by_name", options={"expose"=true})
 	 */
 	public function locationByNameAction($name) {
 		
@@ -46,7 +46,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/id/{id}", name="location_by_id")
+	 * @Route("/location/id/{id}", name="location_by_id", options={"expose"=true})
 	 */
 	public function locationByIdAction($id) {
 	
@@ -67,7 +67,7 @@ class LocationController extends Controller {
 	}
 	
 	/**
-	 * @Route("/location/postalcode/{postalcode}", name="location_by_postalcode")
+	 * @Route("/location/postalcode/{postalcode}", name="location_by_postalcode", options={"expose"=true})
 	 */
 	public function locationByPostalcodeAction($postalcode) {
 	
@@ -89,7 +89,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/facebook/{location}", name="location_by_facebook")
+	 * @Route("/location/facebook/{location}", name="location_by_facebook", options={"expose"=true})
 	 */
 	public function locationByFacebookAction($location) {
 		
