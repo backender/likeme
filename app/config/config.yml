@@ -11,12 +11,12 @@ services:
             validator: "@validator"
             container: "@service_container"     
     likeme.gaufrette.stream_registry:
-        class: Likeme\Systembundle\Gaufrette\StreamRegistry
+        class: Likeme\SystemBundle\Gaufrette\StreamRegistry
     #
     # Amazon adapters
     #
     likeme.amazon_s3:
-        class: Likeme\Systembundle\Gaufrette\AmazoneWithoutSSL
+        class: Likeme\SystemBundle\Gaufrette\AmazoneWithoutSSL
         arguments: 
             -
                 key:  %amazon_s3.key%

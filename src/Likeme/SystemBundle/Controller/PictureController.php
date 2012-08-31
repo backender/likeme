@@ -137,7 +137,9 @@ class PictureController extends Controller
     	
     	// Amazone Filesystem erstellen
     	define("AWS_CERTIFICATE_AUTHORITY", true);
-    	    	
+    	
+    	$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
+    	
     	// Bilder in Amazon S3 speichern
     	if ( ! $filesystem->has($_POST["fcbk_id"]."/images/profile/")) {
      		$filesystem->write($_POST["fcbk_id"]."/images/profile/","");
