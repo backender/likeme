@@ -28,7 +28,7 @@
 	
 		
 		{% for picture in pictures %}
-			<img src="{{ picture.src }}"/>
+			<img src="{{ picture.src | imagine_filter('thumbnails') }}"/> 
 		{% endfor %}
 		
 	    <p>{{ 'profile.show.username'|trans({}, 'FOSUserBundle') }}: {{ user.username }}</p>
