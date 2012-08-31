@@ -24,7 +24,8 @@ class AppKernel extends Kernel
         	new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         	new Liip\ImagineBundle\LiipImagineBundle(),
         	new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-        	new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle()
+        	new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
+        	new FOS\JsRoutingBundle\FOSJsRoutingBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

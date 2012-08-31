@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Controller;
 
+use Likeme\SystemBundle\Extension\FacebookToken;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,7 +13,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/get/{input}", name="location_get")
+	 * @Route("/location/get/{input}", name="location_get", options={"expose"=true})
 	 */
 	public function getLocationAction($input) {
 		if (is_numeric($input)){
@@ -22,7 +24,7 @@ class LocationController extends Controller {
 	}
 
 	/**
-	 * @Route("/location/name/{name}", name="location_by_name")
+	 * @Route("/location/name/{name}", name="location_by_name", options={"expose"=true})
 	 */
 	public function locationByNameAction($name) {
 		
@@ -44,7 +46,7 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/id/{id}", name="location_by_id")
+	 * @Route("/location/id/{id}", name="location_by_id", options={"expose"=true})
 	 */
 	public function locationByIdAction($id) {
 	
@@ -65,7 +67,7 @@ class LocationController extends Controller {
 	}
 	
 	/**
-	 * @Route("/location/postalcode/{postalcode}", name="location_by_postalcode")
+	 * @Route("/location/postalcode/{postalcode}", name="location_by_postalcode", options={"expose"=true})
 	 */
 	public function locationByPostalcodeAction($postalcode) {
 	
@@ -87,38 +89,15 @@ class LocationController extends Controller {
 	
 	
 	/**
-	 * @Route("/location/facebook/{location}", name="location_by_facebook")
+	 * @Route("/location/facebook/{location}", name="location_by_facebook", options={"expose"=true})
 	 */
 	public function locationByFacebookAction($location) {
-	
-		//Common FB format is "city, region" so let's split
-		$location = explode(",", $location);
 		
+		//this is more or less just for debugging in browser
+		$facebook_location = $this->container->get("likeme.facebook.location");
+		$locationByFacebook = $facebook_location->locationByFacebook($location);
 		
-		$em = $this->container->get('doctrine')->getEntityManager();
-	
-		// Get saved profile pictures
-		$query = $em->createQueryBuilder()
-		->from('Likeme\SystemBundle\Entity\Location', 'l')
-		->select("l.id, l.postalcode, l.placename, l.statecode")
-		->where("l.placename = :location")
-		->setParameter('location', $location[0]);
-		;
-	
-		$location_complete = $query->getQuery()->getResult();
-		
-		if ($location_complete !== array()) {
-			if (count($location_complete) > 1) {
-				echo count($location_complete);
-				print_r($location_complete);
-			} else {
-				return $location_complete[0]['id'];
-			}
-		} else {
-			return false;
-		}
-		
-		return false;
+		return $locationByFacebook;
 	
 	}
 	
