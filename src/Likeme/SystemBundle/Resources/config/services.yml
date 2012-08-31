@@ -32,8 +32,8 @@ services:
             - [ setContainer, [ @service_container ] ]
             
     likeme_facebook.logout_handler:
-        class: FOS\FacebookBundle\Security\Logout\FacebookHandler
-        #class: Likeme\SystemBundle\Security\Logout\FacebookHandler
+        #class: FOS\FacebookBundle\Security\Logout\FacebookHandler
+        class: Likeme\SystemBundle\Security\Logout\FacebookHandler
         public: false
         arguments: ["@fos_facebook.api", "@service_container"]
    
