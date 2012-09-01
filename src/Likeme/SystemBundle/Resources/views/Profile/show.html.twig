@@ -23,7 +23,11 @@
 			<div id="main">
 				<div class="box-top">Profil <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
-					<div class="likepic"><img width="400px" height="400px" src="http://1.bp.blogspot.com/_9DRIQ9xf9U4/TKZdUmZ2eaI/AAAAAAAABE0/PC_GRAPj0p4/s400/sexy-girls-free-wallpapers002-sexy-girls.jpg" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
+					{% set i = 0 %}
+					{% for picture in pictures if i == 0 %}
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.src | imagine_filter('thumbnails') }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
+						{% set i = 1 %}
+					{% endfor %}
 					{% for picture in pictures %}
 						<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.src | imagine_filter('thumbnails') }}" /></div>
 					{% endfor %}
@@ -68,11 +72,7 @@
 	    {% else %}
 	    	<p>Aktiv, juhu</p>
 		{% endif %}
-	
-		
-		{% for picture in pictures %}
-			<img src="{{ picture.src | imagine_filter('thumbnails') }}"/> 
-		{% endfor %}
+
 		
 	    <p>Age: {{ user.birthday | age }}</p>
 	    <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
