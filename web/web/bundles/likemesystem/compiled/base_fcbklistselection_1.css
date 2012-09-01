@@ -29,7 +29,7 @@ body
 }
 
 #filters .selections li.view_on {
-	background:#FFFFFF url(../../../../../bundles/likemesystem/images/fcbklistselection/multi_selector_bg.gif) repeat-x scroll center top;	
+	background:#FFFFFF url(../../../../bundles/likemesystem/images/fcbklistselection/multi_selector_bg.gif) repeat-x scroll center top;	
 }
 #filters .selections li {
 	float:left;
@@ -73,7 +73,7 @@ body
 #fcbklist .itemselected 
 {
 	background-color:#D7F8AC !important;
-	background-image: url(../../../../../bundles/likemesystem/images/fcbklistselection/checked.png);
+	background-image: url(../../../../bundles/likemesystem/images/fcbklistselection/checked.png);
 	background-repeat:no-repeat;
 	background-position:right bottom;	
 	z-index:10;

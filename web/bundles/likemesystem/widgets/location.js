@@ -44,19 +44,21 @@ $.widget( "likeme.locationcomplete",  {
 			 
 	},
 	selectitem: function( id ) {
-		var self = this;
-		$.ajax({
-			url: Routing.generate('location_by_id', { "id": id }),
-			dataType: "json",
-			data: {
-			
-			},
-			success: function( data ) {
-				$.map( data, function( item ) {
-					$("#show_location").val(item.postalcode + " " + item.placename + ", " + item.statecode);
-				});
-			}
-		});
+		if(id !== '') {
+			var self = this;
+			$.ajax({
+				url: Routing.generate('location_by_id', { "id": id }),
+				dataType: "json",
+				data: {
+				
+				},
+				success: function( data ) {
+					$.map( data, function( item ) {
+						$("#show_location").val(item.postalcode + " " + item.placename + ", " + item.statecode);
+					});
+				}
+			});
+		}
 	}
 	
 });
