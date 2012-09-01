@@ -230,31 +230,40 @@ class PictureController extends Controller
     }
     
     /**
-     * @Route("/profile/crop", name="crop_pictures")
+     * @Route("/profile/crop", name="crop_pictures", options={"expose"=true}))
      * @Template()
      */
     public function cropAction()
     {
-    	$em = $this->get('doctrine')->getEntityManager();
+    	if (isset($_GET['url'])) {
+    		$imagelink = $_GET['url'];
+    		
+    		
+    	//	$em = $this->get('doctrine')->getEntityManager();
+    		 
+//     		// Get current User object
+//     		$username = $this->container->get('security.context')->getToken()->getUser();
+//     		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+    		 
+//     		// Get Pictures
+//     		$query = $em->createQueryBuilder()
+//     		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+//     		->select("p.src")
+//     		->where("p.user = :userid AND p.type = :type")
+//     		->setParameter('userid', $curUser->getId())
+//     		->setParameter('type', 'original');
+    		 
+//     		$savedpictures = $query->getQuery()->getResult();
+    		 
+//     		// Edit picture links for LiipImagineBundle
+//     		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
+//     		$imaginelinks = $imagineservice->editLinks($savedpictures);
+    	} else {
+    		$imagelink = null;
+    	}
     	
-    	// Get current User object
-    	$username = $this->container->get('security.context')->getToken()->getUser();
-    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
-    	
-    	// Get Pictures
-    	$query = $em->createQueryBuilder()
-    	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-    	->select("p.src")
-    	->where("p.user = :userid AND p.type = :type")
-    	->setParameter('userid', $curUser->getId())
-    	->setParameter('type', 'original');
-    	
-    	$savedpictures = $query->getQuery()->getResult();  
-    	
-    	// Edit picture links for LiipImagineBundle
-    	$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');	
-		$imaginelinks = $imagineservice->editLinks($savedpictures);
+
    	
-    	return array('savedpictures' => $imaginelinks);
+    	return array('image' => $imagelink);
     }
 }

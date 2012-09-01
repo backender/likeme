@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500' rel='stylesheet' type='text/css'>
-        <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
         	{% stylesheets filter='cssrewrite'
 			'bundles/likemesystem/css/ui-lightness/jquery-ui-1.8.23.custom.css'
@@ -20,16 +19,9 @@
     </head>
     <body>
     	<div id="container">
-      {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
-      
-        <h1>{% block head %}{% endblock %}</h1>
-        
-        {% block navi %}
-			{{ knp_menu_render('main') }}
-        
-			<br /><br />
-        {% endblock %}
-        
+    	
+      	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
+             
             	
         {% block body %}{% endblock %}
         
