@@ -1,8 +1,6 @@
-{% extends "::base_empty.html.twig" %}
+
 
 {% block stylesheets %}
-	
-	{{ parent() }}
 	
 	{% stylesheets filter='cssrewrite'
 		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
@@ -26,7 +24,6 @@
 	</form>
 				
 	 {% block javascripts %}
-	 		{{ parent() }}
 	    	{% javascripts 
 	    		'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
 	    	%}
