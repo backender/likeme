@@ -1,12 +1,11 @@
-{% extends 'LikemeSystemBundle::layout.html.twig' %}
+{% extends "::base_empty.html.twig" %}
 
 {% block stylesheets %}
-
+	
 	{{ parent() }}
 	
 	{% stylesheets filter='cssrewrite'
-		'@LikemeSystemBundle/Resources/public/jcrop/css/jquery.Jcrop.css'
-		output='web/bundles/likemesystem/compiled/picture_crop.css'
+		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
 	%}
 			
 	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
@@ -14,23 +13,22 @@
 	{% endstylesheets %}
 {% endblock %}
 
-{% block head %}Pictures{% endblock %}
+{% block body %}
 
-{% block fos_user_content %}
+	<img id="target" src="{{ image }}" align="middle" /><br></span>
 
-	<h1>Cropping</h1>
-	
-		
-	{% for photo in savedpictures %}
-			 	<img id="target" src="{{ photo.src | imagine_filter('thumbnails') }}" align="middle" /><br></span>
-	{% endfor %} 
-	
-
+	<form action="crop.php" method="post" onsubmit="return checkCoords();">
+			<input type="hidden" id="x" name="x" />
+			<input type="hidden" id="y" name="y" />
+			<input type="hidden" id="w" name="w" />
+			<input type="hidden" id="h" name="h" />
+			<input type="submit" value="Crop Image" />
+	</form>
+				
 	 {% block javascripts %}
-	    	{{ parent() }}
+	 		{{ parent() }}
 	    	{% javascripts 
-	    		'@LikemeSystemBundle/Resources/public/jcrop/js/jquery.Jcrop.min.js'
-	    		output='web/bundles/likemesystem/compiled/base.js'
+	    		'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
 	    	%}
 	    	
 	    	<script type="text/javascript" src="{{ asset_url }}"></script>
@@ -38,32 +36,24 @@
 	    	{% endjavascripts %}
 	    	
 	{% endblock %}
-	
-	<form action="crop.php" method="post" onsubmit="return checkCoords();">
-			<input type="hidden" id="x" name="x" />
-			<input type="hidden" id="y" name="y" />
-			<input type="hidden" id="w" name="w" />
-			<input type="hidden" id="h" name="h" />
-			<input type="submit" value="Crop Image" />
-		</form>
-				
-<script language="Javascript">
-    jQuery(function($) {
-        $('#target').Jcrop({
-        	aspectRatio: 1,
-        	onSelect: updateCoords
-        });
-        
-        function updateCoords(c)
-		{
-			$('#x').val(c.x);
-			$('#y').val(c.y);
-			$('#w').val(c.w);
-			$('#h').val(c.h);
-		};
-    });
-</script>
+
+	<script language="Javascript">
+	    jQuery(function($) {
+	        $('#target').Jcrop({
+	        	aspectRatio: 1,
+	        	onSelect: updateCoords
+	        });
+	        
+	        function updateCoords(c)
+			{
+				$('#x').val(c.x);
+				$('#y').val(c.y);
+				$('#w').val(c.w);
+				$('#h').val(c.h);
+			};
+	    });
+	</script>
 	
 
 
-{% endblock fos_user_content %}
+{% endblock body %}

@@ -1,5 +1,16 @@
 {% extends 'LikemeSystemBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	{% stylesheets filter='cssrewrite'
+		'bundles/likemesystem/photoselector/fcbklistselection.css'
+	%}
+			
+	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
+				
+	{% endstylesheets %}
+			
+{% endblock %}
 
 {% block head %}Pictures{% endblock %}
 
