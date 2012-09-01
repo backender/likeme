@@ -21,8 +21,8 @@ services:
             -
                 key:  %amazon_s3.key%
                 secret: %amazon_s3.secret%
-        call:
-            [setSSL]
+        calls:
+            - [setSSL]
     likeme.amazon_s3.base_adapter:
         class: Gaufrette\Adapter\AmazonS3
         arguments: 
@@ -171,5 +171,5 @@ liip_imagine:
             data_loader: media_cache
             quality: 75
             filters:
-                thumbnail: { size: [120, 90], mode: inset }
+                thumbnail: { size: [400, 400], mode: outbound }
 
