@@ -5,7 +5,14 @@
 {% block stylesheets %}
 
 	{{ parent() }}
-				
+	
+	{% stylesheets filter='cssrewrite'
+		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
+	%}
+			
+	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
+		
+	{% endstylesheets %}
 {% endblock %}
 
 {% block fos_user_content %}
@@ -87,6 +94,7 @@
    	'bundles/likemesystem/widgets/location.js'
    	'bundles/likemesystem/js/selectlocation.js'
    	'bundles/likemesystem/js/extensions.js'
+   	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
    	output='web/bundles/likemesystem/compiled/profile_show.js'
 	%}
 	    	
@@ -95,7 +103,7 @@
 	    	
 	<script type="text/javascript">
 	$(document).ready(function() {
-		$('.box-bottom div').each(function(i) {
+		$('.likepic, likepic-sm').each(function(i) {
 			var link = Routing.generate('crop_pictures', { "url": $(this).find('img').attr("src") });
 			$(this).click(function(){
 				showUrlInDialog(link,'Crop');

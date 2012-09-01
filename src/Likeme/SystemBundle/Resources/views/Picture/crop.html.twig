@@ -2,13 +2,7 @@
 
 {% block stylesheets %}
 	
-	{% stylesheets filter='cssrewrite'
-		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
-	%}
-			
-	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
-		
-	{% endstylesheets %}
+	
 {% endblock %}
 
 {% block body %}
@@ -24,17 +18,10 @@
 	</form>
 				
 	 {% block javascripts %}
-	    	{% javascripts 
-	    		'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
-	    	%}
-	    	
-	    	<script type="text/javascript" src="{{ asset_url }}"></script>
-	    	
-	    	{% endjavascripts %}
-	    	
+	    
 	{% endblock %}
 
-	<script language="Javascript">
+		<script language="Javascript">
 	    jQuery(function($) {
 	        $('#target').Jcrop({
 	        	aspectRatio: 1,
@@ -51,6 +38,5 @@
 	    });
 	</script>
 	
-
 
 {% endblock body %}
