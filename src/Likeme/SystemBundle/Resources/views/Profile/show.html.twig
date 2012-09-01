@@ -32,9 +32,9 @@
 					{% endfor %}
 					<div class="clear"></div>
 					<div id="about">
-					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">&Uuml;ber Mich</h3>
+					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">{{ form_label(form.aboutme) }}</h3>
 						<textarea class="about-text"></textarea>
-						{{ form_row(form.aboutme) }}
+						{{ form_widget(form.aboutme) }}
 					</div>
 				</div>
 			</div>
@@ -48,9 +48,9 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">Wohnort <div class="save"><a href="">speichern</a></div></div>
+				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
-					{{ form_row(form.location) }}
+					{{ form_widget(form.location) }}
 				</div>
 				
 				
