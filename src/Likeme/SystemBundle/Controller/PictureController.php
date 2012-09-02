@@ -238,37 +238,43 @@ class PictureController extends Controller
     	if (isset($_POST['url'])) {
     		$imagelink = $_POST['url'];
     		
-    		$targ_w = $targ_h = 150;
-    		$jpeg_quality = 90;
-
-    		$img_r = imagecreatefromjpeg($imagelink);
-    		$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
-    		
-    		$newthumb = imagecopyresampled($dst_r,$img_r,0,0,$_POST['x'],$_POST['y'],
-    				$targ_w,$targ_h,$_POST['w'],$_POST['h']);
-    		
-    		//header('Content-type: image/jpeg');
-    		    		
-			ob_start(); 
-				imagejpeg($dst_r, null, $jpeg_quality);
-				$newthumb = ob_get_contents();
-			ob_end_clean();
-    		
-    		
-    	    // Amazone Filesystem erstellen
-	    	define("AWS_CERTIFICATE_AUTHORITY", true);
-	    	
-	    	$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
-	    	
-	    	$thumblink = str_replace("http://likeme.s3.amazonaws.com/","",$_POST['thumburl']);
-	    	
-	    	// Bild in Amazon S3 speichern
-	    	if ($filesystem->has($thumblink)) {
-	     		$filesystem->write($thumblink, $newthumb, true);
-	     	}  
-    		
-    		$ret = 'Bild wurde aktualisiert';
-
+    		try {
+    			$targ_w = $targ_h = 150;
+    			$jpeg_quality = 90;
+    			
+    			$img_r = imagecreatefromjpeg($imagelink);
+    			$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+    			
+    			$newthumb = imagecopyresampled($dst_r,$img_r,0,0,$_POST['x'],$_POST['y'],
+    					$targ_w,$targ_h,$_POST['w'],$_POST['h']);
+    			
+    			//header('Content-type: image/jpeg');
+    			
+    			ob_start();
+    			imagejpeg($dst_r, null, $jpeg_quality);
+    			$newthumb = ob_get_contents();
+    			ob_end_clean();
+    			
+    			
+    			// Amazone Filesystem erstellen
+    			define("AWS_CERTIFICATE_AUTHORITY", true);
+    			
+    			$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
+    			
+    			$thumblink = str_replace("http://likeme.s3.amazonaws.com/","",$_POST['thumburl']);
+    			
+    			// Bild in Amazon S3 speichern
+    			if ($filesystem->has($thumblink)) {
+    				$filesystem->write($thumblink, $newthumb, true);
+    			}
+    			
+    			// Bestätigung für erfolgreiches Updaten
+    			$ret = 1;
+    			
+			} catch (Exception $e) {
+				$ret = 'Fehler: ' .  $e->getMessage();
+			}	
+    			
     	} else {
     		$ret = 'Fehler';
     	}

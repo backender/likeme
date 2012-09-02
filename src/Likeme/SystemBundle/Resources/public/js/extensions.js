@@ -92,8 +92,14 @@ $(document).ready(function() {
 												  h: croph
 											  }
 											}).done(function( msg ) {
-											  alert( msg );
-											  window.location.reload();
+											  if (msg == 1) {
+												  var timestamp = new Date().getTime();
+												  $(self).find('img').attr('src', self.find('img').attr("src")+'?'+timestamp); 
+												  $('body').css('cursor','default');
+												  $(self).poshytip('hide');
+											  } else {
+												  alert( msg );
+											  }
 											});
 									})
 									.appendTo(footerdiv);
