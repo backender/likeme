@@ -8,8 +8,8 @@ class GetLinksForImagine
 		$i = 0;
 		
 		foreach($picturearray as $picture) {
-			foreach($picture as $key => $value) {
-				$picturearray[$i][$key] = str_replace("http://likeme.s3.amazonaws.com","",$value);
+			foreach($picture as $key => $value) {			
+				$picturearray[$i]['thumb'] = str_replace("http://likeme.s3.amazonaws.com","",$value);
 			}
 			$i++;
 		}

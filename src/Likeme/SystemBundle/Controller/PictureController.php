@@ -9,6 +9,7 @@ use Likeme\SystemBundle\Entity\Pictures;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Gaufrette\Filesystem;
 
 
@@ -231,39 +232,46 @@ class PictureController extends Controller
     
     /**
      * @Route("/profile/crop", name="crop_pictures", options={"expose"=true}))
-     * @Template()
      */
     public function cropAction()
     {
-    	if (isset($_GET['url'])) {
-    		$imagelink = $_GET['url'];
+    	if (isset($_POST['url'])) {
+    		$imagelink = $_POST['url'];
     		
-    		
-    	//	$em = $this->get('doctrine')->getEntityManager();
-    		 
-//     		// Get current User object
-//     		$username = $this->container->get('security.context')->getToken()->getUser();
-//     		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
-    		 
-//     		// Get Pictures
-//     		$query = $em->createQueryBuilder()
-//     		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-//     		->select("p.src")
-//     		->where("p.user = :userid AND p.type = :type")
-//     		->setParameter('userid', $curUser->getId())
-//     		->setParameter('type', 'original');
-    		 
-//     		$savedpictures = $query->getQuery()->getResult();
-    		 
-//     		// Edit picture links for LiipImagineBundle
-//     		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-//     		$imaginelinks = $imagineservice->editLinks($savedpictures);
-    	} else {
-    		$imagelink = null;
-    	}
-    	
+    		$targ_w = $targ_h = 150;
+    		$jpeg_quality = 90;
 
-   	
-    	return array('image' => $imagelink);
+    		$img_r = imagecreatefromjpeg($imagelink);
+    		$dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+    		
+    		$newthumb = imagecopyresampled($dst_r,$img_r,0,0,$_POST['x'],$_POST['y'],
+    				$targ_w,$targ_h,$_POST['w'],$_POST['h']);
+    		
+    		//header('Content-type: image/jpeg');
+    		    		
+			ob_start(); 
+				imagejpeg($dst_r, null, $jpeg_quality);
+				$newthumb = ob_get_contents();
+			ob_end_clean();
+    		
+    		
+    	    // Amazone Filesystem erstellen
+	    	define("AWS_CERTIFICATE_AUTHORITY", true);
+	    	
+	    	$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
+	    	
+	    	$thumblink = str_replace("http://likeme.s3.amazonaws.com/","",$_POST['thumburl']);
+	    	
+	    	// Bild in Amazon S3 speichern
+	    	if ($filesystem->has($thumblink)) {
+	     		$filesystem->write($thumblink, $newthumb, true);
+	     	}  
+    		
+    		$ret = 'Bild wurde aktualisiert';
+
+    	} else {
+    		$ret = 'Fehler';
+    	}
+    	return new Response($ret);
     }
 }
