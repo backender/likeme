@@ -82,6 +82,20 @@ class User extends BaseUser
 	 * @Assert\NotBlank(message="Please enter aboutme.")
 	 */
 	private $aboutme;
+	
+	/**
+	 * @var integer $pref_gender
+	 *
+	 * @ORM\Column(name="pref_gender", type="integer")
+	 */
+	private $pref_gender;
+	
+	/**
+	 * @var string $pref_age_range
+	 *
+	 * @ORM\Column(name="pref_age_range", type="string", length=255)
+	 */
+	private $pref_age_range;
 
 
 	public function __construct()
@@ -336,4 +350,44 @@ class User extends BaseUser
         return $this->active;
     }
 
+
+    /**
+     * Set pref_gender
+     *
+     * @param integer $prefGender
+     */
+    public function setPrefGender($prefGender)
+    {
+        $this->pref_gender = $prefGender;
+    }
+
+    /**
+     * Get pref_gender
+     *
+     * @return integer 
+     */
+    public function getPrefGender()
+    {
+        return $this->pref_gender;
+    }
+
+    /**
+     * Set pref_age_range
+     *
+     * @param string $prefAgeRange
+     */
+    public function setPrefAgeRange($prefAgeRange)
+    {
+        $this->pref_age_range = $prefAgeRange;
+    }
+
+    /**
+     * Get pref_age_range
+     *
+     * @return string 
+     */
+    public function getPrefAgeRange()
+    {
+        return $this->pref_age_range;
+    }
 }

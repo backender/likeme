@@ -1,6 +1,8 @@
 <?php
 
 namespace Likeme\SystemBundle\Controller;
+use Likeme\SystemBundle\Form\Type\PreferenceFormType;
+
 use FOS\UserBundle\Controller\ProfileController as BaseController;
 
 use Likeme\SystemBundle\Form\Type\ProfileFormType;
@@ -38,8 +40,10 @@ class ProfileController extends Controller {
 		}
 		
 		$em = $this->container->get('doctrine')->getEntityManager();
+		// Get current user
 		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		
+		// Build form
 		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $curUser);
 	
 		// Get Pictures

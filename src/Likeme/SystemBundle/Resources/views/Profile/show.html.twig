@@ -20,6 +20,7 @@
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
 		<div id="content">
 		<form action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+		
 			<div id="main">
 				<div class="box-top">Profil <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
@@ -53,18 +54,19 @@
 				<div class="box-bottom">
 					{{ form_widget(form.location) }}
 				</div>
-				
-				
+		
+						
 				<div class="box-top">Preferenzen <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
-					<input type="text" value="balbla">
-					<input type="text" value="blablabla">
-					<input type="text" value="h�rd�pfel">
+					{{ form_widget(form.pref_gender) }}
+					{{ form_widget(form.pref_age_range) }}
 				</div>
 				
 			</div>
-		</form>
 		</div>
+		{{ form_errors(form)  }}
+		<input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
+		</form>
 
 	<div class="fos_user_user_show">
 		{% if active == false %}
