@@ -20,7 +20,7 @@
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
 		<div id="content">
 		<form action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
-		
+		{{ form_widget(form._token) }}
 			<div id="main">
 				<div class="box-top">Profil <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
@@ -36,6 +36,7 @@
 					<div id="about">
 					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">{{ form_label(form.aboutme) }}</h3>
 						<textarea class="about-text"></textarea>
+						{{ form_errors(form.aboutme) }}
 						{{ form_widget(form.aboutme) }}
 					</div>
 				</div>
@@ -52,13 +53,16 @@
 				
 				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
+					{{ form_errors(form.location) }}
 					{{ form_widget(form.location) }}
 				</div>
 		
 						
 				<div class="box-top">Preferenzen <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
+					{{ form_errors(form.pref_gender) }}
 					{{ form_widget(form.pref_gender) }}
+					{{ form_errors(form.pref_age_range) }}
 					{{ form_widget(form.pref_age_range) }}
 				</div>
 				
