@@ -107,7 +107,6 @@ $(document).ready(function() {
 								return container;
 					}
 			});
-			var link = Routing.generate('crop_pictures', { "url": self.find('img').attr("src") });
 			self.click(function(){
 				$('.likepic, .likepic-sm').each(function(i) {
 					$(this).poshytip('hide'); 
@@ -124,9 +123,14 @@ function showUrlInDialog(url, title = 'Dialog') {
 	   $.ajax({
 		     url: url,
 		     success: function(data) {
-		       tag.html(data);
-		     }
+		       tag.append(data);
+		       $('body').append(tag);
+//		       	.dialog({
+//		       		modal: true
+//		       })
+//		       .dialog('open');
+//		     }
 		   });
 
         return false;
-    }
+}

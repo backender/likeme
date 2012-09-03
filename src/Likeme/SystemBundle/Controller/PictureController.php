@@ -16,7 +16,7 @@ use Gaufrette\Filesystem;
 class PictureController extends Controller
 {
     /**
-     * @Route("/profile/pictures", name="pictures")
+     * @Route("/profile/pictures", name="pictures", options={"expose"=true})
      * @Template()
      */
     public function showAction()
@@ -231,7 +231,7 @@ class PictureController extends Controller
     }
     
     /**
-     * @Route("/profile/crop", name="crop_pictures", options={"expose"=true}))
+     * @Route("/profile/crop", name="crop_pictures", options={"expose"=true})
      */
     public function cropAction()
     {

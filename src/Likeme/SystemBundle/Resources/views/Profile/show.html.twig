@@ -9,6 +9,7 @@
 	{% stylesheets filter='cssrewrite'
 		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
 		'bundles/likemesystem/poshytip/tip-darkgray/tip-darkgray.css'
+		'bundles/likemesystem/photoselector/fcbklistselection.css'
 	%}
 			
 	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
@@ -80,7 +81,7 @@
 	    <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
 
 	    
-	    <a href={{ path('pictures') }}>Bilder</a>
+	    <a href="#" onclick="showUrlInDialog(Routing.generate('pictures'),'Bilder')">Bilder</a>
 	        
 	</div>
    	
@@ -96,17 +97,15 @@
    	{% javascripts 
    	'bundles/likemesystem/widgets/location.js'
    	'bundles/likemesystem/js/selectlocation.js'
-   	'bundles/likemesystem/js/extensions.js'
    	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
    	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
+   	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
+   	'bundles/likemesystem/js/extensions.js'
    	output='web/bundles/likemesystem/compiled/profile_show.js'
 	%}
 	    	
 	<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 	    	
-	<script type="text/javascript">
-	
-    
-	</script>    	
+   	
 {% endblock %}
