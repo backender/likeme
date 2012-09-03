@@ -200,7 +200,7 @@ box-shadow: 0 5px 3px #EEEEEE inset;
 margin-bottom:10px;
 }
 
-.about-text
+#about textarea
 {
 font-size:14px;
 font-family: 'Ubuntu', sans-serif;
