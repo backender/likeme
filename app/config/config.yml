@@ -158,7 +158,6 @@ liip_imagine:
     driver:               gd
     web_root:             %kernel.root_dir%/../web
     data_root:            %kernel.root_dir%/../web
-    cache:                's3'
     controller_action:    liip_imagine.controller:filterAction
     formats:              []
     filter_sets:
