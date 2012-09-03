@@ -1,11 +1,14 @@
-body 
-{
+#view_selected {
 	font-size:11px;
 	text-align:left;
 	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	background:#FFFFFF url(../../../bundles/likemesystem/images/fcbklistselection/multi_selector_bg.gif) repeat-x scroll center top;		
 }
+
+
 #fcbklist 
 {
+	font-size:11px;
 	border-color: #C1C1C1;
 	border-style:none solid solid;
 	border-width:medium 1px 1px;
@@ -79,10 +82,11 @@ body
 	z-index:10;
 }
 #fcbklist strong {
-	color:#222222;
-	font-size:11px;	
-	margin-top:2px;
-	width:65px;
+    color: #222222;
+    font-size: 11px;
+    line-height: 18px;
+    vertical-align: top;
+    width: 65px;
 }
 .clearer 
 {

@@ -7,10 +7,11 @@
 			{% for photo in savedpictures %}
 			 	<li class="selected">    
 			 		<strong>Aktuelles Profilbild</strong>    
-			        <span class="fcbkitem_text"><img src="{{ photo.src }}" height="120px" align="middle" /><br></span>
+			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.src }}" style = "max-width: 110px; max-height: 120px;" align="middle" /></div>
 			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.src }}" />       
 			    </li>
 			{% endfor %} 
+			<br>
 			<br>
 			<br>
 			<br>
@@ -27,7 +28,7 @@
 			{% for photo in photos %}
 			 	<li>        
 			 		<strong>Aus Facebook</strong> 
-			        <span class="fcbkitem_text"><img src="{{ photo.images.7.source }}" align="middle" /><br></span>
+			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.images.7.source }}" style = "max-width: 110px; max-height: 120px;" align="middle" /></div>
 			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.images.1.source }}" />       
 			    </li>
 			{% endfor %}   

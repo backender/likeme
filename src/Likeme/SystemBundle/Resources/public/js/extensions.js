@@ -118,18 +118,27 @@ $(document).ready(function() {
 
 });   
 
-function showUrlInDialog(url, title = 'Dialog') {
-	   var tag = $("<div></div>");
+function showUrlInDialog(url, dialogtitle) {
+		if (typeof title == 'undefined' ) {
+			title = '';
+		}
+	   $('body').css('cursor','wait');
+	   var tag = $("<div/>")
+	   	.attr("id", "dialogdiv");
 	   $.ajax({
 		     url: url,
 		     success: function(data) {
-		       tag.append(data);
 		       $('body').append(tag);
-//		       	.dialog({
-//		       		modal: true
-//		       })
-//		       .dialog('open');
-//		     }
+		       tag.append(data)
+		       	.dialog({
+		       		modal: true,
+		       		width: 582,
+		       		height: 645,
+		       		title: dialogtitle
+		       }).dialog('open');
+		     }
+		   }).done(function() {
+			   $('body').css('cursor','default');
 		   });
 
         return false;

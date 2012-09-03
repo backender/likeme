@@ -27,11 +27,11 @@
 				<div class="box-bottom">
 					{% set i = 0 %}
 					{% for picture in pictures if i == 0 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb | imagine_filter('thumbnails') }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
 						{% set i = 1 %}
 					{% endfor %}
 					{% for picture in pictures %}
-						<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb | imagine_filter('thumbnails') }}" org="{{ picture.src }}"/></div>
+						<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 					{% endfor %}
 					<div class="clear"></div>
 					<div id="about">

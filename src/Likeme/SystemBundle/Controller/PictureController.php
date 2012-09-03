@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Likeme\SystemBundle\Extension\GetLinksForImagine;
 
 use Likeme\SystemBundle\Entity\Pictures;
@@ -11,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Gaufrette\Filesystem;
-
 
 class PictureController extends Controller
 {
@@ -224,8 +225,34 @@ class PictureController extends Controller
     	// Save persists in Database
     	$em->flush();
     	
+    	
+    	
+    	// Leere Seite mit Bilder aufrufen damit LiipImagineBundle die thumbnails erstellt
+
+    	// Get Pictures
+    	$query = $em->createQueryBuilder()
+    	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+    	->select("p.src")
+    	->where("p.user = :userid AND p.type = :type")
+    	->setParameter('userid', $curUser->getId())
+    	->setParameter('type', 'original');
+    	
+    	$allpictures = $query->getQuery()->getResult();
+    	
+    	// Edit picture links for LiipImagineBundle
+    	$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
+    	$imaginelinks = $imagineservice->editLinksForGeneration($allpictures);
+    	
+    	// Generate thumbnails on amazon s3 for each picture
+    	foreach($imaginelinks as $link) {
+    		echo $link['thumb'];
+    		$imagemanagerResponse = $this->container
+    		->get('liip_imagine.controller')
+    		->filterAction($this->getRequest(), $link['thumb'], 'thumbnails');
+    	}
+    	
     	// Forward to Profileview
-		$response = $this->forward('LikemeSystemBundle:Picture:crop', array());
+		$response = new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 		// ... further modify the response or return it directly
 		return $response;
     }

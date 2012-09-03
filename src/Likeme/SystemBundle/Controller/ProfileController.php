@@ -58,7 +58,7 @@ class ProfileController extends Controller {
 		
 		// Edit picture links for LiipImagineBundle
 		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-		$imaginelinks = $imagineservice->editLinks($allpictures);
+		$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
 		
 		//FOS Form Handler
 		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
