@@ -118,5 +118,9 @@
     git=http://github.com/willdurand/BazingaExposeTranslationBundle.git
     target=/bundles/Bazinga/ExposeTranslationBundle
     
+[JsFormValidationBundle]
+    git=git://github.com/Abhoryo/APYJsFormValidationBundle.git
+    target=bundles/APY/JsFormValidationBundle
+    version=2.0
         
     

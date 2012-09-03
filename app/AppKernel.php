@@ -26,7 +26,8 @@ class AppKernel extends Kernel
         	new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
         	new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
         	new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-        	new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle()
+        	new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
+        	//new APY\JsFormValidationBundle\APYJsFormValidationBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
