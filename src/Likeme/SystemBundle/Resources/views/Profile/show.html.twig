@@ -19,10 +19,10 @@
 {% block fos_user_content %}
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
 		<div id="content">
-		<form action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+		<form id="profileForm" action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
 		{{ form_widget(form._token) }}
 			<div id="main">
-				<div class="box-top">Profil <div class="save"><a href="">speichern</a></div></div>
+				<div class="box-top">Profil <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
 					{% set i = 0 %}
 					{% for picture in pictures if i == 0 %}
@@ -35,7 +35,6 @@
 					<div class="clear"></div>
 					<div id="about">
 					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">{{ form_label(form.aboutme) }}</h3>
-						<textarea class="about-text"></textarea>
 						{{ form_errors(form.aboutme) }}
 						{{ form_widget(form.aboutme) }}
 					</div>
@@ -51,14 +50,14 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a href="">speichern</a></div></div>
+				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
 					{{ form_errors(form.location) }}
 					{{ form_widget(form.location) }}
 				</div>
 		
 						
-				<div class="box-top">Preferenzen <div class="save"><a href="">speichern</a></div></div>
+				<div class="box-top">Preferenzen <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
 					{{ form_errors(form.pref_gender) }}
 					{{ form_widget(form.pref_gender) }}
@@ -80,6 +79,7 @@
 		{% endif %}
 
 		
+		{{ form_errors(form) }}
 	    <p>Age: {{ user.birthday | age }}</p>
 	    <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
 
@@ -90,7 +90,6 @@
    	
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	
 	
 {% endblock fos_user_content %}
 
@@ -109,8 +108,26 @@
 	<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 	    	
-	<script type="text/javascript">
-	
-    
-	</script>    	
+<script type="text/javascript">
+    $(document).ready(function(){
+
+     $('a.submit').click(function(){
+       var dataString = $('#profileForm').serialize();
+       var postUrl = $('#profileForm').attr('action');
+        console.log(dataString);
+
+        $.ajax({
+         type: "POST",
+         url: postUrl,
+         data: dataString,
+         success: function(response) {
+           console.log(response);
+          //Gets the error and write into the .err div....
+           alert(response);
+         }
+       });
+       return false; 
+      });
+   });
+</script> 	
 {% endblock %}

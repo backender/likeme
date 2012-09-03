@@ -1,10 +1,10 @@
 <?php
 
 namespace Likeme\SystemBundle\Controller;
+
+use Symfony\Component\HttpFoundation\Response;
 use Likeme\SystemBundle\Form\Type\PreferenceFormType;
-
 use FOS\UserBundle\Controller\ProfileController as BaseController;
-
 use Likeme\SystemBundle\Form\Type\ProfileFormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -12,7 +12,6 @@ use FOS\UserBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 
 class ProfileController extends Controller {
 	
@@ -60,16 +59,6 @@ class ProfileController extends Controller {
 		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
 		$imaginelinks = $imagineservice->editLinks($allpictures);
 		
-		//FOS Form Handler
-		/*$formHandler = $this->container->get('fos_user.profile.form.handler');
-		
-		$process = $formHandler->process($user);
-		if ($process) {
-			$this->setFlash('fos_user_success', 'profile.flash.updated');
-		
-			return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
-		}*/
-		
 		//Embedded Form Handler
 		$request = $this->getRequest();
 		if ($request->getMethod() == 'POST') {
@@ -77,13 +66,21 @@ class ProfileController extends Controller {
 
 			$validator = $this->get('validator');
 			$errors = $validator->validate($user);
-			
+			print_r($errors);	
 			if ($form->isValid()) {
 				$em->persist($user);
 				$em->flush();
 								
 				return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 			}			
+		}
+		
+		if ($this->container->get('request')->isXmlHttpRequest())
+		{
+			if(!empty($errors)) {
+				$return = json_encode($errors);
+				return new Response($return, 200, array('Content-Type' => 'application/json'));
+			}
 		}
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
