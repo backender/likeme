@@ -33,7 +33,7 @@
         	height: null,
         	row: null,
         	// Define how many pictures can be selected
-            maxSelect: 3
+            maxSelect: 4
         },
 
         //Setup widget (eg. element creation, apply theming
@@ -50,8 +50,8 @@
             this.createTabs(elem, o.width);
             this.wrapElements(elem, o.width, o.height, o.row);
            
-         // not required without tabs
-         //    this.bindEventsOnTabs(elem);
+            
+            this.bindEventsOnTabs(elem);
             this.bindEventsOnItems(elem);
         },
         
@@ -105,8 +105,7 @@
                 obj.parents("li").attr("addedid", "tester");
                 this.addValue(obj, this.element);
             }
-          // not required without tabs
-          //  this.hiddenCheck(obj, this.element);
+            this.hiddenCheck(obj, this.element);
         },
         
         //bind onmouseover && click event on item
@@ -151,12 +150,23 @@
                 });
             });
         },
-                
-        //create control without tabs
+        
+        //create control tabs
         createTabs: function(elem, width){
             var html = '<div id="filters" style="width:' + (parseInt(width, 10) + 2) + 'px;">' +
+            '<ul class="selections" id="selections"><li id="view_all" class="view_on">' +
+            '<a onclick="return false;" href="#">View All</a></li><li id="view_selected" class="">' +
+            '<a onclick="return false;" href="#">Selected (<strong id="view_selected_count">0</strong>)</a></li>' +
+            '<li id="view_unselected" class=""><a onclick="return false;" href="#">Unselected</a></li></ul>' +
+            '<div class="clearer"></div></div>';
+            elem.before(html);
+        },
+        
+        //create control without tabs
+        createWithoutTabs: function(elem, width){
+            var html = '<div id="filters" style="width:' + (parseInt(width, 10) + 2) + 'px;">' +
             '<ul class="selections" id="selections"><li id="view_selected" class="">' +
-            'Ausgew&auml;hlt (<strong id="view_selected_count">0</strong>)</li>' +
+            'Selected (<strong id="view_selected_count">0</strong>)</li>' +
             '</ul>' +
             '<div class="clearer"></div></div>';
             elem.before(html);

@@ -9,6 +9,7 @@
 	{% stylesheets filter='cssrewrite'
 		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
 		'bundles/likemesystem/poshytip/tip-darkgray/tip-darkgray.css'
+		'bundles/likemesystem/photoselector/fcbklistselection.css'
 	%}
 			
 	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
@@ -26,11 +27,11 @@
 				<div class="box-bottom">
 					{% set i = 0 %}
 					{% for picture in pictures if i == 0 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb | imagine_filter('thumbnails') }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
 						{% set i = 1 %}
 					{% endfor %}
 					{% for picture in pictures %}
-						<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb | imagine_filter('thumbnails') }}" org="{{ picture.src }}"/></div>
+						<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 					{% endfor %}
 					<div class="clear"></div>
 					<div id="about">
@@ -50,14 +51,14 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
 					{{ form_errors(form.location) }}
 					{{ form_widget(form.location) }}
 				</div>
 		
 						
-				<div class="box-top">Preferenzen <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">Preferenzen <div class="save"><a href="">speichern</a></div></div>
 				<div class="box-bottom">
 					{{ form_errors(form.pref_gender) }}
 					{{ form_widget(form.pref_gender) }}
@@ -79,12 +80,11 @@
 		{% endif %}
 
 		
-		{{ form_errors(form) }}
 	    <p>Age: {{ user.birthday | age }}</p>
 	    <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
 
 	    
-	    <a href={{ path('pictures') }}>Bilder</a>
+	    <a href="#" onclick="showUrlInDialog(Routing.generate('pictures'),'Bilder')">Bilder</a>
 	        
 	</div>
    	
@@ -99,15 +99,17 @@
    	{% javascripts 
    	'bundles/likemesystem/widgets/location.js'
    	'bundles/likemesystem/js/selectlocation.js'
-   	'bundles/likemesystem/js/extensions.js'
    	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
    	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
+   	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
+   	'bundles/likemesystem/js/extensions.js'
    	output='web/bundles/likemesystem/compiled/profile_show.js'
 	%}
 	    	
 	<script type="text/javascript" src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 	    	
+   	
 <script type="text/javascript">
     $(document).ready(function(){
 

@@ -57,7 +57,7 @@ class ProfileController extends Controller {
 		
 		// Edit picture links for LiipImagineBundle
 		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-		$imaginelinks = $imagineservice->editLinks($allpictures);
+		$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
 		
 		//Embedded Form Handler
 		$request = $this->getRequest();

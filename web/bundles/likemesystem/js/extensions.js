@@ -107,7 +107,6 @@ $(document).ready(function() {
 								return container;
 					}
 			});
-			var link = Routing.generate('crop_pictures', { "url": self.find('img').attr("src") });
 			self.click(function(){
 				$('.likepic, .likepic-sm').each(function(i) {
 					$(this).poshytip('hide'); 
@@ -119,14 +118,28 @@ $(document).ready(function() {
 
 });   
 
-function showUrlInDialog(url, title = 'Dialog') {
-	   var tag = $("<div></div>");
+function showUrlInDialog(url, dialogtitle) {
+		if (typeof title == 'undefined' ) {
+			title = '';
+		}
+	   $('body').css('cursor','wait');
+	   var tag = $("<div/>")
+	   	.attr("id", "dialogdiv");
 	   $.ajax({
 		     url: url,
 		     success: function(data) {
-		       tag.html(data);
+		       $('body').append(tag);
+		       tag.append(data)
+		       	.dialog({
+		       		modal: true,
+		       		width: 582,
+		       		height: 645,
+		       		title: dialogtitle
+		       }).dialog('open');
 		     }
+		   }).done(function() {
+			   $('body').css('cursor','default');
 		   });
 
         return false;
-    }
+}
