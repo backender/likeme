@@ -26,7 +26,6 @@ class MenuBuilder {
 
 		$menu->addChild('Home', array('route' => 'home'));
 		$menu->addChild('Profil', array('route' => 'fos_user_profile_show'));
-		$menu->addChild('Registrieren',	array('route' => 'fos_user_registration_register'));
 
 		if( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY') ){
 			$menu->addChild('Logout', array('route' => 'fos_user_security_logout'));
