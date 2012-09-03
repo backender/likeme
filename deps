@@ -121,6 +121,5 @@
 [JsFormValidationBundle]
     git=git://github.com/Abhoryo/APYJsFormValidationBundle.git
     target=bundles/APY/JsFormValidationBundle
-    version=2.0
-        
+    version=v2.0
     

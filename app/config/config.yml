@@ -172,13 +172,13 @@ liip_imagine:
             filters:
                 thumbnail: { size: [400, 400], mode: outbound }
 
-#apy_js_form_validation:
-#    enabled: true
-#    yui_js: false
-#    check_mode: both
-#    javascript_framework: jquery
-#    validation_bundle: APYJsFormValidationBundle
-#    script_directory: bundles/jsformvalidation/js/
-#    warmer_routes: [route1,route2]
-#    identifier_field: jsfv_identifier
+apy_js_form_validation:
+    enabled: true
+    yui_js: false
+    check_mode: both
+    javascript_framework: jquery
+    validation_bundle: APYJsFormValidationBundle
+    script_directory: bundles/jsformvalidation/js/
+    warmer_routes: [route1,route2]
+    
     
