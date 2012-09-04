@@ -17,6 +17,49 @@
 	{% endstylesheets %}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    	
+   	{% javascripts 
+   	'bundles/likemesystem/widgets/location.js'
+   	'bundles/likemesystem/js/selectlocation.js'
+   	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
+   	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
+   	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
+   	'bundles/likemesystem/js/extensions.js'
+   	output='web/bundles/likemesystem/compiled/profile_show.js'
+	%}
+	    	
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	
+	<!-- Call JsFormValidationBundle -->
+	{{ JSFV(form) }}
+	
+<script type="text/javascript">
+    $(document).ready(function(){
+
+     $('a.submit').click(function(){
+       var dataString = $('#profileForm').serialize();
+       var postUrl = $('#profileForm').attr('action');
+        console.log(dataString);
+
+        $.ajax({
+         type: "POST",
+         url: postUrl,
+         data: dataString,
+         success: function(response) {
+           console.log(response);
+          //Gets the error and write into the .err div....
+           alert(response);
+         }
+       });
+       return false; 
+      });
+   });
+</script> 	
+{% endblock %}
+
 {% block fos_user_content %}
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
 		<div id="content">
@@ -90,46 +133,8 @@
    	
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
 	
 {% endblock fos_user_content %}
 
-{% block javascripts %}
-    {{ parent() }}
-    	
-   	{% javascripts 
-   	'bundles/likemesystem/widgets/location.js'
-   	'bundles/likemesystem/js/selectlocation.js'
-   	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
-   	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
-   	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
-   	'bundles/likemesystem/js/extensions.js'
-   	output='web/bundles/likemesystem/compiled/profile_show.js'
-	%}
-	    	
-	<script type="text/javascript" src="{{ asset_url }}"></script>
-	{% endjavascripts %}
-	    	
-   	
-<script type="text/javascript">
-    $(document).ready(function(){
 
-     $('a.submit').click(function(){
-       var dataString = $('#profileForm').serialize();
-       var postUrl = $('#profileForm').attr('action');
-        console.log(dataString);
-
-        $.ajax({
-         type: "POST",
-         url: postUrl,
-         data: dataString,
-         success: function(response) {
-           console.log(response);
-          //Gets the error and write into the .err div....
-           alert(response);
-         }
-       });
-       return false; 
-      });
-   });
-</script> 	
-{% endblock %}
