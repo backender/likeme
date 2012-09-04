@@ -41,6 +41,7 @@ class ProfileController extends Controller {
 		$em = $this->container->get('doctrine')->getEntityManager();
 		// Get current user
 		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
+		$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($curUser->getLocation());
 		
 		// Build form
 		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $curUser);
@@ -92,7 +93,7 @@ class ProfileController extends Controller {
 		
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive(), 'pictures' => $imaginelinks)
+				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $curUser, 'active' => self::isActive(), 'pictures' => $imaginelinks, 'location' => $userLocation)
 		);
 
 	}

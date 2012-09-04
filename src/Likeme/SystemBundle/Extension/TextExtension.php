@@ -14,7 +14,8 @@ class TextExtension extends \Twig_Extension
 			'truncate' => new \Twig_Filter_Method($this, 'truncate'),
 			'comment_date' => new \Twig_Filter_Method($this, 'comment_date'),
 			'age' => new \Twig_Filter_Method($this, 'age'),
-			'fb_date' => new \Twig_Filter_Method($this, 'fb_date')
+			'fb_date' => new \Twig_Filter_Method($this, 'fb_date'),
+			'state' => new \Twig_Filter_Method($this, 'state')
 		);
 	}
 	
@@ -56,5 +57,11 @@ class TextExtension extends \Twig_Extension
 		$date = explode("/", $date);
 		$date = $date[1].".".$date[0].".".$date[2];
 		return $date;
+	}
+	
+	public function state($state)
+	{
+		$state = explode(" ", $state);
+		return $state[1];
 	}
 }
