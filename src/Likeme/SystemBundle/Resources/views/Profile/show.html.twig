@@ -28,7 +28,7 @@
 				<div class="box-bottom">
 					{% set i = 0 %}
 					{% for picture in pictures if i == 0 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} ({{ location.state | state }})</p></div></div>
 						{% set i = 1 %}
 					{% endfor %}
 					<div id="sortablepictures">
