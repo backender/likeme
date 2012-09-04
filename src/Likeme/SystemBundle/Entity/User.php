@@ -49,9 +49,9 @@ class User extends BaseUser
   	protected $facebookID;
 	
 	/**
-	 * @var integer $gender
+	 * @var string $gender
 	 *
-	 * @ORM\Column(name="gender", type="integer", nullable=true)
+	 * @ORM\Column(name="gender", type="string", nullable=true)
 	 */
 	private $gender;
 	
@@ -102,6 +102,13 @@ class User extends BaseUser
 	{
 		parent::__construct();
 		
+		//Set default values for users preferences
+		if ($this->getPrefGender() == null) {
+			$this->setPrefGender(0);
+		}
+		if ($this->getPrefAgeRange() == null) {
+			$this->setPrefAgeRange(0);
+		}
 
 	}
 	

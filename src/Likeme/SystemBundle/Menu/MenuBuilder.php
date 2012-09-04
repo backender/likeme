@@ -28,9 +28,9 @@ class MenuBuilder {
 		$menu->addChild('Profil', array('route' => 'fos_user_profile_show'));
 
 		if( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY') ){
-			$menu->addChild('Logout', array('route' => 'fos_user_security_logout'));
+			$menu->addChild('Logout', array('route' => '_security_logout'));
 		} else {
-			$menu->addChild('Login', array('route' => 'fos_user_security_login'));
+			//$menu->addChild('Login', array('route' => 'fos_user_security_login'));
 		}
 		
 		return $menu;
