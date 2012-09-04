@@ -94,7 +94,7 @@ $(document).ready(function() {
 											}).done(function( msg ) {
 											  if (msg == 1) {
 												  var timestamp = new Date().getTime();
-												  $(self).find('img').attr('src', self.find('img').attr("src")+'?'+timestamp); 
+												  $(self).find('img').attr('src', self.find('img').attr("src") + '?' + timestamp); 
 												  $('body').css('cursor','default');
 												  $(self).poshytip('hide');
 											  } else {

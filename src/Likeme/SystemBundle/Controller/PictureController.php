@@ -289,6 +289,10 @@ class PictureController extends Controller
     			$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
     			
     			$thumblink = str_replace("http://likeme.s3.amazonaws.com/","",$_POST['thumburl']);
+    			   			
+    			if (strrpos($thumblink, '?') !== false) {
+    				$thumblink = substr($thumblink, 0, strrpos($thumblink, '?') );
+    			}
     			
     			// Bild in Amazon S3 speichern
     			if ($filesystem->has($thumblink)) {

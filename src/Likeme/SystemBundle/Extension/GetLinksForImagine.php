@@ -36,7 +36,7 @@ class GetLinksForImagine implements ContainerAwareInterface
 		
 		foreach($picturearray as $picture) {
 			foreach($picture as $key => $value) {			
-					$picturearray[$i]['thumb'] = substr_replace($value, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0)."?time=".date('ymdHi');
+					$picturearray[$i]['thumb'] = substr_replace($value, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0)."?".date('ymdHi');
 			}
 			$i++;
 		}
