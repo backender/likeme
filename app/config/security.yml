@@ -21,7 +21,7 @@ security:
                 server_url: "http://www.likeme.ch/"
                 login_path: /login
                 check_path: /login_fb_check
-                default_target_path: /
+                default_target_path: /afterlogin
                 provider: my_fos_facebook_provider
             logout:
                 #handlers: ["fos_facebook.logout_handler"]

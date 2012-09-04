@@ -1,6 +1,6 @@
 {% extends 'LikemeSystemBundle::layout.html.twig' %}
 
-{% block head %}likeme <div style="float:right; margin-top:10px;" id="profilepic"><img height="40px" width="40px" src="http://1.bp.blogspot.com/_9DRIQ9xf9U4/TKZdUmZ2eaI/AAAAAAAABE0/PC_GRAPj0p4/s400/sexy-girls-free-wallpapers002-sexy-girls.jpg" /></div>{% endblock %}
+{% block head %}likeme <div style="float:right; margin-top:10px;" id="profilepic"><img height="40px" width="40px" src= {% for picture in pictures if picture.position == 1 %} "{{ picture.thumb }}" {% endfor %}/></div>{% endblock %}
 
 {% block stylesheets %}
 
