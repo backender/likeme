@@ -1,11 +1,20 @@
 <?php
 namespace Likeme\SystemBundle\Extension;
 
-class TextExtension extends \Twig_Extension
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
+class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 {
 	public function getName()
 	{
 		return 'text_twig_extension';
+	}
+	
+	private $container;
+	
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
 	}
 	
 	public function getFilters()
@@ -16,6 +25,13 @@ class TextExtension extends \Twig_Extension
 			'age' => new \Twig_Filter_Method($this, 'age'),
 			'fb_date' => new \Twig_Filter_Method($this, 'fb_date'),
 			'state' => new \Twig_Filter_Method($this, 'state')
+		);
+	}
+	
+	public function getGlobals()
+	{
+		return array(
+			'user_pictures' => self::user_pictures()
 		);
 	}
 	
@@ -63,5 +79,34 @@ class TextExtension extends \Twig_Extension
 	{
 		$state = explode(" ", $state);
 		return $state[1];
+	}
+	
+	public function user_pictures()
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		
+		$em = $this->container->get('doctrine')->getEntityManager();
+		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
+		
+		if(!empty($curUser)) {
+			// Get Pictures
+			$query = $em->createQueryBuilder()
+			->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+			->select("p.id, p.src, p.position")
+			->where("p.user = :userid AND p.type = :type")
+			->setParameter('userid', $curUser->getId())
+			->setParameter('type', 'original')
+			->orderBy('p.position', 'ASC');
+			
+			$allpictures = $query->getQuery()->getResult();
+			
+			// Edit picture links for LiipImagineBundle
+			$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
+			$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
+			
+			return $imaginelinks;
+		}
+		
+		return false;
 	}
 }

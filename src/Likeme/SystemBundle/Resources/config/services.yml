@@ -20,6 +20,8 @@ services:
         
     likeme.twig.extension:
         class: Likeme\SystemBundle\Extension\TextExtension
+        calls:
+            - [ setContainer, [ @service_container ] ]
         tags:
             - { name: twig.extension }
         

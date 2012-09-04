@@ -1,10 +1,10 @@
-{% extends '::base.html.twig'%}
+{% extends 'LikemeSystemBundle::layout.html.twig' %}
 
-{% block head %}Home{% endblock %}
+{% block title %}Startseite{% endblock %}
 
+{%block fos_user_content%}
 
-{%block body%}
-
+<br />
 {% if is_granted("IS_AUTHENTICATED_FULLY")%}
     Welcome {{app.user.username}}
 {%endif%}

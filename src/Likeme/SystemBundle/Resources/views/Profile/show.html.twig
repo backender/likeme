@@ -1,7 +1,5 @@
 {% extends 'LikemeSystemBundle::layout.html.twig' %}
 
-{% block head %}likeme <div style="float:right; margin-top:10px;" id="profilepic"><img height="40px" width="40px" src= {% for picture in pictures if picture.position == 1 %} "{{ picture.thumb }}" {% endfor %}/></div>{% endblock %}
-
 {% block stylesheets %}
 
 	{{ parent() }}
@@ -17,6 +15,8 @@
 	{% endstylesheets %}
 {% endblock %}
 
+{% block title %}Profil Seite{% endblock %}
+
 {% block fos_user_content %}
 
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
@@ -26,11 +26,12 @@
 			<div id="main">
 				<div class="box-top">Profil <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
-					{% for picture in pictures if picture.position == 1 %}
+					{% for picture in user_pictures if picture.position == 1 %}
 						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} ({{ location.state | state }})</p></div></div>
 					{% endfor %}
 					<div id="sortablepictures">
-						{% for picture in pictures %}
+					
+						{% for picture in user_pictures %}
 							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 						{% endfor %}
 					</div>
@@ -76,21 +77,10 @@
 			</div>
 		</div>
 		{{ form_errors(form)  }}
-		<input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" />
 		</form>
 
 	<div class="fos_user_user_show">
-		{% if active == false %}
-	    	<p>Inaktiv :(</p>
-	    {% else %}
-	    	<p>Aktiv, juhu</p>
-		{% endif %}
 
-		
-	    <p>Age: {{ user.birthday | age }}</p>
-	    <p>{{ 'profile.show.gender'|trans({}, 'FOSUserBundle') }}: {{ user.gender }}</p>
-
-	    
 	    <a href="#" onclick="showUrlInDialog(Routing.generate('pictures'),'Bilder')">Bilder</a>
 	        
 	</div>

@@ -22,7 +22,15 @@
     	<div id="container">
       {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
       
-        <h1>{% block head %}{% endblock %}</h1>
+        <h1>
+        {% block head %}
+        	{% if is_granted('ROLE_USER') %}
+        		likeme <div style="float:right; margin-top:10px;" id="profilepic"><a href="{{ path('fos_user_profile_show') }}"><img height="40px" width="40px" src="{{ user_pictures.0.thumb }}" /></a></div>
+        	{% else %}
+        		likeme
+        	{% endif %}
+        {% endblock %}
+        </h1>
         
         {% block navi %}
 			{{ knp_menu_render('main') }}
@@ -35,7 +43,7 @@
         {% endblock %}
         
             	
-        {% block body %}{% endblock %}
+        {% block body %}{# layout.html.twig #}{% endblock %}
         
 
         {% block javascripts %}
