@@ -83,11 +83,12 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 	
 	public function user_pictures()
 	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
 		
-		$em = $this->container->get('doctrine')->getEntityManager();
-		
-		if(!empty($user)) {
+		if( $this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY') ){
+			
+			$user = $this->container->get('security.context')->getToken()->getUser();
+			$em = $this->container->get('doctrine')->getEntityManager();
+			
 			// Get Pictures
 			$query = $em->createQueryBuilder()
 			->from('Likeme\SystemBundle\Entity\Pictures', 'p')
