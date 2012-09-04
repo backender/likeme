@@ -1,8 +1,17 @@
 <?php
 namespace Likeme\SystemBundle\Extension;
 
-class GetLinksForImagine 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
+class GetLinksForImagine implements ContainerAwareInterface
 {
+	private $container;
+	
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
+	}
+	
 	public function editLinksForGeneration($picturearray) {
 		// Edit picture paths for LiipImagineBundle
 		$i = 0;
