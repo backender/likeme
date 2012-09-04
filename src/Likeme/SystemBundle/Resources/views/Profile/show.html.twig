@@ -26,14 +26,12 @@
 			<div id="main">
 				<div class="box-top">Profil <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
-					{% set i = 0 %}
-					{% for picture in pictures if i == 0 %}
+					{% for picture in pictures if picture.position == 1 %}
 						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>Sarah, 18 (Blasel)</p></div></div>
-						{% set i = 1 %}
 					{% endfor %}
 					<div id="sortablepictures">
 						{% for picture in pictures %}
-							<div class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
+							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 						{% endfor %}
 					</div>
 					<div class="clear"></div>
@@ -93,6 +91,26 @@
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
 
+	<style>
+	
+		#sortablepictures {
+		    float: left;
+		    height: 400px;
+		    margin: 0;
+		    padding: 0;
+		    width: 120px;
+		    position: relative;
+		}
+		.ui-sortable-placeholder {
+		    border: 1px dotted black;
+		    height: 120px !important;
+		    visibility: visible !important;
+		    margin-bottom: 20px;
+		}
+		.ui-sortable-placeholder * {
+		    visibility: hidden;
+		}
+	</style>
 	
 {% endblock fos_user_content %}
 
@@ -141,7 +159,19 @@
       });
 
 		$( "#sortablepictures" ).sortable({
-			connectWith: "#sortablepictures"
+			axis: 'y',
+			update : function () {
+			    var newOrdering = $('#sortablepictures').sortable('toArray');
+			    $.ajax({
+			         type: "POST",
+			         url: Routing.generate('order_pictures'),
+			         data: {picorder: newOrdering},
+			         success: function(response) {
+			           console.log(response);
+			     	}	
+			  
+			  	});
+			}
 		});
 
 
