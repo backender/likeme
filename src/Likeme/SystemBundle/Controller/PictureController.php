@@ -169,17 +169,6 @@ class PictureController extends Controller
      	if ($savedpictures) {
      		$lastUpdate = $savedpictures[0]->getTimestamp();
         }
-        
-        // Get timestamp of last update in database
-        $query = $em->createQueryBuilder()
-        ->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-        ->select("p")
-        ->where("p.user = :userid AND p.position = :position")
-        ->setParameter('userid', $curUser->getId())
-        ->setParameter('position', '1')
-        ->setMaxResults(1);
-        
-        $savedprofilpicture = $query->getQuery()->getResult();
             	
      	$actDateTime = new \DateTime();
      	
@@ -211,12 +200,7 @@ class PictureController extends Controller
     			$picture->setTimestamp($actDateTime);
     			$picture->setType('original');
     			$picture->setUser($curUser);
-    			
-    			// Falls noch kein Profilbild ausgewählt wurde
-    			if (!$savedprofilpicture) {
-    				$picture->setPosition(1);
-    				$savedpicture = true;
-    			}
+    			$picture->setPosition(4);
     			
     		} else {
     			// If database entry already exists => Update timestamp
@@ -230,6 +214,7 @@ class PictureController extends Controller
 
     	// Save persists in Database
     	$em->flush();
+    	  
     	
     	// Delete all old database entries
     	if ($savedpictures) {
@@ -239,14 +224,45 @@ class PictureController extends Controller
     			$em->remove($oldentry);
     		}
     	}
+    	
+    	// Save persists in Database
+    	$em->flush();
+    	
+    	// Falls noch kein Profilbild ausgewählt wurde
+    	
+    	// Get timestamp of last update in database
+    	$query = $em->createQueryBuilder()
+    	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+    	->select("p")
+    	->where("p.user = :userid AND p.position = :position")
+    	->setParameter('userid', $curUser->getId())
+    	->setParameter('position', '1')
+    	->setMaxResults(1);
+    	
+    	$savedprofilpicture = $query->getQuery()->getResult();
 
+    	if (!$savedprofilpicture) {
+    		// Get timestamp of last update in database
+    		$query = $em->createQueryBuilder()
+    		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+    		->select("p")
+    		->where("p.user = :userid AND p.type = :type")
+    		->setParameter('userid', $curUser->getId())
+    		->setParameter('type', 'original')
+    		->setMaxResults(1);
+    	
+    		$newprofilepic = $query->getQuery()->getResult();
+    	
+    		$newprofilepic[0]->setPosition(1);
+    		$em->persist($newprofilepic[0]);
+    	}
     	
     	// Save persists in Database
     	$em->flush();
     	
     	
+    	// Thumbnails durch LiipImagineBundle erstellen
     	
-    	// Leere Seite mit Bilder aufrufen damit LiipImagineBundle die thumbnails erstellt
 
     	// Get Pictures
     	$query = $em->createQueryBuilder()
@@ -261,19 +277,21 @@ class PictureController extends Controller
     	// Edit picture links for LiipImagineBundle
     	$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
     	$imaginelinks = $imagineservice->editLinksForGeneration($allpictures);
+ 
     	
     	// Generate thumbnails on amazon s3 for each picture
     	foreach($imaginelinks as $link) {
-    		echo $link['thumb'];
-    		$imagemanagerResponse = $this->container
+    		$this->container
     		->get('liip_imagine.controller')
     		->filterAction($this->getRequest(), $link['thumb'], 'thumbnails');
     	}
     	
     	// Forward to Profileview
 		$response = new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
-		// ... further modify the response or return it directly
-		return $response;
+	
+
+    	// ... further modify the response or return it directly
+    	return $response;
     }
     
     /**
