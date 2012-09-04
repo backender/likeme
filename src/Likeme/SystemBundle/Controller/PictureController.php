@@ -295,6 +295,10 @@ class PictureController extends Controller
     				$filesystem->write($thumblink, $newthumb, true);
     			}
     			
+    			// In Session speichern, dass kürzlich ein Bild gecroppt wurde => Browser darf nicht mehr auf gechachte Bilder zurückgreifen
+    			$session = $this->container->get('session');
+    			$session->set('cropped', true);
+    			
     			// Bestätigung für erfolgreiches Updaten
     			$ret = 1;
     			
