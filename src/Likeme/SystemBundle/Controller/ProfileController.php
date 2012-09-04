@@ -45,22 +45,7 @@ class ProfileController extends Controller {
 		
 		// Build form
 		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $curUser);
-	
-		// Get Pictures
-		$query = $em->createQueryBuilder()
-		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-		->select("p.id, p.src, p.position")
-		->where("p.user = :userid AND p.type = :type")
-		->setParameter('userid', $curUser->getId())
-		->setParameter('type', 'original')
-		->orderBy('p.position', 'ASC');
-		
-		$allpictures = $query->getQuery()->getResult();
-		
-		// Edit picture links for LiipImagineBundle
-		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-		$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
-		
+
 		//Embedded Form Handler
 		$request = $this->getRequest();
 		if ($request->getMethod() == 'POST') {
@@ -93,7 +78,7 @@ class ProfileController extends Controller {
 		
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $curUser, 'active' => self::isActive(), 'pictures' => $imaginelinks, 'location' => $userLocation)
+				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $curUser, 'active' => self::isActive(), 'location' => $userLocation)
 		);
 
 	}
