@@ -86,15 +86,14 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		
 		$em = $this->container->get('doctrine')->getEntityManager();
-		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 		
-		if(!empty($curUser)) {
+		if(!empty($user)) {
 			// Get Pictures
 			$query = $em->createQueryBuilder()
 			->from('Likeme\SystemBundle\Entity\Pictures', 'p')
 			->select("p.id, p.src, p.position")
 			->where("p.user = :userid AND p.type = :type")
-			->setParameter('userid', $curUser->getId())
+			->setParameter('userid', $user->getId())
 			->setParameter('type', 'original')
 			->orderBy('p.position', 'ASC');
 			

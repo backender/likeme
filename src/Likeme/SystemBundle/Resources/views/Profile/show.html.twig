@@ -1,5 +1,7 @@
 {% extends 'LikemeSystemBundle::layout.html.twig' %}
 
+{% set user = app.user %}
+
 {% block stylesheets %}
 
 	{{ parent() }}
@@ -50,7 +52,7 @@
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.lastname }}</span>
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.birthday | fb_date }}</span>
 					<span style="margin-top:10px; border:none;" class="profileinfo">
-					{% if active == false %}
+					{% if user.active == false %}
 				    	<p>Inaktiv :(</p>
 				    {% else %}
 				    	<p>Aktiv, juhu</p>
