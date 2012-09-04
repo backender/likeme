@@ -13,7 +13,8 @@ class TextExtension extends \Twig_Extension
 		return array(
 			'truncate' => new \Twig_Filter_Method($this, 'truncate'),
 			'comment_date' => new \Twig_Filter_Method($this, 'comment_date'),
-			'age' => new \Twig_Filter_Method($this, 'age')
+			'age' => new \Twig_Filter_Method($this, 'age'),
+			'fb_date' => new \Twig_Filter_Method($this, 'fb_date')
 		);
 	}
 	
@@ -48,5 +49,12 @@ class TextExtension extends \Twig_Extension
 		//get age from date or birthdate
 		$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
 		return $age;
+	}
+	
+	public function fb_date($date)
+	{
+		$date = explode("/", $date);
+		$date = $date[1].".".$date[0].".".$date[2];
+		return $date;
 	}
 }
