@@ -2,8 +2,6 @@
 
 {% block body %}
 
-	{% block title %}{% endblock %}
-
         {% for key, message in app.session.getFlashes() %}
         <div class="{{ key }}">
             {{ message|trans({}, 'FOSUserBundle') }}
@@ -11,7 +9,7 @@
         {% endfor %}
 
         <div>
-            {% block fos_user_content %}{% endblock fos_user_content %}
+            {% block fos_user_content %}{% block title %}{% endblock %}{% endblock fos_user_content %}
         </div>
 
 {% endblock body %}
