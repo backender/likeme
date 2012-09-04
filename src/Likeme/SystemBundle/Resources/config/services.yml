@@ -40,4 +40,5 @@ services:
    
     likeme.liipimaginebundle.getlinks:
         class: Likeme\SystemBundle\Extension\GetLinksForImagine
-        
+        calls:
+            - [ setContainer, [ @service_container ] ]
