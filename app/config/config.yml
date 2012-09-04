@@ -179,6 +179,5 @@ apy_js_form_validation:
     javascript_framework: jquery
     validation_bundle: APYJsFormValidationBundle
     script_directory: bundles/jsformvalidation/js/
-    warmer_routes: [route1,route2]
     
     
