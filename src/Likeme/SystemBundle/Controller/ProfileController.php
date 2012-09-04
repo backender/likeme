@@ -66,22 +66,29 @@ class ProfileController extends Controller {
 
 			$validator = $this->get('validator');
 			$errors = $validator->validate($user);
-			print_r($errors);	
+
 			if ($form->isValid()) {
 				$em->persist($user);
 				$em->flush();
-								
+
+				//ajax form success
+				if ($this->container->get('request')->isXmlHttpRequest())
+				{
+					$return = 1;
+					return new Response($return);
+				}
+				
 				return new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
 			}			
 		}
 		
+		//ajax form failed
 		if ($this->container->get('request')->isXmlHttpRequest())
 		{
-			if(!empty($errors)) {
-				$return = json_encode($errors);
-				return new Response($return, 200, array('Content-Type' => 'application/json'));
-			}
+			$return = $errors;
+			return new Response($return);
 		}
+		
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
 				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $user, 'active' => self::isActive(), 'pictures' => $imaginelinks)
