@@ -49,10 +49,11 @@ class ProfileController extends Controller {
 		// Get Pictures
 		$query = $em->createQueryBuilder()
 		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-		->select("p.src")
+		->select("p.id, p.src, p.position")
 		->where("p.user = :userid AND p.type = :type")
 		->setParameter('userid', $curUser->getId())
-		->setParameter('type', 'original');
+		->setParameter('type', 'original')
+		->orderBy('p.position', 'ASC');
 		
 		$allpictures = $query->getQuery()->getResult();
 		

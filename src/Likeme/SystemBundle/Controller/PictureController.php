@@ -33,7 +33,8 @@ class PictureController extends Controller
             ->select("p")
             ->where("p.user = :userid AND p.type = :type")
             ->setParameter('userid', $curUser->getId())
-            ->setParameter('type', 'original');
+            ->setParameter('type', 'original')
+            ->orderBy('p.position', 'ASC');
     	 
     	$savedpictures = $query->getQuery()->getResult();
     	
@@ -300,8 +301,8 @@ class PictureController extends Controller
     			}
     			
     			// In Session speichern, dass kürzlich ein Bild gecroppt wurde => Browser darf nicht mehr auf gechachte Bilder zurückgreifen
-    			$session = $this->container->get('session');
-    			$session->set('cropped', true);
+//     			$session = $this->container->get('session');
+//     			$session->set('cropped', true);
     			
     			// Bestätigung für erfolgreiches Updaten
     			$ret = 1;
@@ -310,6 +311,48 @@ class PictureController extends Controller
 				$ret = 'Fehler: ' .  $e->getMessage();
 			}	
     			
+    	} else {
+    		$ret = 'Fehler';
+    	}
+    	return new Response($ret);
+    }
+    
+    /**
+     * @Route("/profile/savepicorder", name="order_pictures", options={"expose"=true})
+     */
+    public function orderAction()
+    {
+    	if (isset($_POST['picorder'])) {
+    		$pictureorder = $_POST['picorder'];
+    
+    		try {
+    			
+    			$em = $this->get('doctrine')->getEntityManager();
+    			
+    			$i = 1;
+    			
+    			foreach($pictureorder as $imageid) {
+    				// Get timestamp of last update in database
+    				$pictoorder = $em->getRepository('LikemeSystemBundle:Pictures')->findOneById($imageid);
+    				
+    				// Save values in object
+    				$pictoorder->setPosition($i);
+    				
+    				$em->persist($pictoorder);
+    				
+    				$i++;
+    			}   			
+    			
+    			// Save persists in Database
+    			$em->flush();
+
+    			// Bestätigung für erfolgreiches Updaten
+    			$ret = 1;
+    			 
+    		} catch (Exception $e) {
+    			$ret = 'Fehler: ' .  $e->getMessage();
+    		}
+    		 
     	} else {
     		$ret = 'Fehler';
     	}
