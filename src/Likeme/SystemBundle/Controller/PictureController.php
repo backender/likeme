@@ -169,7 +169,18 @@ class PictureController extends Controller
      	if ($savedpictures) {
      		$lastUpdate = $savedpictures[0]->getTimestamp();
         }
-    	
+        
+        // Get timestamp of last update in database
+        $query = $em->createQueryBuilder()
+        ->from('Likeme\SystemBundle\Entity\Pictures', 'p')
+        ->select("p")
+        ->where("p.user = :userid AND p.position = :position")
+        ->setParameter('userid', $curUser->getId())
+        ->setParameter('position', '1')
+        ->setMaxResults(1);
+        
+        $savedprofilpicture = $query->getQuery()->getResult();
+            	
      	$actDateTime = new \DateTime();
      	
     	// Output all picture links
@@ -200,6 +211,13 @@ class PictureController extends Controller
     			$picture->setTimestamp($actDateTime);
     			$picture->setType('original');
     			$picture->setUser($curUser);
+    			
+    			// Falls noch kein Profilbild ausgewählt wurde
+    			if (!$savedprofilpicture) {
+    				$picture->setPosition(1);
+    				$savedpicture = true;
+    			}
+    			
     		} else {
     			// If database entry already exists => Update timestamp
     			$picture = $result; 
