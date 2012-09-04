@@ -26,23 +26,17 @@ class GetLinksForImagine implements ContainerAwareInterface
 		return $picturearray;
 	}
 	
-	public function editLinksForDisplay($picturearray, $cropped) {
+	public function editLinksForDisplay($picturearray) {
 		// Edit picture paths for LiipImagineBundle
 		$i = 0;
-	
+		
+		// Check if pictures have been cropped 
+		// $session = $this->container->get('session');
+		//$cropped = $session->get('cropped');
+		
 		foreach($picturearray as $picture) {
-			foreach($picture as $key => $value) {
-				$session = $this->container->get('session');
-				$cropped = $session->get('cropped');
-				
-				if ($cropped == true) {
+			foreach($picture as $key => $value) {			
 					$picturearray[$i]['thumb'] = substr_replace($value, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0)."?time=".date('ymdHi');
-					$session->set('cropped', false);
-					echo 'Bilder neu geladen';
-				} else {
-					$picturearray[$i]['thumb'] = substr_replace($value, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0);
-					echo 'Bilder aus cache';
-				}	
 			}
 			$i++;
 		}
