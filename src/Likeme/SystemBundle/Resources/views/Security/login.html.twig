@@ -21,9 +21,9 @@
     <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
 
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
-    {{ facebook_login_button({'autologoutlink': true}) }}
+{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}    
+{{ facebook_login_button({'autologoutlink': false}) }}
 </form>
-{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
 
 <script>
   function goLogIn(){
