@@ -53,27 +53,27 @@ class User extends BaseUser
 	 *
 	 * @ORM\Column(name="gender", type="string", nullable=true)
 	 */
-	private $gender;
+	protected $gender;
 	
 	/**
 	 * @var string $birthday
 	 *
 	 * @ORM\Column(name="birthday", type="string", nullable=true)
 	 */
-	private $birthday;
+	protected $birthday;
 	
 	
 	/**
 	 * @var integer $location
 	 *
 	 * @ORM\Column(name="location", type="integer", nullable=true)
-	 * @Assert\NotNull(message="Please enter location.")
+	 * @Assert\NotBlank(message="Please enter location.")
 	 * @ORM\ManyToOne(targetEntity="Location")
 	 * @ORM\JoinColumns({
 	 *   @ORM\JoinColumn(name="location", referencedColumnName="id")
 	 * })
 	 */
-	private $location;
+	protected $location;
 	
 	/**
 	 * @var text $aboutme
@@ -81,35 +81,35 @@ class User extends BaseUser
 	 * @ORM\Column(name="aboutme", type="text", nullable=true)
 	 * @Assert\NotBlank(message="Please enter aboutme.")
 	 */
-	private $aboutme;
+	protected $aboutme;
 	
 	/**
 	 * @var integer $pref_gender
 	 *
 	 * @ORM\Column(name="pref_gender", type="integer", nullable=false)
 	 */
-	private $pref_gender;
+	protected $pref_gender;
 	
 	/**
 	 * @var string $pref_age_range
 	 *
 	 * @ORM\Column(name="pref_age_range", type="string", length=255, nullable=false)
 	 */
-	private $pref_age_range;
+	protected $pref_age_range;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="User", mappedBy="userILiked")
+	 * @ORM\ManyToMany(targetEntity="User", mappedBy="liked_user")
 	 */
-	private $userLikedMe;
+	protected $user_who_likes;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="User", inversedBy="userLikedMe")
+	 * @ORM\ManyToMany(targetEntity="User", inversedBy="user_who_likes")
 	 * @ORM\JoinTable(name="likes",
 	 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="liked_user_id", referencedColumnName="id", onDelete="cascade")}
 	 *      )
 	 */
-	private $userILiked;
+	protected $liked_user;
 
 
 	public function __construct()
@@ -124,9 +124,14 @@ class User extends BaseUser
 			$this->setPrefAgeRange("0-100");
 		}
 		
-		$this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
-		$this->myFriends = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->user_who_likes = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->liked_user = new \Doctrine\Common\Collections\ArrayCollection();
 
+	}
+	
+	public function __toString()
+	{
+		return $this->firstname;
 	}
 	
 	public function serialize()
@@ -414,5 +419,26 @@ class User extends BaseUser
     public function getPrefAgeRange()
     {
         return $this->pref_age_range;
+    }
+
+
+    /**
+     * Get user_who_likes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getUserWhoLikes()
+    {
+        return $this->user_who_likes;
+    }
+
+    /**
+     * Get liked_user
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getLikedUser()
+    {
+        return $this->liked_user;
     }
 }
