@@ -263,7 +263,7 @@ background-image:url('../images/crop.png');
 background-size: 25px, 25px;
 opacity:0.8;
 filter:alpha(opacity=80); /* For IE8 and earlier */
-border:1px solid rgba(204, 204, 204, .5);
+border:1px solid rgba(204, 204, 204, .4);
 border-radius:5px;
 z-index:999;
 }
