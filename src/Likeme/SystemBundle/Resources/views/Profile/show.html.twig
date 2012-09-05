@@ -23,6 +23,7 @@
 {% block fos_user_content %}
 
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
+
 		<div id="content">
 		<form id="profileForm" action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
 		{{ form_widget(form._token) }}
@@ -142,6 +143,7 @@
     $(document).ready(function(){
 
      $('a.submit').click(function(){
+       $("#loading").css({"visibility":"visible"});
        var dataString = $('#profileForm').serialize();
        var postUrl = $('#profileForm').attr('action');
         console.log(dataString);
@@ -151,9 +153,11 @@
          url: postUrl,
          data: dataString,
          success: function(response) {
+          $("#loading").css({"visibility":"hidden"});
            console.log(response);
           //Gets the error and write into the .err div....
-           alert(response);
+           $("#loading").css({"visibility":"hidden"});
+           //alert(response);
          }
        });
        return false; 
