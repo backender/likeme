@@ -357,8 +357,4 @@ class Location
         return $this->accuracy;
     }
     
-    public function __toString() {
-    	return $this->placename;
-    }
-    
 }

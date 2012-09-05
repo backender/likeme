@@ -32,7 +32,7 @@ class ProfileController extends Controller {
 		
 		// Get current users location
 		if($user->getLocation() !== NULL) {
-			$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($user->getLocation());
+			$userLocation = $user->getLocation();
 		} else {
 			$userLocation = false;
 		}
