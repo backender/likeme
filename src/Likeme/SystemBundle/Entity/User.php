@@ -105,8 +105,8 @@ class User extends BaseUser
 	/**
 	 * @ORM\ManyToMany(targetEntity="User", inversedBy="userLikedMe")
 	 * @ORM\JoinTable(name="likes",
-	 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-	 *      inverseJoinColumns={@ORM\JoinColumn(name="liked_user_id", referencedColumnName="id")}
+	 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
+	 *      inverseJoinColumns={@ORM\JoinColumn(name="liked_user_id", referencedColumnName="id", onDelete="cascade")}
 	 *      )
 	 */
 	private $userILiked;
