@@ -20,29 +20,18 @@ class UserService implements ContainerAwareInterface
 		
 		// Get EntityManager
 		$em = $this->container->get('doctrine')->getEntityManager();
-		
-		// Get Location Repository
-		$locrepository = $this->container->get('doctrine')->getRepository('LikemeSystemBundle:Location');
+		//Preference Service
+		$prefService = $this->container->get('likeme.user.prefservice');
 		
 		// Get location from user
 		$location = $user->getLocation();
-		
+
 		// Höhen- und Breitengrade für location range ermitteln
 		$latitude = $location->getLat();
 		$longitude = $location->getLon();
-		
+			
 		// Get prefered gender from user
-		switch ($user->getPrefGender()) {
-			case 0:
-				$prefGender = 'both';
-				break;
-			case 1:
-				$prefGender = 'male';
-				break;
-			case 2:
-				$prefGender = 'female';
-				break;
-		}
+		$prefGender = $prefService->getPrefGender($user->getPrefGender());
 		
 		// Get prefered age range from
 		$prefAgeRange = explode("-", $user->getPrefAgeRange());
