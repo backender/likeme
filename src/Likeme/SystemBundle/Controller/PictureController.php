@@ -25,14 +25,13 @@ class PictureController extends Controller
     	// Get Users current pictures on Amazon
     	$user = $this->container->get('security.context')->getToken()->getUser();
      	$em = $this->container->get('doctrine')->getEntityManager();
-    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 
     	// Get saved profile pictures
     	$query = $em->createQueryBuilder()
             ->from('Likeme\SystemBundle\Entity\Pictures', 'p')
             ->select("p")
             ->where("p.user = :userid AND p.type = :type")
-            ->setParameter('userid', $curUser->getId())
+            ->setParameter('userid', $user->getId())
             ->setParameter('type', 'original')
             ->orderBy('p.position', 'ASC');
     	 
@@ -152,15 +151,14 @@ class PictureController extends Controller
      	$em = $this->get('doctrine')->getEntityManager();
      	
      	// Get current User object
-     	$username = $this->container->get('security.context')->getToken()->getUser();
-     	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+     	$user = $this->container->get('security.context')->getToken()->getUser();
      	
      	// Get timestamp of last update in database
      	$query = $em->createQueryBuilder()
      	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
      	->select("p")
      	->where("p.user = :userid AND p.type = :type")
-     	->setParameter('userid', $curUser->getId())
+     	->setParameter('userid', $user->getId())
      	->setParameter('type', 'original')
      	->setMaxResults(1);
      	
@@ -235,7 +233,7 @@ class PictureController extends Controller
     	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     	->select("p")
     	->where("p.user = :userid AND p.position = :position")
-    	->setParameter('userid', $curUser->getId())
+    	->setParameter('userid', $user->getId())
     	->setParameter('position', '1')
     	->setMaxResults(1);
     	
@@ -247,7 +245,7 @@ class PictureController extends Controller
     		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     		->select("p")
     		->where("p.user = :userid AND p.type = :type")
-    		->setParameter('userid', $curUser->getId())
+    		->setParameter('userid', $user->getId())
     		->setParameter('type', 'original')
     		->setMaxResults(1);
     	
@@ -269,7 +267,7 @@ class PictureController extends Controller
     	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     	->select("p.src")
     	->where("p.user = :userid AND p.type = :type")
-    	->setParameter('userid', $curUser->getId())
+    	->setParameter('userid', $user->getId())
     	->setParameter('type', 'original');
     	
     	$allpictures = $query->getQuery()->getResult();
