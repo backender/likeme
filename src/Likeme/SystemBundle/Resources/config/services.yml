@@ -44,3 +44,8 @@ services:
         class: Likeme\SystemBundle\Extension\GetLinksForImagine
         calls:
             - [ setContainer, [ @service_container ] ]
+            
+    likeme.user.userservice:
+        class: Likeme\SystemBundle\Extension\UserService
+        calls:
+            - [ setContainer, [ @service_container ] ]

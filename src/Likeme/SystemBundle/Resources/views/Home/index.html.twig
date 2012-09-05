@@ -5,6 +5,44 @@
 {%block fos_user_content%}
 
 <br />
-Try likeme!
+{% if is_granted("IS_AUTHENTICATED_FULLY")%}
+
+    Welcome {{app.user.username}}
+    
+		<div id="content">
+		<form id="profileForm" action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+		{{ form_widget(form._token) }}
+			<div id="main">
+				<div class="box-top"><div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-bottom">
+					{% for picture in user_pictures if picture.position == 1 %}
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.state | state }}){% endif %}</p></div></div>
+					{% endfor %}
+					<div id="sortablepictures">
+					
+						{% for picture in user_pictures %}
+							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
+						{% endfor %}
+					</div>
+					<div class="clear"></div>
+					<div id="about">
+					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">{{ form_label(form.aboutme) }}</h3>
+						{{ form_errors(form.aboutme) }}
+						{{ form_widget(form.aboutme) }}
+					</div>
+				</div>
+			</div>
+			<div id="sider">
+				
+			</div>
+		 
+		{{ form_errors(form)  }}
+		</form>
+   	
+   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+	    
+{%endif%}
 
 {%endblock%}
