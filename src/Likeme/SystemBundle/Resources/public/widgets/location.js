@@ -13,9 +13,9 @@ $.widget( "likeme.locationcomplete",  {
 			
 			var input = this.input = $( "<input>" )
 							.attr("id", "show_location")
-			                .insertAfter( select )
-			                .val( value )
-			                .autocomplete({
+							.insertAfter( select )
+							.val( value )
+							.autocomplete({
 			  
 			source: function( request, response ) {
 				$.ajax({
@@ -30,7 +30,7 @@ $.widget( "likeme.locationcomplete",  {
 								label: item.postalcode + " " + item.placename + ", " + item.statecode,
 								value: item.postalcode + " " + item.placename + ", " + item.statecode,
 								id: item.id
-							}
+							};
 						}));
 					}
 				});
@@ -40,7 +40,7 @@ $.widget( "likeme.locationcomplete",  {
 				
 			}
 	 
-		} )
+		} );
 			 
 	},
 	selectitem: function( id ) {

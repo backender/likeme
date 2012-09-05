@@ -33,7 +33,7 @@
 				<div class="box-top">{% block title %}Profil{% endblock %} <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
 					{% for picture in user_pictures if picture.position == 1 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} ({{ location.state | state }})</p></div></div>
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.state | state }}){% endif %}</p></div></div>
 					{% endfor %}
 					<div id="sortablepictures">
 					
@@ -56,7 +56,7 @@
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.lastname }}</span>
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.birthday | fb_date }}</span>
 					<span style="margin-top:10px; border:none;" class="profileinfo">
-					{% if user.active == false %}
+					{% if user.active == 0 %}
 				    	<p>Inaktiv :(</p>
 				    {% else %}
 				    	<p>Aktiv, juhu</p>
@@ -82,7 +82,7 @@
 				
 			</div>
 		</div>
-
+		 
 		{{ form_errors(form)  }}
 		</form>
 

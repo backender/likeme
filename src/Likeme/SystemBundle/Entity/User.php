@@ -24,7 +24,7 @@ class User extends BaseUser
 	/**
 	 * @var integer $active
 	 *
-	 * @ORM\Column(type="integer")
+	 * @ORM\Column(type="integer", nullable=true)
 	 */
 	protected $active;
 	
@@ -67,7 +67,7 @@ class User extends BaseUser
 	 * @var integer $location
 	 *
 	 * @ORM\Column(name="location", type="integer", nullable=true)
-	 * @Assert\NotBlank(message="Please enter location.")
+	 * @Assert\NotNull(message="Please enter location.")
 	 * @ORM\ManyToOne(targetEntity="Location")
 	 * @ORM\JoinColumns({
 	 *   @ORM\JoinColumn(name="location", referencedColumnName="id")
@@ -86,14 +86,14 @@ class User extends BaseUser
 	/**
 	 * @var integer $pref_gender
 	 *
-	 * @ORM\Column(name="pref_gender", type="integer")
+	 * @ORM\Column(name="pref_gender", type="integer", nullable=false)
 	 */
 	private $pref_gender;
 	
 	/**
 	 * @var string $pref_age_range
 	 *
-	 * @ORM\Column(name="pref_age_range", type="string", length=255)
+	 * @ORM\Column(name="pref_age_range", type="string", length=255, nullable=false)
 	 */
 	private $pref_age_range;
 
@@ -106,7 +106,7 @@ class User extends BaseUser
 		if ($this->getPrefGender() == null) {
 			$this->setPrefGender(0);
 		}
-		if ($this->getPrefAgeRange() == null) {
+		if ($this->getPrefAgeRange() == NULL) {
 			$this->setPrefAgeRange("0-100");
 		}
 
@@ -245,9 +245,9 @@ class User extends BaseUser
     /**
      * @param Array
      */
-    public function setFBData($fbdata)
+    public function setFBData($fbdata = null)
     {
-    	$this->active = true;
+    	$this->active = 1;
     	
     	if($this->getUsername() == NULL) {
 	    	if (isset($fbdata['id'])) {
@@ -278,15 +278,15 @@ class User extends BaseUser
     	//facebook data could be empty
     	if($this->getLocation() == NULL) {
     		//already checked on facebook user provider
-	    	$this->active = false;
+	    	$this->active = 0;
     	}
     	
     	//facebook data could be empty
-	    if($this->getAboutme() == NULL) {	
+	    if($this->getAboutme() == '') {	
 	    	if (isset($fbdata['bio'])) {
 	    		$this->setAboutme($fbdata['bio']);
 	    	} else {
-	    		$this->active = false;
+	    		$this->active = 0;
 	    	}
 	    }
 		if($this->getGender() == NULL) {    
@@ -294,6 +294,7 @@ class User extends BaseUser
 	    		$this->setGender($fbdata['gender']);
 	    	}
 		}
+
     }
     
 

@@ -21,15 +21,21 @@ class ProfileController extends Controller {
 	 */
 	public function showAction() {
 		$user = $this->container->get('security.context')->getToken()->getUser();
-
+		$em = $this->container->get('doctrine')->getEntityManager();
+		
 		if (!is_object($user) || !$user instanceof UserInterface) {
 			throw new AccessDeniedException('This user does not have access to this section.');
 		}
 		
-		// Get current users location
-		$em = $this->container->get('doctrine')->getEntityManager();
-		$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($user->getLocation());
+		//Check if user is active
+		$user->setFBData();
 		
+		// Get current users location
+		if($user->getLocation() !== NULL) {
+			$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($user->getLocation());
+		} else {
+			$userLocation = false;
+		}
 		// Build form
 		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $user);
 
@@ -40,11 +46,14 @@ class ProfileController extends Controller {
 
 			$validator = $this->get('validator');
 			$errors = $validator->validate($user);
-
+			
 			if ($form->isValid()) {
 				$em->persist($user);
 				$em->flush();
-
+				
+				//Check if user is active
+				$user->setFBData();
+				
 				//ajax form success
 				if ($this->container->get('request')->isXmlHttpRequest())
 				{
