@@ -66,12 +66,10 @@ class User extends BaseUser
 	/**
 	 * @var integer $location
 	 *
-	 * @ORM\Column(name="location", type="integer", nullable=true)
-	 * @Assert\NotBlank(message="Please enter location.")
-	 * @ORM\ManyToOne(targetEntity="Location")
-	 * @ORM\JoinColumns({
-	 *   @ORM\JoinColumn(name="location", referencedColumnName="id")
-	 * })
+	 * @Assert\NotNull(message="Please enter location.")
+	 * @ORM\ManyToOne(targetEntity="Location", inversedBy="id")
+	 * @ORM\JoinColumn(name="location", referencedColumnName="id", onDelete="persist")
+	 *
 	 */
 	protected $location;
 	

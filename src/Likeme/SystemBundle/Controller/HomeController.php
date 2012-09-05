@@ -33,8 +33,20 @@ class HomeController extends Controller
      */
     public function showAction()
     {
+    	// Get EntityManager
+    	$em = $this->get('doctrine')->getEntityManager();
     	
-    	return array();
+    	// Get current User object
+    	$username = $this->container->get('security.context')->getToken()->getUser();
+    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+    	
+    	// UserService abrufen  	 
+    	$UserService = $this->container->get('likeme.user.userservice');
+    	 
+    	// Get random user for current user ($curUser)
+    	$rndUser = $UserService->getRandomUser($curUser);
+    	
+    	return array('query'=>$rndUser);
     }
     
 }

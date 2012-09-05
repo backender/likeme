@@ -17,6 +17,7 @@ class Location
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\OneToMany(targetEntity="User", mappedBy="location")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -355,4 +356,9 @@ class Location
     {
         return $this->accuracy;
     }
+    
+    public function __toString() {
+    	return $this->placename;
+    }
+    
 }
