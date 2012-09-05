@@ -191,8 +191,8 @@ class AfterLoginController extends Controller
     		$response = new Response('Fehler');
     	}
     	
-    	// Forward to Profileview
-    	$response = new RedirectResponse($this->container->get('router')->generate('fos_user_profile_show'));
+    	// Forward to Home
+    	$response = new RedirectResponse($this->container->get('router')->generate('home'));
     	
     	return $response;
     }    

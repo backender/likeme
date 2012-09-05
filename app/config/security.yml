@@ -16,10 +16,11 @@ security:
             form_login:
                 provider: fos_userbundle
                 csrf_provider: form.csrf_provider
+                login_path: /
             fos_facebook:
                 app_url:    "http://www.facebook.com/apps/application.php?id=100806270069332"
                 server_url: "http://www.likeme.ch/"
-                login_path: /login
+                login_path: /
                 check_path: /login_fb_check
                 default_target_path: /afterlogin
                 provider: my_fos_facebook_provider
