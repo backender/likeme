@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Entity;
 
+use Symfony\Tests\Component\Translation\String;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -106,6 +108,10 @@ class Location
      */
     private $accuracy;
 
+    public function __toString()
+    {
+    	return (String)$this->id;
+    }
 
     /**
      * Get id
