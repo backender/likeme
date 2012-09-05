@@ -47,7 +47,8 @@ text-decoration:none;
 
 h1 a:hover
 {
-opacity: 0.8;
+opacity:0.8;
+filter:alpha(opacity=80); /* For IE8 and earlier */
 }
 
 #hallo
@@ -105,8 +106,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 #menu-top ul li a:hover
 {
-opacity: 0.8;
-}
+opacity:0.8;
+filter:alpha(opacity=80); /* For IE8 and earlier */}
 
 
 .borbo
@@ -243,6 +244,44 @@ border-radius:5px;
 padding:0;
 }
 
+.likepic-sm:hover
+{
+cursor:move;
+    box-shadow:0 0px 4px #999;
+    -webkit-box-shadow:0 0px 4px #999;
+    -moz-box-shadow:0 0px 4px #999;
+}
+
+.likepic-crop
+{
+width:25px;
+height:25px;
+bottom:10px;
+right:10px;
+position:absolute;
+background-image:url('../images/crop.png');
+background-size: 25px, 25px;
+opacity:0.8;
+filter:alpha(opacity=80); /* For IE8 and earlier */
+border:1px solid rgba(204, 204, 204, .5);
+border-radius:5px;
+z-index:999;
+}
+
+.likepic-crop:hover
+{
+opacity:1;
+filter:alpha(opacity=100); /* For IE8 and earlier */
+
+}
+
+.likepic-crop a
+{
+display:block;
+width:25px;
+height:25px;
+}
+
 .likeinfo
 {
 position:absolute;
@@ -305,7 +344,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .biglink a:hover
 {
 
-opacity: 0.8;
+opacity:0.8;
+filter:alpha(opacity=80); /* For IE8 and earlier */
 
 }
 
@@ -354,7 +394,8 @@ background-color
 
 .save a:hover
 {
-opacity: 0.8;
+opacity:0.8;
+filter:alpha(opacity=80); /* For IE8 and earlier */
 }
 
 .profileinfo

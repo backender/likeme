@@ -17,8 +17,8 @@ class ProfileFormType extends AbstractType
 	{
 		$gender_choices = array(
 				0 => 'Beide',
-				1 => 'Männlich',
-				2 => 'Weiblich'
+				1 => 'Männer',
+				2 => 'Frauen'
 		);
 		
 		$age_range_choices = array(
