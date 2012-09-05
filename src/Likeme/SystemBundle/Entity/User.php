@@ -107,7 +107,7 @@ class User extends BaseUser
 			$this->setPrefGender(0);
 		}
 		if ($this->getPrefAgeRange() == null) {
-			$this->setPrefAgeRange(0);
+			$this->setPrefAgeRange("0-100");
 		}
 
 	}
