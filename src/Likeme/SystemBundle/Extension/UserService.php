@@ -12,6 +12,23 @@ class UserService implements ContainerAwareInterface
 		$this->container = $container;
 	}
 	
+	public function getPrefGender($pref_gender) {
+		// Get prefered gender from user
+		switch ($pref_gender) {
+			case 0:
+				$gender = 'both';
+				break;
+			case 1:
+				$gender = 'male';
+				break;
+			case 2:
+				$gender = 'female';
+				break;
+		}
+	
+		return $gender;
+	}
+	
 	public function getRandomUser($user) {
 		
 		// Settings
@@ -20,8 +37,6 @@ class UserService implements ContainerAwareInterface
 		
 		// Get EntityManager
 		$em = $this->container->get('doctrine')->getEntityManager();
-		//Preference Service
-		$prefService = $this->container->get('likeme.user.prefservice');
 		
 		// Get location from user
 		$location = $user->getLocation();
@@ -31,7 +46,7 @@ class UserService implements ContainerAwareInterface
 		$longitude = $location->getLon();
 			
 		// Get prefered gender from user
-		$prefGender = $prefService->getPrefGender($user->getPrefGender());
+		$prefGender = self::getPrefGender($user->getPrefGender());
 		
 		// Get prefered age range from
 		$prefAgeRange = explode("-", $user->getPrefAgeRange());
