@@ -197,7 +197,7 @@ class PictureController extends Controller
     			$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
     			$picture->setTimestamp($actDateTime);
     			$picture->setType('original');
-    			$picture->setUser($curUser);
+    			$picture->setUser($user);
     			$picture->setPosition(4);
     			
     		} else {
