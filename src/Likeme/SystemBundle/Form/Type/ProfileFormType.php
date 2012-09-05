@@ -31,7 +31,8 @@ class ProfileFormType extends AbstractType
 		);
 		
         $builder
-        ->add('location', 'hidden', array('label' => 'Wohnort'))
+        //->add('location', 'hidden', array('label' => 'Wohnort'))
+        ->add('location', 'entity', array('class' => 'LikemeSystemBundle:Location', 'property' => 'id'))
 		->add('aboutme', 'textarea', array('label' => 'Über Mich'))
 		->add('pref_gender', 'choice', array('choices' => $gender_choices))
 		->add('pref_age_range', 'hidden')
