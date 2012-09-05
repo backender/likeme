@@ -31,10 +31,10 @@ class ProfileFormType extends AbstractType
 		);
 		
         $builder
-        ->add('location', 'text', array('label' => 'Wohnort'))
+        ->add('location', 'hidden', array('label' => 'Wohnort'))
 		->add('aboutme', 'textarea', array('label' => 'Über Mich'))
 		->add('pref_gender', 'choice', array('choices' => $gender_choices))
-		->add('pref_age_range', 'choice', array('choices' => $age_range_choices))
+		->add('pref_age_range', 'hidden')
         ;
     }
 }

@@ -30,7 +30,7 @@
 		<form id="profileForm" action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
 		{{ form_widget(form._token) }}
 			<div id="main">
-				<div class="box-top">{% block title %}Profil Seite{% endblock %} <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">{% block title %}Profil{% endblock %} <div class="save"><a class="submit" href="#">speichern</a></div></div>
 				<div class="box-bottom">
 					{% for picture in user_pictures if picture.position == 1 %}
 						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} ({{ location.state | state }})</p></div></div>
@@ -78,7 +78,7 @@
 					{{ form_widget(form.pref_gender) }}
 					{{ form_errors(form.pref_age_range) }}
 					{{ form_widget(form.pref_age_range) }}
-				</div>
+					<div id="slider-range"></div>
 				
 			</div>
 		</div>
@@ -183,4 +183,32 @@
    });
 </script>
 
+
+	<script>
+	$(function() {
+		var self = $("#likeme_user_profile_pref_age_range"),
+		select = self.hide();
+		var input = this.input = $( "<input>" )
+		.attr("id", "show_location")
+               .insertAfter( select )
+               .val( self.val().replace("-", " - ") + " Jahre" );
+
+		var n=self.val().split("-");
+		
+		$( "#slider-range" ).slider({
+			range: true,
+			min: 0,
+			max: 100,
+			values: [ n[0], n[1] ],
+			slide: function( event, ui ) {
+				$( "#likeme_user_profile_pref_age_range" ).val( ui.values[ 0 ] + "-" + ui.values[ 1 ] );
+				input.val( ui.values[ 0 ] + " - " + ui.values[ 1 ] + " Jahre" );
+			}
+		});
+		//$( "#likeme_user_profile_pref_age_range" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+		//	" - " + $( "#slider-range" ).slider( "values", 1 ) + " Jahre" );
+		
+	});
+	</script>
+	
 {% endblock %}
