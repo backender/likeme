@@ -26,7 +26,6 @@ class AfterLoginController extends Controller
     	
     	// Get Users current pictures on Amazon
     	$user = $this->container->get('security.context')->getToken()->getUser();
-    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
 
     	
     	// Check if user has already an image
@@ -34,7 +33,7 @@ class AfterLoginController extends Controller
     	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     	->select("p")
     	->where("p.user = :userid AND p.type = :type")
-    	->setParameter('userid', $curUser->getId())
+    	->setParameter('userid', $user->getId())
     	->setParameter('type', 'original')
     	->setMaxResults(1);
     	
@@ -146,7 +145,7 @@ class AfterLoginController extends Controller
     							$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
     							$picture->setTimestamp($actDateTime);
     							$picture->setType('original');
-    							$picture->setUser($curUser);
+    							$picture->setUser($user);
     							$picture->setPosition(1);
     							
     							// Persist object
@@ -164,7 +163,7 @@ class AfterLoginController extends Controller
     							->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     							->select("p.src")
     							->where("p.user = :userid AND p.type = :type")
-    							->setParameter('userid', $curUser->getId())
+    							->setParameter('userid', $user->getId())
     							->setParameter('type', 'original');
     							
     							$allpictures = $query->getQuery()->getResult();
