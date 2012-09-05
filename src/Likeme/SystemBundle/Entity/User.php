@@ -95,6 +95,20 @@ class User extends BaseUser
 	 * @ORM\Column(name="pref_age_range", type="string", length=255, nullable=false)
 	 */
 	private $pref_age_range;
+	
+	/**
+	 * @ORM\ManyToMany(targetEntity="User", mappedBy="userILiked")
+	 */
+	private $userLikedMe;
+	
+	/**
+	 * @ORM\ManyToMany(targetEntity="User", inversedBy="userLikedMe")
+	 * @ORM\JoinTable(name="likes",
+	 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
+	 *      inverseJoinColumns={@ORM\JoinColumn(name="liked_user_id", referencedColumnName="id", onDelete="cascade")}
+	 *      )
+	 */
+	private $userILiked;
 
 
 	public function __construct()
@@ -108,6 +122,9 @@ class User extends BaseUser
 		if ($this->getPrefAgeRange() == NULL) {
 			$this->setPrefAgeRange("0-100");
 		}
+		
+		$this->friendsWithMe = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->myFriends = new \Doctrine\Common\Collections\ArrayCollection();
 
 	}
 		
