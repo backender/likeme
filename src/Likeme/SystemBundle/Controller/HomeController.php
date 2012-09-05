@@ -37,14 +37,13 @@ class HomeController extends Controller
     	$em = $this->get('doctrine')->getEntityManager();
     	
     	// Get current User object
-    	$username = $this->container->get('security.context')->getToken()->getUser();
-    	$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($username);
+    	$user = $this->container->get('security.context')->getToken()->getUser();
     	
     	// UserService abrufen  	 
     	$UserService = $this->container->get('likeme.user.userservice');
     	 
     	// Get random user for current user ($curUser)
-    	$rndUser = $UserService->getRandomUser($curUser);
+    	$rndUser = $UserService->getRandomUser($user);
     	
     	return array('query'=>$rndUser);
     }
