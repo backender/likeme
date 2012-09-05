@@ -20,22 +20,32 @@
     </head>
     <body>
     	<div id="container">
-      {{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}
       
-        <h1>{% block head %}{% endblock %}</h1>
-        
+        <div id="header">
+        <h1><a href="{{ path('home') }}">likeme</a></h1>
+        {% block head %} {% endblock %}
+
+        <div id="menu-top">
+
         {% block navi %}
 			{{ knp_menu_render('main') }}
-        
-        	{% if not is_granted('ROLE_USER') %}
-        		{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}    
+	        
+	        {% if not is_granted('ROLE_USER') %}
+	        	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}    
 				{{ facebook_login_button({'autologoutlink': false}) }}
 			{% endif %}
-			<br /><br />
-        {% endblock %}
+				<br /><br />
+	    {% endblock %}
+        </div>
         
+        
+        {% if is_granted("IS_AUTHENTICATED_FULLY")%}
+	    <span id="hallo">Hallo, {{app.user.firstname}}</span>
+	    {%endif%}
+	    
+        </div>
             	
-        {% block body %}{% endblock %}
+        {% block body %}{# layout.html.twig #}{% endblock %}
         
 
         {% block javascripts %}

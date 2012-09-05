@@ -3,8 +3,8 @@
 namespace Likeme\SystemBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Likeme\SystemBundle\Form\Type\PreferenceFormType;
-use FOS\UserBundle\Controller\ProfileController as BaseController;
+//use Likeme\SystemBundle\Form\Type\PreferenceFormType;
+//use FOS\UserBundle\Controller\ProfileController as BaseController;
 use Likeme\SystemBundle\Form\Type\ProfileFormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -14,18 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class ProfileController extends Controller {
-	
-	
-	public function __construct() {
-		$this->fos = new BaseController();
-	}
-	
-	public function isActive() {
-		$user = $this->container->get('security.context')->getToken()->getUser();
-		$active = $user->getactive();
-
-		return $active;
-	}
 
 	/**
 	 * @Route("/profile", name="profile")
@@ -38,29 +26,13 @@ class ProfileController extends Controller {
 			throw new AccessDeniedException('This user does not have access to this section.');
 		}
 		
+		// Get current users location
 		$em = $this->container->get('doctrine')->getEntityManager();
-		// Get current user
-		$curUser = $em->getRepository('LikemeSystemBundle:User')->findOneByUsername($user);
-		$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($curUser->getLocation());
+		$userLocation = $em->getRepository('LikemeSystemBundle:Location')->findOneById($user->getLocation());
 		
 		// Build form
-		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $curUser);
-	
-		// Get Pictures
-		$query = $em->createQueryBuilder()
-		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-		->select("p.id, p.src, p.position")
-		->where("p.user = :userid AND p.type = :type")
-		->setParameter('userid', $curUser->getId())
-		->setParameter('type', 'original')
-		->orderBy('p.position', 'ASC');
-		
-		$allpictures = $query->getQuery()->getResult();
-		
-		// Edit picture links for LiipImagineBundle
-		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-		$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
-		
+		$form = $this->container->get('form.factory')->create(new ProfileFormType(), $user);
+
 		//Embedded Form Handler
 		$request = $this->getRequest();
 		if ($request->getMethod() == 'POST') {
@@ -93,7 +65,7 @@ class ProfileController extends Controller {
 		
 		
 		return $this->container->get('templating')->renderResponse('FOSUserBundle:Profile:show.html.'. $this->container->getParameter('fos_user.template.engine'),
-				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'user' => $curUser, 'active' => self::isActive(), 'pictures' => $imaginelinks, 'location' => $userLocation)
+				array('form' => $form->createView(), 'theme' => $this->container->getParameter('fos_user.template.theme'), 'location' => $userLocation)
 		);
 
 	}
