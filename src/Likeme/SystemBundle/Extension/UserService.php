@@ -18,7 +18,6 @@ class UserService implements ContainerAwareInterface
 		$AllowedDailyLikes = 15;
 	
 		
-		
 		// Get EntityManager
 		$em = $this->container->get('doctrine')->getEntityManager();
 		
