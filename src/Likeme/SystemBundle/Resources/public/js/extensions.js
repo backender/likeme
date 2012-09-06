@@ -125,11 +125,13 @@ $(document).ready(function() {
 
 });   
 
-function showUrlInDialog(url, dialogtitle) {
+function showUrlInDialog(url, dialogtitle, loadingtext) {
 		if (typeof title == 'undefined' ) {
 			title = '';
 		}
-	   $('body').css('cursor','wait');
+	   $("#loading-inside").text(loadingtext);
+	   $("#loading").css({"visibility":"visible"});
+	   $('#dialogdiv').remove();
 	   var tag = $("<div/>")
 	   	.attr("id", "dialogdiv");
 	   $.ajax({
@@ -145,7 +147,8 @@ function showUrlInDialog(url, dialogtitle) {
 		       }).dialog('open');
 		     }
 		   }).done(function() {
-			   $('body').css('cursor','default');
+			   $("#loading").css({"visibility":"hidden"});
+			   $("#loading-inside").text("Speichern...");
 		   });
 
         return false;
