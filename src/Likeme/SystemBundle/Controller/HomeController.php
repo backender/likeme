@@ -43,7 +43,7 @@ class HomeController extends Controller
     	$UserService = $this->container->get('likeme.user.userservice');
     	 
     	// Get random user for current user ($curUser)
-    	$rndUser = $UserService->getRandomUser($user);
+    	$rndUser = $UserService->getUserInRadius($user);
     	
     	return array('query'=>$rndUser);
     }

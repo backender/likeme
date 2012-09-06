@@ -123,3 +123,6 @@
     target=bundles/APY/JsFormValidationBundle
     version=v2.0
     
+[DoctrineExtensions]
+    git=git://github.com/beberlei/DoctrineExtensions.git
+    
