@@ -301,7 +301,7 @@ class PictureController extends Controller
     		$imagelink = $_POST['url'];
     		
     		try {
-    			$targ_w = $targ_h = 150;
+    			$targ_w = $targ_h = 400;
     			$jpeg_quality = 90;
     			
     			$img_r = imagecreatefromjpeg($imagelink);
@@ -323,15 +323,17 @@ class PictureController extends Controller
     			
     			$filesystem = $this->container->get('gaufrette.filesystem.media_cache');
     			
-    			$thumblink = str_replace("http://likeme.s3.amazonaws.com/","",$_POST['thumburl']);
+    			// Get thumbnail link
+    			$thumblink = substr_replace($imagelink, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0);			
+    			$thumbfslink = str_replace("http://likeme.s3.amazonaws.com/","",$thumblink);
     			   			
-    			if (strrpos($thumblink, '?') !== false) {
-    				$thumblink = substr($thumblink, 0, strrpos($thumblink, '?') );
+    			if (strrpos($thumbfslink, '?') !== false) {
+    				$thumblink = substr($thumbfslink, 0, strrpos($thumbfslink, '?') );
     			}
     			
     			// Bild in Amazon S3 speichern
-    			if ($filesystem->has($thumblink)) {
-    				$filesystem->write($thumblink, $newthumb, true);
+    			if ($filesystem->has($thumbfslink)) {
+    				$filesystem->write($thumbfslink, $newthumb, true);
     			}
     			
     			// In Session speichern, dass kürzlich ein Bild gecroppt wurde => Browser darf nicht mehr auf gechachte Bilder zurückgreifen
