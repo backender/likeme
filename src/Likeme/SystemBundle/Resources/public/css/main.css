@@ -500,5 +500,6 @@ background-image:url('../images/loader.gif');
 
 #loading-text
 {
+white-space: nowrap;
 display:inline;
 }
