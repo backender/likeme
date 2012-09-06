@@ -41,6 +41,9 @@ class HomeController extends Controller
     	
     	// UserService abrufen  	 
     	$UserService = $this->container->get('likeme.user.userservice');
+    	
+    	// Strange statement 1
+    	$strangers = $UserService->getUserMandatory();
     	 
     	// Get random user for current user ($curUser)
     	$rndUser = $UserService->getUserInRadius($user);
