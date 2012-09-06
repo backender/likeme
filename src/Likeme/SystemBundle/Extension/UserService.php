@@ -82,39 +82,6 @@ class UserService implements ContainerAwareInterface
 		
 	}
 	
-	public function setUpExtentedEM()
-	{
-		$config = new \Doctrine\ORM\Configuration();
-		$config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
-		$config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache());
-		$config->setProxyDir($GLOBALS['doctrine2-proxies-path']);
-		$config->setProxyNamespace($GLOBALS['doctrine2-proxies-namespace']);
-		$config->setAutoGenerateProxyClasses(true);
-	
-		$driver = $config->newDefaultAnnotationDriver($GLOBALS['doctrine2-entities-path']);
-		$config->setMetadataDriverImpl($driver);
-	
-		$conn = array(
-				'driver' => 'pdo_sqlite',
-				'memory' => true,
-		);
-	
-		$config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
-		$config->addCustomNumericFunction('ASIN', 'DoctrineExtensions\Query\Mysql\Asin');
-		$config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
-		$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
-		$config->addCustomNumericFunction('COT', 'DoctrineExtensions\Query\Mysql\Cot');
-		$config->addCustomNumericFunction('TAN', 'DoctrineExtensions\Query\Mysql\Tan');
-		$config->addCustomNumericFunction('ATAN', 'DoctrineExtensions\Query\Mysql\Atan');
-		$config->addCustomNumericFunction('ATAN2', 'DoctrineExtensions\Query\Mysql\Atan2');
-	
-		$config->addCustomNumericFunction('DEGREES', 'DoctrineExtensions\Query\Mysql\Degrees');
-		$config->addCustomNumericFunction('RADIANS', 'DoctrineExtensions\Query\Mysql\Radians');
-	
-		$em = \Doctrine\ORM\EntityManager::create($conn, $config);
-		
-		return $em;
-	}
 	
 	public function getUserInRadius($user) {
 	
@@ -141,20 +108,20 @@ class UserService implements ContainerAwareInterface
 		$em = $this->container->get('doctrine')->getEntityManager();
 		$config = $em->getConfiguration();
 		
-		$config->addCustomNumericFunction('DEGREES', 'DoctrineExtensions\Query\Mysql\Degrees');
-		$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
+		// Add some functions to EntityManager
 		$config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
-		$config->addCustomNumericFunction('ASIN', 'DoctrineExtensions\Query\Mysql\Asin');
 		$config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
 		$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
 		
-		$query = $em->createQuery('SELECT l, (acos(sin('.$latitude.'*'.pi().'/180)*sin(l.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(l.lat*'.pi().'/180)*cos(('.$longitude.'-l.lon)*'.pi().'/180))) as distance FROM LikemeSystemBundle:Location l ORDER BY distance ASC')
+		$query = $em->createQuery('SELECT u, (acos(sin('.$latitude.'*'.pi().'/180)*sin(l.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(l.lat*'.pi().'/180)*cos(('.$longitude.'-l.lon)*'.pi().'/180))) as distance FROM LikemeSystemBundle:User u JOIN u.location l ORDER BY distance ASC')
 			->setMaxResults(15);
 	
 		$places = $query->getResult();
 		
+		echo 'User aus deiner N&auml;he: ';
 		foreach($places as $place) {
-			echo $place[0]->getPlacename();
+			echo $place[0]->getFirstname() .' aus ';
+			echo $place[0]->getLocation()->getPlacename() . ', ';
 		}
 		
 	
