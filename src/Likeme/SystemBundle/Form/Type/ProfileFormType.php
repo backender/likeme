@@ -29,8 +29,8 @@ class ProfileFormType extends AbstractType implements ContainerAwareInterface
 	{
 		$gender_choices = array(
 				0 => 'Beide',
-				1 => 'Männlich',
-				2 => 'Weiblich'
+				1 => 'Männer',
+				2 => 'Frauen'
 		);
 		
 		//get users location

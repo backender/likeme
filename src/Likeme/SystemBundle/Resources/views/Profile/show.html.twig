@@ -23,11 +23,12 @@
 {% block fos_user_content %}
 
 {# {% include "FOSUserBundle:Profile:show_content.html.twig" %} #}
+
 		<div id="content">
 		<form id="profileForm" action="{{ path('profile') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
 		{{ form_widget(form._token) }}
 			<div id="main">
-				<div class="box-top">{% block title %}Profil{% endblock %} <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">{% block title %}Profil{% endblock %} </div>
 				<div class="box-bottom">
 					{% for picture in user_pictures if picture.position == 1 %}
 						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.state | state }}){% endif %}</p></div></div>
@@ -35,7 +36,7 @@
 					<div id="sortablepictures">
 					
 						{% for picture in user_pictures %}
-							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
+							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/><div class="likepic-crop"><a href="#"></a></div></div>
 						{% endfor %}
 					</div>
 					<div class="clear"></div>
@@ -48,6 +49,7 @@
 				</div>
 			</div>
 			<div id="sider">
+				<div class="save"><a class="submit" href="#">Speichern</a></div>
 				<div class="box-top">Angaben</div>
 				<div class="box-bottom">
 					<span style="padding-bottom:10px;" class="profileinfo">{{ user.firstname }}</span>
@@ -63,14 +65,14 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">{{ form_label(form.location) }} <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">{{ form_label(form.location) }}</div>
 				<div class="box-bottom">
 					{{ form_errors(form.location) }}
 					{{ form_widget(form.location) }}
 				</div>
 		
 						
-				<div class="box-top">Preferenzen <div class="save"><a class="submit" href="#">speichern</a></div></div>
+				<div class="box-top">Preferenzen</div>
 				<div class="box-bottom">
 					{{ form_errors(form.pref_gender) }}
 					{{ form_widget(form.pref_gender) }}
@@ -141,6 +143,7 @@
     $(document).ready(function(){
 
      $('a.submit').click(function(){
+       $("#loading").css({"visibility":"visible"});
        var dataString = $('#profileForm').serialize();
        var postUrl = $('#profileForm').attr('action');
         console.log(dataString);
@@ -150,9 +153,11 @@
          url: postUrl,
          data: dataString,
          success: function(response) {
+          $("#loading").css({"visibility":"hidden"});
            console.log(response);
           //Gets the error and write into the .err div....
-           alert(response);
+           $("#loading").css({"visibility":"hidden"});
+           //alert(response);
          }
        });
        return false; 
@@ -192,7 +197,7 @@
 		
 		$( "#slider-range" ).slider({
 			range: true,
-			min: 0,
+			min: 1,
 			max: 100,
 			values: [ n[0], n[1] ],
 			slide: function( event, ui ) {
