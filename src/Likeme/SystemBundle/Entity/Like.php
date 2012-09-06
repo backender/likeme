@@ -28,4 +28,54 @@ class Like
 	 * @ORM\JoinColumn(name="stranger_like", referencedColumnName="id")
 	 */
 	private $stranger_like;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set user_like
+     *
+     * @param Likeme\SystemBundle\Entity\User $userLike
+     */
+    public function setUserLike(\Likeme\SystemBundle\Entity\User $userLike)
+    {
+        $this->user_like = $userLike;
+    }
+
+    /**
+     * Get user_like
+     *
+     * @return Likeme\SystemBundle\Entity\User 
+     */
+    public function getUserLike()
+    {
+        return $this->user_like;
+    }
+
+    /**
+     * Set stranger_like
+     *
+     * @param Likeme\SystemBundle\Entity\User $strangerLike
+     */
+    public function setStrangerLike(\Likeme\SystemBundle\Entity\User $strangerLike)
+    {
+        $this->stranger_like = $strangerLike;
+    }
+
+    /**
+     * Get stranger_like
+     *
+     * @return Likeme\SystemBundle\Entity\User 
+     */
+    public function getStrangerLike()
+    {
+        return $this->stranger_like;
+    }
 }
