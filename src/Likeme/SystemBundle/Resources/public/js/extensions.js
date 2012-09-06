@@ -1,5 +1,5 @@
 $(document).ready(function() {
-		$('.likepic, .likepic-sm').each(function(i) {
+		$('.likepic-sm').each(function(i) {
 			var self = $(this);
 			self.poshytip({
 					className: 'tip-darkgray',
@@ -46,8 +46,8 @@ $(document).ready(function() {
 								// Get selected image
 								var image = $('<img/>')
 									.attr("src", self.find('img').attr("org"))
-									.appendTo(content)
-									.Jcrop({
+									.appendTo(content);
+									image.Jcrop({
 							        	aspectRatio: 1,
 							        	minSize: [100, 100],
 							        	boxWidth: 200, 
@@ -79,13 +79,12 @@ $(document).ready(function() {
 										}
 									})
 									.click(function(){
-										$('body').css('cursor','wait');
+										 $("#loading").css({"visibility":"visible"});
 										$.ajax({
 											  type: "POST",
 											  url: Routing.generate('crop_pictures'),
 											  data: { 
 												  url: self.find('img').attr("org"),
-												  thumburl: self.find('img').attr("src"),
 												  x: cropx, 
 												  y: cropy,
 												  w: cropw, 
@@ -94,8 +93,11 @@ $(document).ready(function() {
 											}).done(function( msg ) {
 											  if (msg == 1) {
 												  var timestamp = new Date().getTime();
+												  // Update small picture
 												  $(self).find('img').attr('src', self.find('img').attr("src") + '?' + timestamp); 
-												  $('body').css('cursor','default');
+												  // Update big picture
+												  $('.likepic').find('img').attr('src', $(self).find('img').attr('src'));
+												  $("#loading").css({"visibility":"hidden"});
 												  $(self).poshytip('hide');
 											  } else {
 												  alert( msg );
@@ -107,11 +109,16 @@ $(document).ready(function() {
 								return container;
 					}
 			});
-			self.click(function(){
-				$('.likepic, .likepic-sm').each(function(i) {
+			
+			$('.likepic-crop').click(function(event){
+				$('.likepic-sm').each(function(i) {
 					$(this).poshytip('hide'); 
 				});
-				self.poshytip('show'); 
+				$(this).parent().poshytip('show'); 
+			});	
+			
+			$('.likepic-sm').click(function(){
+				$('.likepic').find('img').attr('src', $(this).find('img').attr('src'));
 			});	
 			
 		});
