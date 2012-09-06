@@ -497,3 +497,8 @@ width:220px;
 height:19px;
 background-image:url('../images/loader.gif');
 }
+
+#loading-text
+{
+display:inline;
+}
