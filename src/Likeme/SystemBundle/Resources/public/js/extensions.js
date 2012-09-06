@@ -129,7 +129,7 @@ function showUrlInDialog(url, dialogtitle, loadingtext) {
 		if (typeof title == 'undefined' ) {
 			title = '';
 		}
-	   $("#loading-inside").text(loadingtext);
+	   $("#loading-text").text(loadingtext);
 	   $("#loading").css({"visibility":"visible"});
 	   $('#dialogdiv').remove();
 	   var tag = $("<div/>")
@@ -148,7 +148,7 @@ function showUrlInDialog(url, dialogtitle, loadingtext) {
 		     }
 		   }).done(function() {
 			   $("#loading").css({"visibility":"hidden"});
-			   $("#loading-inside").text("Speichern...");
+			   $("#loading-text").text("Speichern...");
 		   });
 
         return false;
