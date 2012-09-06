@@ -95,37 +95,43 @@ class UserService implements ContainerAwareInterface
 		// Get location from user
 		$location = $user->getLocation();
 		
-		// Höhen- und Breitengrade für location range ermitteln
-		$latitude = $location->getLat();
-		$longitude = $location->getLon();
+		if(!empty($location)) {
+			
+			// Höhen- und Breitengrade für location range ermitteln
+			$latitude = $location->getLat();
+			$longitude = $location->getLon();
+			
+			$lat = $latitude * (pi()/180);
+			$lng = $longitude * (pi()/180);
+			
+			
+			
+			// Get EntityManager
+			$em = $this->container->get('doctrine')->getEntityManager();
+			$config = $em->getConfiguration();
+			
+			// Add some functions to EntityManager
+			$config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
+			$config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
+			$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
+			
+			$query = $em->createQuery('SELECT u, (acos(sin('.$latitude.'*'.pi().'/180)*sin(l.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(l.lat*'.pi().'/180)*cos(('.$longitude.'-l.lon)*'.pi().'/180))) as distance FROM LikemeSystemBundle:User u JOIN u.location l ORDER BY distance ASC')
+				->setMaxResults(15);
 		
-		$lat = $latitude * (pi()/180);
-		$lng = $longitude * (pi()/180);
+			$places = $query->getResult();
+			
+			echo 'User aus deiner N&auml;he: ';
+			foreach($places as $place) {
+				echo $place[0]->getFirstname() .' aus ';
+				echo $place[0]->getLocation()->getPlacename() . ', ';
+			}
+			
 		
+			return (1);
 		
-		
-		// Get EntityManager
-		$em = $this->container->get('doctrine')->getEntityManager();
-		$config = $em->getConfiguration();
-		
-		// Add some functions to EntityManager
-		$config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
-		$config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
-		$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
-		
-		$query = $em->createQuery('SELECT u, (acos(sin('.$latitude.'*'.pi().'/180)*sin(l.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(l.lat*'.pi().'/180)*cos(('.$longitude.'-l.lon)*'.pi().'/180))) as distance FROM LikemeSystemBundle:User u JOIN u.location l ORDER BY distance ASC')
-			->setMaxResults(15);
-	
-		$places = $query->getResult();
-		
-		echo 'User aus deiner N&auml;he: ';
-		foreach($places as $place) {
-			echo $place[0]->getFirstname() .' aus ';
-			echo $place[0]->getLocation()->getPlacename() . ', ';
 		}
 		
-	
-		return (1);
+		return false;
 	
 	}
 }

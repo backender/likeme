@@ -35,17 +35,14 @@ class ProfileFormType extends AbstractType
 		);
 		
 		//get users location
-		$location = $options['data']->getLocation()->getId();
+		$locationData = $options['data']->getLocation();
+		if (!empty($locationData)) {
+			$location = $locationData->getId();
+		} else {
+			$location = null;
+		}
 		
         $builder
-        /*->add('location', 'entity', array('class' => 'LikemeSystemBundle:Location', 
-        								  'property' => 'id', 
-        								  'query_builder' => function(EntityRepository $er) use ($location) {
-        														return $er->createQueryBuilder('u')
-        																  ->where('u.id = :id')
-        																  ->setParameter('id', $location); 
-       														 },
-		))*/
 		->add($builder->create('location', 'text')->prependNormTransformer($transformer))
 		->add('aboutme', 'textarea', array('label' => 'Über Mich'))
 		->add('pref_gender', 'choice', array('choices' => $gender_choices))
