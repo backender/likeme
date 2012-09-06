@@ -45,10 +45,7 @@ class HomeController extends Controller
     	// Get random user for current user ($curUser)
     	$rndUser = $UserService->getUserInRadius($user);
     	
-    	// Get like-data
-    	$likemes = $user->getLikedUser();
-    	
-    	return array('stranger'=>$rndUser[0], 'liked_user' => $likemes);
+    	return array('stranger'=>$rndUser[0]);
     }
     
 }
