@@ -18,6 +18,10 @@ class User extends BaseUser
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @ORM\OneToMany(targetEntity="Like", mappedBy="user_like")
+	 * @ORM\OneToMany(targetEntity="Like", mappedBy="stranger_like")
+	 * @ORM\OneToMany(targetEntity="Next", mappedBy="user_next")
+	 * @ORM\OneToMany(targetEntity="Next", mappedBy="stranger_next")
 	 */
 	protected $id;
 	
@@ -68,7 +72,7 @@ class User extends BaseUser
 	 *
 	 * @Assert\NotNull(message="Please enter location.")
 	 * @ORM\ManyToOne(targetEntity="Location", inversedBy="id")
-	 * @ORM\JoinColumn(name="location", referencedColumnName="id", onDelete="persist")
+	 * @ORM\JoinColumn(name="location", referencedColumnName="id")
 	 *
 	 */
 	protected $location;
@@ -94,20 +98,6 @@ class User extends BaseUser
 	 * @ORM\Column(name="pref_age_range", type="string", length=255, nullable=false)
 	 */
 	protected $pref_age_range;
-	
-	/**
-	 * @ORM\ManyToMany(targetEntity="User", mappedBy="liked_user")
-	 */
-	protected $user_who_likes;
-	
-	/**
-	 * @ORM\ManyToMany(targetEntity="User", inversedBy="user_who_likes")
-	 * @ORM\JoinTable(name="likes",
-	 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")},
-	 *      inverseJoinColumns={@ORM\JoinColumn(name="liked_user_id", referencedColumnName="id", onDelete="cascade")}
-	 *      )
-	 */
-	protected $liked_user;
 
 
 	public function __construct()
@@ -417,26 +407,5 @@ class User extends BaseUser
     public function getPrefAgeRange()
     {
         return $this->pref_age_range;
-    }
-
-
-    /**
-     * Get user_who_likes
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getUserWhoLikes()
-    {
-        return $this->user_who_likes;
-    }
-
-    /**
-     * Get liked_user
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getLikedUser()
-    {
-        return $this->liked_user;
     }
 }
