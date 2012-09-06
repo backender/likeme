@@ -81,7 +81,7 @@
 				
 			</div>
 		</div>
-		<input type="submit" />
+
 		{{ form_errors(form)  }}
 		</form>
 
@@ -154,7 +154,6 @@
          success: function(response) {
           $("#loading").css({"visibility":"hidden"});
            console.log(response);
-           alert(response)
           //Gets the error and write into the .err div....
            $("#loading").css({"visibility":"hidden"});
            //alert(response);
