@@ -1,5 +1,5 @@
 $(document).ready(function() {
-		$('.likepic, .likepic-sm').each(function(i) {
+		$('.likepic-sm').each(function(i) {
 			var self = $(this);
 			self.poshytip({
 					className: 'tip-darkgray',
@@ -107,11 +107,11 @@ $(document).ready(function() {
 								return container;
 					}
 			});
-			self.click(function(){
-				$('.likepic, .likepic-sm').each(function(i) {
+			$('.likepic-crop').click(function(){
+				$('.likepic-sm').each(function(i) {
 					$(this).poshytip('hide'); 
 				});
-				self.poshytip('show'); 
+				$(this).parent().poshytip('show'); 
 			});	
 			
 		});
