@@ -18,10 +18,10 @@ class User extends BaseUser
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
-	 * @ORM\OneToMany(targetEntity="Like", mappedBy="user_like")
-	 * @ORM\OneToMany(targetEntity="Like", mappedBy="stranger_like")
-	 * @ORM\OneToMany(targetEntity="Next", mappedBy="user_next")
-	 * @ORM\OneToMany(targetEntity="Next", mappedBy="stranger_next")
+	 * @ORM\OneToMany(targetEntity="Like", mappedBy="user")
+	 * @ORM\OneToMany(targetEntity="Like", mappedBy="stranger")
+	 * @ORM\OneToMany(targetEntity="Next", mappedBy="user")
+	 * @ORM\OneToMany(targetEntity="Next", mappedBy="stranger")
 	 */
 	protected $id;
 	

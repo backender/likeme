@@ -19,63 +19,13 @@ class Next
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="user_next", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user", referencedColumnName="id")
 	 */
-	private $user_next;
+	private $user;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="stranger_next", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id")
 	 */
-	private $stranger_next;
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set user_next
-     *
-     * @param Likeme\SystemBundle\Entity\User $userNext
-     */
-    public function setUserNext(\Likeme\SystemBundle\Entity\User $userNext)
-    {
-        $this->user_next = $userNext;
-    }
-
-    /**
-     * Get user_next
-     *
-     * @return Likeme\SystemBundle\Entity\User 
-     */
-    public function getUserNext()
-    {
-        return $this->user_next;
-    }
-
-    /**
-     * Set stranger_next
-     *
-     * @param Likeme\SystemBundle\Entity\User $strangerNext
-     */
-    public function setStrangerNext(\Likeme\SystemBundle\Entity\User $strangerNext)
-    {
-        $this->stranger_next = $strangerNext;
-    }
-
-    /**
-     * Get stranger_next
-     *
-     * @return Likeme\SystemBundle\Entity\User 
-     */
-    public function getStrangerNext()
-    {
-        return $this->stranger_next;
-    }
+	private $stranger;
 }
