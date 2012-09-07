@@ -14,8 +14,8 @@ $(document).ready(function() {
 								
 								// Create container div for poshytip
 								var container = $('<div/>')
-									.addClass('content');
-
+									.addClass('crop_content');
+							
 								// Create a header div
 								var headerdiv = $('<div/>')
 									.attr("style","margin-top: -3px; margin-right: -14px; float: right;")
@@ -46,8 +46,8 @@ $(document).ready(function() {
 								// Get selected image
 								var image = $('<img/>')
 									.attr("src", self.find('img').attr("org"))
-									.appendTo(content);
-									image.Jcrop({
+									 .appendTo(content)
+									.Jcrop({
 							        	aspectRatio: 1,
 							        	minSize: [100, 100],
 							        	boxWidth: 200, 
@@ -55,7 +55,8 @@ $(document).ready(function() {
 							        	bgColor: 'none',
 							        	onSelect: updateCoords
 							        });
-							       
+							      
+								
 								function updateCoords(c) {
 									cropx = c.x;
 									cropy = c.y;
@@ -80,7 +81,7 @@ $(document).ready(function() {
 									})
 									.click(function(){
 										 $("#loading").css({"visibility":"visible"});
-										$.ajax({
+										 $.ajax({
 											  type: "POST",
 											  url: Routing.generate('crop_pictures'),
 											  data: { 
@@ -90,7 +91,8 @@ $(document).ready(function() {
 												  w: cropw, 
 												  h: croph
 											  }
-											}).done(function( msg ) {
+										})
+										.done(function( msg ) {
 											  if (msg == 1) {
 												  var timestamp = new Date().getTime();
 												  // Update small picture
@@ -102,10 +104,18 @@ $(document).ready(function() {
 											  } else {
 												  alert( msg );
 											  }
-											});
+										});
 									})
 									.appendTo(footerdiv);
-									updateCallback(container);
+	
+							    if (image.height() > 0) {
+							    	return container;
+							    } else {
+							    	image.load(function() {
+							    		updateCallback(container);
+							    	});
+							    }								
+									 	
 								return 'Loading image...';
 					}
 			});
