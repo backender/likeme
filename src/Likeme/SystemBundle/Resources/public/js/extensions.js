@@ -105,8 +105,8 @@ $(document).ready(function() {
 											});
 									})
 									.appendTo(footerdiv);
-									
-								return container;
+									updateCallback(container);
+								return 'Loading image...';
 					}
 			});
 			
