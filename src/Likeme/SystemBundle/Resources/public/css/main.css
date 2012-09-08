@@ -476,6 +476,7 @@ width: 1px;
 
 #loading-inside
 {
+box-shadow: 0 0 3px 1px #444444;
 font-size:22px;
 font-weight:500;
 border-radius:5px;
