@@ -2,7 +2,8 @@ $(document).ready(function() {
 		$('.likepic-sm').each(function(i) {
 			var self = $(this);
 			self.poshytip({
-					className: 'tip-darkgray',
+					className: 'tip-twitter',
+					showTimeout: 1,
 					bgImageFrameSize: 8,
 					showOn: 'none',
 					alignTo: 'target',
@@ -14,8 +15,8 @@ $(document).ready(function() {
 								
 								// Create container div for poshytip
 								var container = $('<div/>')
-									.addClass('content');
-
+									.addClass('crop_content');
+							
 								// Create a header div
 								var headerdiv = $('<div/>')
 									.attr("style","margin-top: -3px; margin-right: -14px; float: right;")
@@ -46,16 +47,17 @@ $(document).ready(function() {
 								// Get selected image
 								var image = $('<img/>')
 									.attr("src", self.find('img').attr("org"))
-									.appendTo(content);
-									image.Jcrop({
+									 .appendTo(content)
+									.Jcrop({
 							        	aspectRatio: 1,
 							        	minSize: [100, 100],
-							        	boxWidth: 200, 
-							        	boxHeight: 200,
+							        	boxWidth: 400, 
+							        	boxHeight: 400,
 							        	bgColor: 'none',
 							        	onSelect: updateCoords
 							        });
-							       
+							      
+								
 								function updateCoords(c) {
 									cropx = c.x;
 									cropy = c.y;
@@ -65,22 +67,15 @@ $(document).ready(function() {
 								
 								// Create a footer div
 								var footerdiv = $('<div/>')
-									.attr("style","margin-bottom: -3px; margin-right: -14px;")
 									.appendTo(container);
 								
 								// Create a close button
-								var cropbutton = $('<button/>')
-									.attr("id", "cropButton")
-									.attr("style","background: none repeat scroll 0% 0%; border: none;")
-									.button({
-										label: "Speichern",
-										icons: {
-											primary: "ui-icon-disk"
-										}
-									})
+								var cropbutton = $('<div/>')
+									.attr("style","margin-bottom: -3px; margin-right: -14px;")
+									.append("<div id='cropButton'><a href='#'>Speichern</a></div>")
 									.click(function(){
 										 $("#loading").css({"visibility":"visible"});
-										$.ajax({
+										 $.ajax({
 											  type: "POST",
 											  url: Routing.generate('crop_pictures'),
 											  data: { 
@@ -90,7 +85,8 @@ $(document).ready(function() {
 												  w: cropw, 
 												  h: croph
 											  }
-											}).done(function( msg ) {
+										})
+										.done(function( msg ) {
 											  if (msg == 1) {
 												  var timestamp = new Date().getTime();
 												  // Update small picture
@@ -102,11 +98,19 @@ $(document).ready(function() {
 											  } else {
 												  alert( msg );
 											  }
-											});
+										});
 									})
 									.appendTo(footerdiv);
-									
-								return container;
+	
+							    if (image.height() > 0) {
+							    	return container;
+							    } else {
+							    	image.load(function() {
+							    		updateCallback(container);
+							    	});
+							    }								
+									 	
+								return 'Loading image...';
 					}
 			});
 			

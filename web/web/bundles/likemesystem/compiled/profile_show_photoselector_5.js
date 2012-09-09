@@ -94,16 +94,22 @@
             
         addToSelected: function(obj){
             if (obj.hasClass("itemselected")) {
-            	//deselect item
-                $("#view_selected_count").text(parseInt($("#view_selected_count").text(), 10) - 1);
-                obj.parents("li").removeAttr("addedid");
-                this.removeValue(obj, this.element);
+            	if (parseInt($("#view_selected_count").text(), 10) > 1) {
+                	//deselect item
+                    $("#view_selected_count").text(parseInt($("#view_selected_count").text(), 10) - 1);
+                    obj.parents("li").removeAttr("addedid");
+                    this.removeValue(obj, this.element);
+                    obj.toggleClass("itemselected");
+        			obj.parents("li").toggleClass("liselected");
+            	}
             }
             else {
             	//select item
                 $("#view_selected_count").text(parseInt($("#view_selected_count").text(), 10) + 1);
                 obj.parents("li").attr("addedid", "tester");
                 this.addValue(obj, this.element);
+                obj.toggleClass("itemselected");
+    			obj.parents("li").toggleClass("liselected");
             }
           // not required without tabs
           //  this.hiddenCheck(obj, this.element);
@@ -126,8 +132,10 @@
                 	}
                 	else {
                 		self.addToSelected(obj);
-                		obj.toggleClass("itemselected");
-                		obj.parents("li").toggleClass("liselected");
+//                		if (parseInt($("#view_selected_count").text(), 10) != 1) {
+//                			obj.toggleClass("itemselected");
+//                			obj.parents("li").toggleClass("liselected");
+//                		}
                 	}
                 });
                 obj.mouseover(function(){

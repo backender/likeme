@@ -1,14 +1,14 @@
 .tip-twitter {
-	opacity:0.8;
+	box-shadow: 0px 0px 5px 1px #bbbbbb;
 	z-index:1000;
 	text-align:left;
-	border-radius:4px;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border:1px solid #ccc;
 	padding:8px 8px;
-	max-width:200px;
 	color:#fff;
-	background-color:#000;
+	background-color:#fff;
 	/**
 	 * - If you set a background-image, border/padding/background-color will be ingnored.
 	 *   You can set any padding to .tip-inner instead if you need.

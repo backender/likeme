@@ -6,7 +6,7 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
         	{% stylesheets filter='cssrewrite'
-			'bundles/likemesystem/css/ui-lightness/jquery-ui-1.8.23.custom.css'
+			'bundles/likemesystem/css/custom-theme/jquery-ui-1.8.23.custom.css'
 			'bundles/likemesystem/css/main.css'
 			%}
 			
@@ -26,18 +26,22 @@
         <h1><a href="{{ path('home') }}">likeme</a></h1>
         {% block head %} {% endblock %}
 
-        <div id="menu-top">
 
-        {% block navi %}
-			{{ knp_menu_render('main') }}
-	        
+        {% block navi %} 
+        
 	        {% if not is_granted('ROLE_USER') %}
-	        	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}    
-				{{ facebook_login_button({'autologoutlink': false}) }}
+	        	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}   
+	        	{# 		{{ facebook_login_button({'autologoutlink': false, 'size':'large' }) }} #}
+				<div id="facebook-login-btb"><a href="#" onclick="FB.login();"><span style="font-weight:400;">login mit </span>facebook</a></div>
 			{% endif %}
-				<br /><br />
+			
+			
+			<div id="menu-top">
+			{{ knp_menu_render('main') }}
+			</div>   
+
 	    {% endblock %}
-        </div>
+      
         
         
         {% if is_granted("IS_AUTHENTICATED_FULLY")%}
@@ -55,7 +59,7 @@
 	    
 	    	{% javascripts 
 	    	'bundles/likemesystem/js/jquery-1.8.0.min.js'
-   			'bundles/likemesystem/js/jquery-ui-1.8.23.js'
+   			'bundles/likemesystem/js/jquery-ui-1.8.23.min.js'
 	    	%}
 	    	
 	    	<script type="text/javascript" src="{{ asset_url }}"></script>
@@ -76,6 +80,15 @@
 			          });
 			      }
 			  }
+			   FB.login(function(response) {
+			   if (response.authResponse) {
+			     FB.api('/me', function(response) {
+			       FB.logout(function(response) {
+			       });
+			     });
+			   }
+			 }, {scope: 'email,user_birthday,user_location,user_photos,user_about_me,user_location'});
+			  
 			</script>
 	    	
 	    	{% endjavascripts %}
