@@ -271,32 +271,32 @@ cursor:move;
 
 .likepic-crop
 {
-width:25px;
-height:25px;
-bottom:10px;
-right:10px;
-position:absolute;
-background-image:url('../images/crop.png');
-background-size: 25px, 25px;
-opacity:0.8;
-filter:alpha(opacity=80); /* For IE8 and earlier */
-border:1px solid rgba(204, 204, 204, .4);
-border-radius:5px;
-z-index:999;
+background-color: rgba(0, 0, 0, 0.5);
+border-radius: 0 0 5px 5px;
+bottom: 2px;
+font-size: 14px;
+height: 30px;
+left: 2px;
+line-height: 30px;
+position: absolute;
+text-align: center;
+text-shadow: -1px -1px 0px #000000;
+width: 116px;
+z-index: 999;
 }
 
 .likepic-crop:hover
 {
-opacity:1;
-filter:alpha(opacity=100); /* For IE8 and earlier */
+background-color: rgba(0, 0, 0, 0.7);
 
 }
 
 .likepic-crop a
 {
-display:block;
-width:25px;
-height:25px;
+display:inline-block;
+color:#fff;
+text-decoration: none;
+font-weight:400;
 }
 
 .likeinfo
