@@ -10,6 +10,7 @@
 	{% stylesheets filter='cssrewrite'
 		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
 		'bundles/likemesystem/poshytip/tip-twitter/tip-twitter.css'
+		'bundles/likemesystem/poshytip/tip-green/tip-green.css'
 		'bundles/likemesystem/photoselector/fcbklistselection.css'
 	%}
 			
@@ -35,11 +36,11 @@
 					{% endfor %}
 					<div id="sortablepictures">
 						{% for picture in user_pictures %}
-							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/><div class="likepic-crop"><a href="#"></a></div></div>
+							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/><div class="likepic-crop"><a href="#">zuschneiden</a></div></div>
 						{% endfor %}
 					</div>
 					<div class="clear"></div>
-					<div class="biglink"> <a href="#" onclick="showUrlInDialog(Routing.generate('pictures'),'Bilder','Lade Profilbilder...')">Bilder Auswählen</a></div>
+					<div class="biglink"> <a href="#" onclick="showUrlInDialog(Routing.generate('pictures'),'Bilder','Lade Profilbilder...')">Bilder von Facebook Auswählen</a></div>
 					<div id="about">
 					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">{{ form_label(form.aboutme) }}</h3>
 						{{ form_errors(form.aboutme) }}
@@ -49,7 +50,7 @@
 			</div>
 			<div id="sider">
 				<div class="save"><a class="submit" href="#">Speichern</a></div>
-				<div class="box-top">Angaben</div>
+				<div class="box-top">Angaben <div class="info" title="Diese Angaben werden von Facebook übernommen und können nur dort geändert werden!"><a href="#"></a></div></div>
 				<div class="box-bottom">
 					<span style="padding-bottom:10px;" class="profileinfo">{{ user.firstname }}</span>
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.lastname }}</span>
@@ -140,7 +141,26 @@
 	
 <script type="text/javascript">
     $(document).ready(function(){
-
+    
+    $(".likepic-sm").hover(
+	  function () {
+	    $(this).find(".likepic-crop").css({"visibility":"visible"});
+	  },
+	  function () {
+	     $(this).find(".likepic-crop").css({"visibility":"hidden"});
+	  }
+	);
+	
+	$('.info').poshytip({
+		className: 'tip-green',
+		showTimeout: 1,
+		alignTo: 'target',
+		alignX: 'center',
+		allowTipHover: false,
+		fade: false,
+		slide: false
+	});
+    
      $('a.submit').click(function(){
        $("#loading").css({"visibility":"visible"});
        var dataString = $('#profileForm').serialize();
