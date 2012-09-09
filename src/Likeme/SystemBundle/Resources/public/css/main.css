@@ -271,6 +271,7 @@ cursor:move;
 
 .likepic-crop
 {
+visibility:hidden;
 background-color: rgba(0, 0, 0, 0.5);
 border-radius: 0 0 5px 5px;
 bottom: 2px;

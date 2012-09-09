@@ -140,7 +140,16 @@
 	
 <script type="text/javascript">
     $(document).ready(function(){
-
+    
+    $(".likepic-sm").hover(
+	  function () {
+	    $(this).find(".likepic-crop").css({"visibility":"visible"});
+	  },
+	  function () {
+	     $(this).find(".likepic-crop").css({"visibility":"hidden"});
+	  }
+	);
+    
      $('a.submit').click(function(){
        $("#loading").css({"visibility":"visible"});
        var dataString = $('#profileForm').serialize();
