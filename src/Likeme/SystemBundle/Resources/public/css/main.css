@@ -109,6 +109,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 opacity:0.8;
 filter:alpha(opacity=80); /* For IE8 and earlier */
+border:1px solid #a4a4a4;
 }
 
 #menu-top ul li a:active
@@ -362,6 +363,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 opacity:0.8;
 filter:alpha(opacity=80); /* For IE8 and earlier */
+border:1px solid #a4a4a4;
 
 }
 
@@ -610,7 +612,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 opacity:0.8;
 filter:alpha(opacity=80); /* For IE8 and earlier */
-
+border:1px solid #a4a4a4;
 }
 
 #cropButton a:active
@@ -657,7 +659,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 opacity:0.8;
 filter:alpha(opacity=80); /* For IE8 and earlier */
-
+border:1px solid #a4a4a4;
 }
 
 .btb a:active
