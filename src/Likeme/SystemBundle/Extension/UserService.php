@@ -1,11 +1,13 @@
 <?php
 namespace Likeme\SystemBundle\Extension;
 
+use Doctrine\Tests\Common\Annotations\True;
 use Doctrine\Tests\Common\Annotations\Null;
-
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-
 use Doctrine\Tests\Common\Annotations\False;
+
+use Likeme\SystemBundle\Entity\Like;
+use Likeme\SystemBundle\Entity\Next;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -50,6 +52,62 @@ class UserService implements ContainerAwareInterface
 		$prefAgeRange = explode("-", $prefAgeRange);
 		
 		return $prefAgeRange;
+	}
+	
+	/**
+	 * User likes stranger
+	 * 
+	 * @param object $stranger
+	 * @return True
+	 * @throws AccessDeniedException if user is not found.
+	 */
+	public function setLike($stranger)
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		
+		if (!is_object($user) || !$user instanceof UserInterface) {
+			throw new AccessDeniedException('This user does not have access to this section.');
+		}
+		
+		$em = $this->container->get('doctrine')->getEntityManager();
+		
+		$like = new Like();
+		
+		$like->setUser($user);
+		$like->setStranger($stranger);
+		
+		$em->persist($like);
+		$em->flush();
+		
+		return true;
+	}
+	
+	/**
+	 * User nexts stranger (do not like)
+	 * 
+	 * @param object $stranger
+	 * @return True
+	 * @throws AccessDeniedException if user is not found.
+	 */
+	public function setNext($stranger)
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		
+		if (!is_object($user) || !$user instanceof UserInterface) {
+			throw new AccessDeniedException('This user does not have access to this section.');
+		}
+		
+		$em = $this->container->get('doctrine')->getEntityManager();
+		
+		$next = new Next();
+		
+		$next->setUser($user);
+		$next->setStranger($stranger);
+		
+		$em->persist($next);
+		$em->flush();
+		
+		return true;
 	}
 	
 	public function getRandomUser($user) {
@@ -174,7 +232,11 @@ class UserService implements ContainerAwareInterface
 			throw new AccessDeniedException('This user does not have access to this section.');
 		}
 		
+		// Get entity manager
 		$em = $this->container->get('doctrine')->getEntityManager();
+		$config = $em->getConfiguration();
+		$config->addCustomNumericFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
+		$config->addCustomNumericFunction('DATE_FORMAT', 'DoctrineExtensions\Query\Mysql\DateFormat');
 		
 		// Get users preferences
 		$prefAgeRange = self::getPrefAgeRange($user->getPrefAgeRange());
@@ -182,20 +244,29 @@ class UserService implements ContainerAwareInterface
 		
 		// Build query according statement 1 (StrangerAbfrage.mm)
 		$query = $em->createQueryBuilder()
-		->select('u')
+		->select("u")
+		//->addselect("(date_format(CURRENT_TIMESTAMP(), '%Y') - date_format(str_to_date(birthday, '%m/%d/%Y'), '%Y')) - (date_format(CURRENT_TIMESTAMP(),'00-%m-%d') < date_format(str_to_date(birthday, '%m/%d/%Y'),'00-%m-%d'))")
 		->from('Likeme\SystemBundle\Entity\User', 'u')
-		->where("u.id != :myid AND (u.birthday >= :minagerange OR u.birthday <= :maxagerange)")
-		->setParameter('myid', $user->getID())
-		->setParameter('minagerange', $prefAgeRange[0])
-		->setParameter('maxagerange', $prefAgeRange[1]);
+		->where("u.id != :myid")
+		->setParameter('myid', $user->getID());
+		
 		
 		if ($prefGender != 'both') {
 			$query->andWhere("u.gender = :prefgender")
 			->setParameter('prefgender', $prefGender);
 		}
 		
-		// TODO: where != ( * like)
-		// TODO: where != ( * next)  
+		// TODO: as a subquery
+		$liked = $em->getRepository('LikemeSystemBundle:Like')->findByUser($user->getId());
+		foreach($liked as $liked) {
+			echo($liked->getUser()."(".$liked->getUser()->getId().") liked ".$liked->getStranger()."(".$liked->getStranger()->getId().")<br />");
+		}
+		
+		// TODO: as a subquery
+		$nexted = $em->getRepository('LikemeSystemBundle:Next')->findByUser($user->getId());
+		foreach($nexted as $nexted) {
+			echo($nexted->getUser()."(".$nexted->getUser()->getId().") nexted ".$nexted->getStranger()."(".$nexted->getStranger()->getId().")<br />");
+		}
 		
 		$array = $query->getQuery()->getResult();
 		
