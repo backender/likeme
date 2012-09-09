@@ -9,8 +9,6 @@ $(document).ready(function() {
 		 if (obj.attr('class') == "selected") {
 			 item = obj.children(".fcbklist_item");
 			 $('#fcbklist').photoselector('addToSelected', item);
-			 item.toggleClass("itemselected");
-			 item.parents("li").toggleClass("liselected");
 		 }
 	 }); 	
 });    

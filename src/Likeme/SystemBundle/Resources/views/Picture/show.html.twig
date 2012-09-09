@@ -1,13 +1,13 @@
 {% block body %}
 	
-	<form action="{{ path('save_profile_pictures') }}" method="POST">
+	<form id="fb-pictures" action="{{ path('save_profile_pictures') }}" method="POST">
 	
-		<ul id="fcbklist">
+		<ul id="fcbklist" style="border-radius:5px;">
 			{# Photos in use #}
 			{% for photo in savedpictures %}
 			 	<li class="selected">    
-			 		<strong>Aktuelles Profilbild</strong>    
-			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.src }}" style = "max-width: 110px; max-height: 120px;" align="middle" /></div>
+			 		<span style="font-weight:500; margin-top:8px;">Aktuelles Profilbild</span>
+			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.src }}" style = "max-width: 110px; max-height: 120px; border-radius:5px;" align="middle" /></div>
 			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.src }}" />       
 			    </li>
 			{% endfor %} 
@@ -27,14 +27,14 @@
 			{# Photos on Facebook #}
 			{% for photo in photos %}
 			 	<li>        
-			 		<strong>Aus Facebook</strong> 
+			 		Aus Facebook
 			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.images.7.source }}" style = "max-width: 110px; max-height: 120px;" align="middle" /></div>
 			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.images.1.source }}" />       
 			    </li>
 			{% endfor %}   
 		</ul>
 	<input type="hidden" name="fcbk_id" value="{{ id }}" />       	
-	<input type="submit" value="Submit" />
+	<div id="submitpic" style="margin-right:10px; margin-top:10px;" class="btb"><a href="#">Speichern</a></div>
 	
 	</form>
 	
@@ -56,8 +56,9 @@
 <script type="text/javascript">
  	$(document).ready(function(){
 
-    $(":submit").click(function(){
+    $("#submitpic").click(function(){
        $("#loading").css({"visibility":"visible"});
+       document.forms['fb-pictures'].submit();
       });
 
    });
