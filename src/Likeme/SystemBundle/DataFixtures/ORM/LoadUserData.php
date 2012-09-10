@@ -40,7 +40,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$testUser1->setPassword('1234');
 		$testUser1->setBirthday(new \DateTime('1990-01-20'));
 		$testUser1->setGender('female');
-		$testUser1->setLocation($testloc); 
+		//$testUser1->setLocation($testloc); 
 
 		$em->persist($testUser1);
 		
