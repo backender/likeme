@@ -125,4 +125,5 @@
     
 [DoctrineExtensions]
     git=git://github.com/beberlei/DoctrineExtensions.git
+
     

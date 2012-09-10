@@ -19,13 +19,13 @@ class Next
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="user", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user", referencedColumnName="id", onDelete="cascade")
 	 */
 	private $user;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id", onDelete="cascade")
 	 */
 	private $stranger;
 

@@ -61,17 +61,17 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 	
 	public function age($birthDate)
 	{
-		//explode the date to get month, day and year (facebook standard)
-		$birthDate = explode("/", $birthDate);
-		//get age from date or birthdate
-		$age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-		return $age;
+		$date = $birthDate;
+ 		$now = new \DateTime();
+ 		$interval = $now->diff($date);
+ 		$age = $interval->y;
+		
+ 		return $age;
 	}
 	
 	public function fb_date($date)
 	{
-		$date = explode("/", $date);
-		$date = $date[1].".".$date[0].".".$date[2];
+		$date = $date->format("d.m.Y");
 		return $date;
 	}
 	

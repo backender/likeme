@@ -1,11 +1,11 @@
 <?php
 namespace Likeme\SystemBundle\Extension;
 
+use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\Tests\Common\Annotations\True;
 use Doctrine\Tests\Common\Annotations\Null;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Doctrine\Tests\Common\Annotations\False;
-
 use Likeme\SystemBundle\Entity\Like;
 use Likeme\SystemBundle\Entity\Next;
 use FOS\UserBundle\Model\UserInterface;
@@ -35,6 +35,31 @@ class UserService implements ContainerAwareInterface
 		}
 	
 		return $gender;
+	}
+	
+	/**
+	 * Gives the users prefered age range of strangers
+	 *
+	 * @param string $prefAgeRange
+	 * @return array|Null
+	 */
+	public function getPrefAgeRangeDate($prefAgeRange)
+	{
+		if (!$prefAgeRange) {
+			return null;
+		}
+		$prefAgeRange = self::getPrefAgeRange($prefAgeRange);
+		$prefAgeRangeMin = $prefAgeRange[1]+1;
+		$prefAgeRangeMax = $prefAgeRange[0];
+		
+		$min = new \DateTime();
+		$max = new \DateTime();
+		$min = $min->sub(date_interval_create_from_date_string($prefAgeRangeMin." year"));
+		$max = $max->sub(date_interval_create_from_date_string($prefAgeRangeMax." year")); 
+		
+		$prefAgeRangeDate = array($min, $max);
+		
+		return $prefAgeRangeDate;
 	}
 	
 	/**
@@ -236,39 +261,54 @@ class UserService implements ContainerAwareInterface
 		$em = $this->container->get('doctrine')->getEntityManager();
 		$config = $em->getConfiguration();
 		$config->addCustomNumericFunction('STR_TO_DATE', 'DoctrineExtensions\Query\Mysql\StrToDate');
-		$config->addCustomNumericFunction('DATE_FORMAT', 'DoctrineExtensions\Query\Mysql\DateFormat');
 		
 		// Get users preferences
 		$prefAgeRange = self::getPrefAgeRange($user->getPrefAgeRange());
+		$prefAgeRangeDate = self::getPrefAgeRangeDate($user->getPrefAgeRange());
 		$prefGender = self::getPrefGender($user->getPrefGender());
+		
+		
+		// TODO: as a subquery
+		//$liked = $em->getRepository('LikemeSystemBundle:Like')->findByUser($user->getId());
+		$liked = $em->createQueryBuilder()
+		->select('l')
+		->from('Likeme\SystemBundle\Entity\Like', 'l')
+		->where('l.user = :user')
+		->setParameter('user', $user->getId());
+		$liked = $liked->getQuery()->getResult();
+		
+		// TODO: as a subquery
+		//$nexted = $em->getRepository('LikemeSystemBundle:Next')->findByUser($user->getId());
+		$nexted = $em->createQueryBuilder()
+		->select('n')
+		->from('Likeme\SystemBundle\Entity\Next', 'n')
+		->where('n.user = :user')
+		->setParameter('user', $user->getId());
+		$nexted = $nexted->getQuery()->getResult();
+		
 		
 		// Build query according statement 1 (StrangerAbfrage.mm)
 		$query = $em->createQueryBuilder()
 		->select("u")
-		//->addselect("(date_format(CURRENT_TIMESTAMP(), '%Y') - date_format(str_to_date(birthday, '%m/%d/%Y'), '%Y')) - (date_format(CURRENT_TIMESTAMP(),'00-%m-%d') < date_format(str_to_date(birthday, '%m/%d/%Y'),'00-%m-%d'))")
+		//->addselect("(date_format(CURRENT_TIMESTAMP(), '%Y')-date_format(str_to_date(birthday, '%m/%d/%Y'), '%Y'))-(date_format(CURRENT_TIMESTAMP(),'00-%m-%d') < date_format(str_to_date(birthday, '%m/%d/%Y'),'00-%m-%d'))")
 		->from('Likeme\SystemBundle\Entity\User', 'u')
 		->where("u.id != :myid")
-		->setParameter('myid', $user->getID());
+		->setParameter('myid', $user->getID())
+		->andwhere("u.birthday >= :minbirthday")
+		->andwhere("u.birthday <= :maxbirthday")
+		->setParameter('minbirthday', $prefAgeRangeDate[0])
+		->setParameter('maxbirthday', $prefAgeRangeDate[1])
+		//->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $liked))
+		;
 		
 		
 		if ($prefGender != 'both') {
 			$query->andWhere("u.gender = :prefgender")
 			->setParameter('prefgender', $prefGender);
 		}
-		
-		// TODO: as a subquery
-		$liked = $em->getRepository('LikemeSystemBundle:Like')->findByUser($user->getId());
-		foreach($liked as $liked) {
-			echo($liked->getUser()."(".$liked->getUser()->getId().") liked ".$liked->getStranger()."(".$liked->getStranger()->getId().")<br />");
-		}
-		
-		// TODO: as a subquery
-		$nexted = $em->getRepository('LikemeSystemBundle:Next')->findByUser($user->getId());
-		foreach($nexted as $nexted) {
-			echo($nexted->getUser()."(".$nexted->getUser()->getId().") nexted ".$nexted->getStranger()."(".$nexted->getStranger()->getId().")<br />");
-		}
-		
 		$array = $query->getQuery()->getResult();
+		
+		
 		
 		// Testing
 		echo "Statement 1: <br />";

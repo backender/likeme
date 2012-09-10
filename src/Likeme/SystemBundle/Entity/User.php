@@ -60,9 +60,9 @@ class User extends BaseUser
 	protected $gender;
 	
 	/**
-	 * @var string $birthday
+	 * @var date $birthday
 	 *
-	 * @ORM\Column(name="birthday", type="string", nullable=true)
+	 * @ORM\Column(name="birthday", type="datetime", nullable=true)
 	 */
 	protected $birthday;
 	
@@ -109,7 +109,7 @@ class User extends BaseUser
 			$this->setPrefGender(0);
 		}
 		if ($this->getPrefAgeRange() == NULL) {
-			$this->setPrefAgeRange("0-100");
+			$this->setPrefAgeRange("1-100");
 		}
 		
 		$this->user_who_likes = new \Doctrine\Common\Collections\ArrayCollection();
@@ -282,7 +282,7 @@ class User extends BaseUser
     	}
     	if($this->getBirthday() == NULL) {
 	    	if (isset($fbdata['birthday'])) {
-	    		$this->setBirthday($fbdata['birthday']);
+	    		$this->setBirthday(new \DateTime(date("Y-m-d", strtotime($fbdata['birthday']))));
 	    	}
     	}
     	//facebook data could be empty
@@ -307,26 +307,6 @@ class User extends BaseUser
 
     }
     
-
-    /**
-     * Set birthday
-     *
-     * @param string $birthday
-     */
-    public function setBirthday($birthday)
-    {
-        $this->birthday = $birthday;
-    }
-
-    /**
-     * Get birthday
-     *
-     * @return string 
-     */
-    public function getBirthday()
-    {
-        return $this->birthday;
-    }
 
     /**
      * Set location
@@ -407,5 +387,25 @@ class User extends BaseUser
     public function getPrefAgeRange()
     {
         return $this->pref_age_range;
+    }
+
+    /**
+     * Set birthday
+     *
+     * @param datetime $birthday
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
+
+    /**
+     * Get birthday
+     *
+     * @return datetime 
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
     }
 }

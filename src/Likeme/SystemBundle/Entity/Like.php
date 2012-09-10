@@ -1,6 +1,8 @@
 <?php
 namespace Likeme\SystemBundle\Entity;
 
+use Symfony\Tests\Component\Translation\String;
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,16 +21,15 @@ class Like
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="user", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user", referencedColumnName="id", onDelete="cascade")
 	 */
 	private $user;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id", onDelete="cascade")
 	 */
 	private $stranger;
-
 
     /**
      * Get id
