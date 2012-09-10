@@ -25,6 +25,7 @@ class LoadLocationData extends AbstractFixture implements OrderedFixtureInterfac
 	}
 	
 	public function load(ObjectManager $manager) {
+	/*
 		ini_set('memory_limit', '-1');
 		$kernel = $this->container->get('kernel');
 		$path = $kernel->locateResource('@LikemeSystemBundle/Resources/public/country/CH/CH.csv');
@@ -55,7 +56,7 @@ class LoadLocationData extends AbstractFixture implements OrderedFixtureInterfac
 		fclose($fp);
 		$manager->persist($location);
 		$manager->flush();
-
+	*/
 	}
 
 }
