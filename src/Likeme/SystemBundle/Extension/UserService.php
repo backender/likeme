@@ -100,6 +100,7 @@ class UserService implements ContainerAwareInterface
 		
 		$like->setUser($user);
 		$like->setStranger($stranger);
+		$like->setCreatedAt(new \DateTime());
 		
 		$em->persist($like);
 		$em->flush();
@@ -128,6 +129,7 @@ class UserService implements ContainerAwareInterface
 		
 		$next->setUser($user);
 		$next->setStranger($stranger);
+		$next->setCreatedAt(new \DateTime());
 		
 		$em->persist($next);
 		$em->flush();
@@ -268,37 +270,35 @@ class UserService implements ContainerAwareInterface
 		$prefGender = self::getPrefGender($user->getPrefGender());
 		
 		
-		// TODO: as a subquery
-		//$liked = $em->getRepository('LikemeSystemBundle:Like')->findByUser($user->getId());
+		// Subquery: Excludes liked users
 		$liked = $em->createQueryBuilder()
-		->select('l')
+		->select('ul.id')
 		->from('Likeme\SystemBundle\Entity\Like', 'l')
-		->where('l.user = :user')
-		->setParameter('user', $user->getId());
-		$liked = $liked->getQuery()->getResult();
+			->innerJoin("l.stranger", "ul")
+		->where('l.user = :user');
+		$liked = $liked->getDQL();
 		
-		// TODO: as a subquery
-		//$nexted = $em->getRepository('LikemeSystemBundle:Next')->findByUser($user->getId());
+		// Subquery: Excludes nexted users
 		$nexted = $em->createQueryBuilder()
-		->select('n')
+		->select('un.id')
 		->from('Likeme\SystemBundle\Entity\Next', 'n')
-		->where('n.user = :user')
-		->setParameter('user', $user->getId());
-		$nexted = $nexted->getQuery()->getResult();
+			->innerJoin("n.stranger", "un")
+		->where('n.user = :user');
+		$nexted = $nexted->getDQL();
 		
 		
 		// Build query according statement 1 (StrangerAbfrage.mm)
 		$query = $em->createQueryBuilder()
 		->select("u")
-		//->addselect("(date_format(CURRENT_TIMESTAMP(), '%Y')-date_format(str_to_date(birthday, '%m/%d/%Y'), '%Y'))-(date_format(CURRENT_TIMESTAMP(),'00-%m-%d') < date_format(str_to_date(birthday, '%m/%d/%Y'),'00-%m-%d'))")
 		->from('Likeme\SystemBundle\Entity\User', 'u')
-		->where("u.id != :myid")
-		->setParameter('myid', $user->getID())
+		->where("u.id != :user")
 		->andwhere("u.birthday >= :minbirthday")
 		->andwhere("u.birthday <= :maxbirthday")
+		->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $liked))
+		->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $nexted))
 		->setParameter('minbirthday', $prefAgeRangeDate[0])
 		->setParameter('maxbirthday', $prefAgeRangeDate[1])
-		//->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $liked))
+		->setParameter('user', $user->getId())
 		;
 		
 		

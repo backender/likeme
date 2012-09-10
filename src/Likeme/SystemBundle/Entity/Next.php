@@ -28,6 +28,13 @@ class Next
 	 * @ORM\JoinColumn(name="stranger", referencedColumnName="id", onDelete="cascade")
 	 */
 	private $stranger;
+	
+	/**
+	 * @var datetime $created_at
+	 *
+	 * @ORM\Column(name="created_at", type="datetime")
+	 */
+	private $created_at;
 
     /**
      * Get id
@@ -77,5 +84,25 @@ class Next
     public function getStranger()
     {
         return $this->stranger;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param datetime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return datetime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 }
