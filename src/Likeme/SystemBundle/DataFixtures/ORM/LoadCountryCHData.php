@@ -1,6 +1,6 @@
 <?php
 namespace Likeme\SystemBundle\DataFixtures\ORM;
-
+/*
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpKernel\Kernel;
@@ -15,7 +15,7 @@ class LoadLocationData extends AbstractFixture implements OrderedFixtureInterfac
 {
 
 	public function getOrder() {
-		return 1;
+		return 0;
 	}
 	
 	private $container;
@@ -56,7 +56,7 @@ class LoadLocationData extends AbstractFixture implements OrderedFixtureInterfac
 		fclose($fp);
 		$manager->persist($location);
 		$manager->flush();
-	*/
+	
 	}
-
-}
+	
+}*/

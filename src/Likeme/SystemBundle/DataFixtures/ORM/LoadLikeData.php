@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Likeme\SystemBundle\Entity\Like;
+use Likeme\SystemBundle\Entity\User;
 
 class LoadLikeData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -25,14 +26,11 @@ class LoadLikeData extends AbstractFixture implements OrderedFixtureInterface, C
 	}
 	
 	public function load(ObjectManager $manager) {
-		
-		$userManager = $this->container->get('fos_user.user_manager');
-		$user1 = $userManager->findUserByUsername('1440552145');
-		$user2 = $userManager->findUserByUsername('1473555091');
+		$em = $this->container->get("doctrine")->getEntityManager();
 		
 		$like1 = new Like();
-		$like1->setUser($user1);
-		$like1->setStranger($user2);
+		$like1->setUser($this->getReference('TestUser1'));
+		$like1->setStranger($this->getReference('TestUser1'));
 		$like1->setCreatedAt(new \DateTime());
 		
 		$manager->persist($like1);
