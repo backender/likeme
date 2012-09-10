@@ -20,6 +20,12 @@ class UserService implements ContainerAwareInterface
 		$this->container = $container;
 	}
 	
+	public function getMaxStranger()
+	{
+		$i=20;
+		return $i;
+	}
+	
 	public function getPrefGender($pref_gender) {
 		// Get prefered gender from user
 		switch ($pref_gender) {
@@ -298,25 +304,82 @@ class UserService implements ContainerAwareInterface
 		->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $nexted))
 		->setParameter('minbirthday', $prefAgeRangeDate[0])
 		->setParameter('maxbirthday', $prefAgeRangeDate[1])
-		->setParameter('user', $user->getId())
-		;
-		
-		
+		->setParameter('user', $user->getId());
 		if ($prefGender != 'both') {
 			$query->andWhere("u.gender = :prefgender")
 			->setParameter('prefgender', $prefGender);
 		}
-		$array = $query->getQuery()->getResult();
+		$base = $query->getDQL();
 		
 		
-		
-		// Testing
-		echo "Statement 1: <br />";
-		foreach($array as $record) {
-			echo "-".$record->getFirstname();
+		$query = $em->createQueryBuilder()
+		->select("lu")
+		->from('Likeme\SystemBundle\Entity\Like', 'lu')
+		->where("lu.stranger = :user")
+		->andwhere($em->createQueryBuilder()->expr()->In('lu.user', $base))
+		->setParameter('minbirthday', $prefAgeRangeDate[0])
+		->setParameter('maxbirthday', $prefAgeRangeDate[1])
+		->setParameter('user', $user->getId())
+		->setMaxResults(round(self::getMaxStranger()/2)); //10
+		if ($prefGender != 'both') {
+			$query->setParameter('prefgender', $prefGender);
 		}
-		echo "<br />";
+		$likedUser_DQL = $query->getDQL();
+		$likedUser = $query->getQuery()->getResult();
+		$likedUserCount = count($likedUser);
+		$likedUserID = '';
+		foreach($likedUser as $object) {
+			if($likedUserID == '') {
+				$likedUserID = $object->getUser()->getId();
+			} else {
+				$likedUserID = $likedUserID.", ".$object->getUser()->getId();
+			}
+		}
 		
-		return $array;
+		// Get location from user
+		$location = $user->getLocation();
+		
+		if(!empty($location)) {
+				
+			// Location range ermitteln
+			$latitude = $location->getLat();
+			$longitude = $location->getLon();
+			
+				
+			// Add some functions to EntityManager
+			$config->addCustomNumericFunction('SIN', 'DoctrineExtensions\Query\Mysql\Sin');
+			$config->addCustomNumericFunction('COS', 'DoctrineExtensions\Query\Mysql\Cos');
+			$config->addCustomNumericFunction('ACOS', 'DoctrineExtensions\Query\Mysql\Acos');
+			
+			
+			$query = $em->createQueryBuilder()
+			->select(
+				'uloc,
+				(acos(sin('.$latitude.'*'.pi().'/180)*sin(loc.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(loc.lat*'.pi().'/180)*cos(('.$longitude.'-loc.lon)*'.pi().'/180))) as distance	
+			')
+			->from('LikemeSystemBundle:User', 'uloc')
+				->innerJoin('uloc.location', 'loc')
+			->where("uloc.id IN (".$base.")")
+			->orderby('distance', 'ASC')
+			->setParameter('minbirthday', $prefAgeRangeDate[0])
+			->setParameter('maxbirthday', $prefAgeRangeDate[1])
+			->setParameter('user', $user->getId());
+			if(!empty($likedUserID)) {
+				$query->andwhere("uloc.id NOT IN (".$likedUserID.")");
+			}
+			if ($prefGender != 'both') {
+				$query->setParameter('prefgender', $prefGender);
+			}
+			$query->setMaxResults(round((self::getMaxStranger()-$likedUserCount)/100*75)); //min. 8
+			$places = $query->getQuery()->getResult();
+						
+			echo 'User aus deiner N&auml;he: ';
+			foreach($places as $place) {
+				echo $place[0]->getFirstname() .' aus ';
+				echo $place[0]->getLocation()->getPlacename() . ', ';
+			}
+		
+		}
+		
 	}
 }

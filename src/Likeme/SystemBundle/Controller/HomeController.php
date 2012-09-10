@@ -46,9 +46,9 @@ class HomeController extends Controller
     	$strangers = $UserService->getUserMandatory();
     	 
     	// Get random user for current user ($curUser)
-    	$rndUser = $UserService->getUserInRadius($user);
+    	//$rndUser = $UserService->getUserInRadius($user);
     	
-    	return array('stranger'=>$rndUser[0]);
+    	return array();
     }
     
 }
