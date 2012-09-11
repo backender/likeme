@@ -32,7 +32,7 @@
 				<div class="box-top">{% block title %}Profil{% endblock %} </div>
 				<div class="box-bottom">
 					{% for picture in user_pictures if picture.position == 1 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.state | state }}){% endif %}</p></div></div>
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.statecode }}){% endif %}</p></div></div>
 					{% endfor %}
 					<div id="sortablepictures">
 						{% for picture in user_pictures %}
