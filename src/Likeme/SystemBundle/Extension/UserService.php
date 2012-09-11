@@ -232,9 +232,6 @@ class UserService implements ContainerAwareInterface
 		$likedUserCount = count($likedUser);
 		$likedUserID = '';
 		foreach($likedUser as $object) {
-			echo "Die m&ouml;gen mich hihi: ";
-			echo $object->getUser()->getFirstname().", ";
-			echo "<br />";
 			if($likedUserID == '') {
 				$likedUserID = $object->getUser()->getId();
 			} else {
@@ -299,13 +296,6 @@ class UserService implements ContainerAwareInterface
 				}
 				$i++;
 			}
-						
-			echo 'User aus deiner N&auml;he: ';
-			foreach($placeUser as $place) {
-				echo $place->getFirstname() .' aus ';
-				echo $place->getLocation()->getPlacename() . ', ';
-			}
-			echo "<br />";
 			
 			
 			/*
@@ -329,12 +319,6 @@ class UserService implements ContainerAwareInterface
 				$query->setParameter('prefgender', $prefGender);
 			}
 			$restUser = $query->getQuery()->getResult();
-			
-			echo "Der Rest: ";
-			foreach($restUser as $object) {
-				echo $object->getFirstname().", ";
-			}
-			echo "->Rest ".round(self::getMaxStranger()-$likedUserCount-$placeUserCount);
 		
 		} else {
 			
@@ -356,12 +340,6 @@ class UserService implements ContainerAwareInterface
 				$query->setParameter('prefgender', $prefGender);
 			}
 			$restUser = $query->getQuery()->getResult();
-				
-			echo "Der (ohne location) Rest: ";
-			foreach($restUser as $object) {
-				echo $object->getFirstname().", ";
-			}
-			echo "->Rest ".round(self::getMaxStranger()-$likedUserCount);
 			
 		}
 		
@@ -371,8 +349,6 @@ class UserService implements ContainerAwareInterface
 		} else {
 			return self::mergeStranger($restUser, $likedUser);
 		}
-		
-		
 	}
 	
 	/**

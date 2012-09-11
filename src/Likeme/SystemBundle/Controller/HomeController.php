@@ -44,7 +44,7 @@ class HomeController extends Controller
     	
     	// Strange statement 1
     	$strangers = $UserService->getStranger();
-    	echo "<br />";
+
     	foreach($strangers as $stranger) {
     			echo $stranger->getFirstname().", ";
     	}
