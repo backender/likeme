@@ -44,8 +44,10 @@ class HomeController extends Controller
     	
     	var_dump($strangers);  	
     	
-    	$stranger = $strangers[0]; //TODO: set session array count
-    	 
+    	$stranger = $this->getDoctrine()
+    	->getRepository('LikemeSystemBundle:User')
+    	->find($strangers[0]); //TODO: set session array count
+
     	// Get pictures from stranger
     	$textExtension = $this->container->get('likeme.twig.extension');
     	$strangerPictures = $textExtension->stranger_pictures($stranger);
