@@ -187,7 +187,7 @@ class AfterLoginController extends Controller
     			echo "other error has happened";
     		}
     		
-    		$response = new Response('Fehler');
+    		$funcresponse = new Response('Fehler');
     	}
     	
     	
@@ -206,9 +206,9 @@ class AfterLoginController extends Controller
     	$session->set('strangers', $strangers);
     	
     	// Forward to Home
-    	$response = new RedirectResponse($this->container->get('router')->generate('home'));
+    	$funcresponse = new RedirectResponse($this->container->get('router')->generate('home'));
 
-    	return $response;
+    	return $funcresponse;
     }    
     
 }
