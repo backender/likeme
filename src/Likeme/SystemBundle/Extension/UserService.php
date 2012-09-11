@@ -420,7 +420,6 @@ class UserService implements ContainerAwareInterface
 		} else {
 			$array = array($liked, $place, $rest);
 		}
-
 		
 		$userarry = array();
 		$i = 0;
