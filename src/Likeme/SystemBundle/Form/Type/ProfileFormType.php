@@ -43,7 +43,7 @@ class ProfileFormType extends AbstractType
 		}
 		
         $builder
-		->add($builder->create('location', 'text')->prependNormTransformer($transformer))
+		->add($builder->create('location', 'text', array('label' => 'Wohnort'))->prependNormTransformer($transformer))
 		->add('aboutme', 'textarea', array('label' => 'Über Mich'))
 		->add('pref_gender', 'choice', array('choices' => $gender_choices))
 		->add('pref_age_range', 'hidden')
