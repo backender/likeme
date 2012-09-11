@@ -44,15 +44,18 @@ class HomeController extends Controller
     	
     	// Strange statement 1
     	$strangers = $UserService->getStranger();
+    	$stranger = $strangers[0]; //TODO: set session array count
+    	
+    	// Get pictures from stranger
+    	$textExtension = $this->container->get('likeme.twig.extension');
+    	$strangerPictures = $textExtension->stranger_pictures($stranger);
 
     	foreach($strangers as $stranger) {
     			echo $stranger->getFirstname().", ";
     	}
     	 
-    	// Get random user for current user ($curUser)
-    	//$rndUser = $UserService->getUserInRadius($user);
+    	return array('stranger' => $stranger, 'stranger_pictures' => $strangerPictures);
     	
-    	return array();
     }
     
 }

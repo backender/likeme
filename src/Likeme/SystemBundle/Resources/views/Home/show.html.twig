@@ -1,50 +1,53 @@
 {% extends 'LikemeSystemBundle::layout.html.twig' %}
 
-
 {% set user = app.user %}
+
 {%block fos_user_content%}
 
 		<div id="content">
 			<div id="main">
 				<div class="box-top">{% block title %}Home{% endblock %}</div>
 				<div class="box-bottom">
-					{% for picture in user_pictures if picture.position == 1 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} location</p></div></div>
+					{% for picture in stranger_pictures if picture.position == 1 %}
+						<div class="likepic">
+							<img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" />
+							<div class="likeinfo">
+								<p>{{ stranger.firstname }}, {{ stranger.birthday | age }} {% if stranger.location != false %} ({{ stranger.location.statecode }}){% endif %}</p>
+							</div>
+						</div>
 					{% endfor %}
 					<div id="sortablepictures">
 					
-						{% for picture in user_pictures %}
+						{% for picture in stranger_pictures %}
 							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 						{% endfor %}
 					</div>
 					<div class="clear"></div>
 					<div id="about">
 					<h3 style="font-size:16px; font-weight:500; margin:20px 0 0 0">Aboutme</h3>
-						aboutme
+						{{ stranger.aboutme }}
 					</div>
 				</div>
 			</div>
 			<div id="sider">
 				<div class="box-top">Angaben</div>
 				<div class="box-bottom">
-					<span style="padding-bottom:10px;" class="profileinfo"></span>
-					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo"></span>
-					<span style="margin-top:10px; border:none;" class="profileinfo">
-					</span>
+					<span style="padding-bottom:10px;" class="profileinfo">{{ stranger.firstname }}</span>
+					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ stranger.lastname }}</span>
+					<span style="margin-top:10px; border:none;" class="profileinfo">{{ stranger.birthday | fb_date }}</span>
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">loca</div>
+				<div class="box-top">Wohnort</div>
 				<div class="box-bottom">
-					
+					Like {{ stranger.firstname }} zuerst!
 				</div>
 		
 						
-				<div class="box-top">Preferenzen</div>
+				<div class="box-top">Pr&auml;ferenzen</div>
 				<div class="box-bottom">
-
-				
-			</div>
+					Like {{ stranger.firstname }} zuerst!
+				</div>
 		</div>
    	
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
