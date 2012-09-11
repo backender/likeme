@@ -156,7 +156,7 @@ class UserService implements ContainerAwareInterface
 	 * @return array|Null
 	 * @throws AccessDeniedException if user is not found.
 	 */
-	public function getUserMandatory() {
+	public function getStranger() {
 		
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		
@@ -198,6 +198,7 @@ class UserService implements ContainerAwareInterface
 		->select("u")
 		->from('Likeme\SystemBundle\Entity\User', 'u')
 		->where("u.id != :user")
+		->andwhere("u.active = 1")
 		->andwhere("u.birthday >= :minbirthday")
 		->andwhere("u.birthday <= :maxbirthday")
 		->andwhere($em->createQueryBuilder()->expr()->notIn('u.id', $liked))
@@ -326,7 +327,95 @@ class UserService implements ContainerAwareInterface
 			}
 			echo "->Rest ".round(self::getMaxStranger()-$likedUserCount-$placeUserCount);
 		
+		} else {
+			
+			/*
+			 *  Build query according statement 5 (StrangerAbfrage.mm)
+			*/
+			$query = $em->createQueryBuilder()
+			->select("nlu")
+			->from('LikemeSystemBundle:User', 'nlu')
+			->where("nlu.id IN (".$base.")")
+			->setParameter('minbirthday', $prefAgeRangeDate[0])
+			->setParameter('maxbirthday', $prefAgeRangeDate[1])
+			->setParameter('user', $user->getId())
+			->setMaxResults(round(self::getMaxStranger()-$likedUserCount)); //Rest bis max.
+			if(!empty($likedUserID)) {
+				$query->andwhere("nlu.id NOT IN (".$likedUserID.")");
+			}
+			if ($prefGender != 'both') {
+				$query->setParameter('prefgender', $prefGender);
+			}
+			$restUser = $query->getQuery()->getResult();
+				
+			echo "Der (ohne location) Rest: ";
+			foreach($restUser as $object) {
+				echo $object->getFirstname().", ";
+			}
+			echo "->Rest ".round(self::getMaxStranger()-$likedUserCount);
+			
 		}
 		
+		// Finally return the stranger array
+		if(isset($places)) {			
+			return self::mergeStranger($restUser, $likedUser, $places);
+		} else {
+			return self::mergeStranger($restUser, $likedUser);
+		}
+		
+		
 	}
+	
+	/**
+	 * Merge every statement from getStranger() and mix
+	 * 
+	 * @param array $liked
+	 * @param array $rest
+	 * @param array $place = null
+	 * @return array|null
+	 */
+	public function mergeStranger($rest, $liked = null, $place = null)
+	{
+		
+		if(empty($rest)) {
+			return null;
+		}
+		// Merge all statements together
+		if (empty($place) && empty($liked)) {
+			$array = array($rest);
+		} elseif (empty($place)) {
+			$array = array($liked, $rest);
+		} elseif(empty($liked)) {
+			$array = array($place, $rest);
+		} else {
+			$array = array($liked, $place, $rest);
+		}
+		
+		// Shuffle array()
+		shuffle($array);
+		
+		return $array;
+	}
+	
+	/**
+	 * Check if daily limit for user is already reached
+	 * 
+	 * @throws AccessDeniedException if user is not found.
+	 * @return true|false
+	 */
+	public function getLimitReached()
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		
+		if (!is_object($user) || !$user instanceof UserInterface) {
+			throw new AccessDeniedException('This user does not have access to this section.');
+		}
+
+		if($user->getStrangerLimitExact() == self::getMaxStranger()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

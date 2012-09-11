@@ -98,6 +98,20 @@ class User extends BaseUser
 	 * @ORM\Column(name="pref_age_range", type="string", length=255, nullable=false)
 	 */
 	protected $pref_age_range;
+	
+	/**
+	 * @var integer $strangerlimit
+	 *
+	 * @ORM\Column(name="strangerlimit", type="integer", nullable=true)
+	 */
+	protected $strangerlimit;
+	
+	/**
+	 * @var date $strangerlimit_time
+	 *
+	 * @ORM\Column(name="strangerlimit_time", type="date", nullable=true)
+	 */
+	protected $strangerlimit_time;
 
 
 	public function __construct()
@@ -111,7 +125,6 @@ class User extends BaseUser
 		if ($this->getPrefAgeRange() == NULL) {
 			$this->setPrefAgeRange("1-100");
 		}
-		
 		$this->user_who_likes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->liked_user = new \Doctrine\Common\Collections\ArrayCollection();
 
@@ -133,6 +146,37 @@ class User extends BaseUser
 		parent::unserialize($parentData);
 	}
 
+	/**
+	 * Increase StrangerLimit +1 (when user likes/nexts)
+	 */
+	public function increaseStrangerlimit()
+	{
+		$now = new \DateTime();
+		if ($this->getStrangerlimitTime()->format("d-m-Y") !== $now->format("d-m-Y")) {
+			$this->setStrangerlimitTime($now);
+			$this->setStrangerlimit(0);
+		}
+	
+		$this->setStrangerlimit($this->getStrangerlimit()+1);
+	
+		return true;
+	}
+	
+	/**
+	 * GetStrangerLimit and reset to 0 if StrangerLimitTime is not today
+	 *
+	 * @return integer
+	 */
+	public function getStrangerLimitExact()
+	{
+		$now = new \DateTime();
+		if ($this->getStrangerlimitTime()->format("d-m-Y") !== $now->format("d-m-Y")) {
+			$this->setStrangerlimit(0);
+			$this->setStrangerlimitTime($now);
+		}
+	
+		return $this->getStrangerlimit();
+	}
 
     /**
      * Get id
@@ -407,5 +451,45 @@ class User extends BaseUser
     public function getBirthday()
     {
         return $this->birthday;
+    }
+
+    /**
+     * Set strangerlimit_time
+     *
+     * @param date $strangerlimitTime
+     */
+    public function setStrangerlimitTime($strangerlimitTime)
+    {
+        $this->strangerlimit_time = $strangerlimitTime;
+    }
+
+    /**
+     * Get strangerlimit_time
+     *
+     * @return date 
+     */
+    public function getStrangerlimitTime()
+    {
+        return $this->strangerlimit_time;
+    }
+
+    /**
+     * Set strangerlimit
+     *
+     * @param integer $strangerlimit
+     */
+    public function setStrangerlimit($strangerlimit)
+    {
+        $this->strangerlimit = $strangerlimit;
+    }
+
+    /**
+     * Get strangerlimit
+     *
+     * @return integer 
+     */
+    public function getStrangerlimit()
+    {
+        return $this->strangerlimit;
     }
 }

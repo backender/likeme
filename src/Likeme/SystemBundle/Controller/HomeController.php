@@ -43,7 +43,11 @@ class HomeController extends Controller
     	$UserService = $this->container->get('likeme.user.userservice');
     	
     	// Strange statement 1
-    	$strangers = $UserService->getUserMandatory();
+    	$strangers = $UserService->getStranger();
+    	echo "<br />";
+    	foreach($strangers[0] as $stranger) {
+    		echo $stranger->getFirstname().", ";
+    	}
     	 
     	// Get random user for current user ($curUser)
     	//$rndUser = $UserService->getUserInRadius($user);
