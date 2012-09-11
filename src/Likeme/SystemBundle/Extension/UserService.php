@@ -267,7 +267,7 @@ class UserService implements ContainerAwareInterface
 				(acos(sin('.$latitude.'*'.pi().'/180)*sin(loc.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(loc.lat*'.pi().'/180)*cos(('.$longitude.'-loc.lon)*'.pi().'/180))) as distance	
 			')
 			->from('LikemeSystemBundle:User', 'uloc')
-				->innerJoin('uloc.location', 'loc')
+				->leftJoin('uloc.location', 'loc')
 			->where("uloc.id IN (".$base.")")
 			->orderby('distance', 'ASC')
 			->setParameter('minbirthday', $prefAgeRangeDate[0])
@@ -290,11 +290,20 @@ class UserService implements ContainerAwareInterface
 					$placeUserID = $placeUserID.", ".$object[0]->getId();
 				}
 			}
+
+			$placeUser = array();
+			$i = 0;
+			foreach ($places as $place) {
+				if(is_array($place)) {
+					$placeUser[$i] = $place[0];
+				}
+				$i++;
+			}
 						
 			echo 'User aus deiner N&auml;he: ';
-			foreach($places as $place) {
-				echo $place[0]->getFirstname() .' aus ';
-				echo $place[0]->getLocation()->getPlacename() . ', ';
+			foreach($placeUser as $place) {
+				echo $place->getFirstname() .' aus ';
+				echo $place->getLocation()->getPlacename() . ', ';
 			}
 			echo "<br />";
 			
@@ -358,7 +367,7 @@ class UserService implements ContainerAwareInterface
 		
 		// Finally return the stranger array
 		if(isset($places)) {			
-			return self::mergeStranger($restUser, $likedUser, $places);
+			return self::mergeStranger($restUser, $likedUser, $placeUser);
 		} else {
 			return self::mergeStranger($restUser, $likedUser);
 		}
