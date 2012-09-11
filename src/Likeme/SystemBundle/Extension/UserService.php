@@ -343,7 +343,16 @@ class UserService implements ContainerAwareInterface
 			if ($prefGender != 'both') {
 				$query->setParameter('prefgender', $prefGender);
 			}
-			$restUser = $query->getQuery()->getResult();
+			$rests = $query->getQuery()->getResult();
+			
+			$restUser = array();
+			$i = 0;
+			foreach($rests as $object) {				
+				if(is_array($object)) {
+					$restUser[$i] = $object['id'];
+				}
+				$i++;
+			}
 		
 		} else {
 			
@@ -364,8 +373,16 @@ class UserService implements ContainerAwareInterface
 			if ($prefGender != 'both') {
 				$query->setParameter('prefgender', $prefGender);
 			}
-			$restUser = $query->getQuery()->getResult();
+			$rests = $query->getQuery()->getResult();
 			
+			$restUser = array();
+			$i = 0;
+			foreach($rests as $object) {
+				if(is_array($object)) {
+					$restUser[$i] = $object['id'];
+				}
+				$i++;
+			}
 		}
 		
 		// Finally return the stranger array
