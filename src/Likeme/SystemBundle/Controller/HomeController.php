@@ -42,17 +42,16 @@ class HomeController extends Controller
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
     	
-    	var_dump($strangers);
-
-    	/*foreach($strangers as $stranger) {
-    			var_dump($stranger);
-    			echo $stranger->getFirstname().", ";
-    	}*/
-    	 
-    	// Get random user for current user ($curUser)
-    	//$rndUser = $UserService->getUserInRadius($user);
+    	var_dump($strangers);  	
     	
-    	return array();
+    	$stranger = $strangers[0]; //TODO: set session array count
+    	 
+    	// Get pictures from stranger
+    	$textExtension = $this->container->get('likeme.twig.extension');
+    	$strangerPictures = $textExtension->stranger_pictures($stranger);
+    	
+    	
+    	return array('stranger' => $stranger, 'stranger_pictures' => $strangerPictures);
     }
     
 }
