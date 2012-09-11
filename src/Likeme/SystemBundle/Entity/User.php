@@ -127,6 +127,7 @@ class User extends BaseUser
 		}
 		$this->user_who_likes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->liked_user = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->strangerlimit_time = new \DateTime();
 
 	}
 	
@@ -170,7 +171,7 @@ class User extends BaseUser
 	public function getStrangerLimitExact()
 	{
 		$now = new \DateTime();
-		if ($this->getStrangerlimitTime()->format("d-m-Y") !== $now->format("d-m-Y")) {
+		if ($this->strangerlimit_time->format("d-m-Y") !== $now->format("d-m-Y")) {
 			$this->setStrangerlimit(0);
 			$this->setStrangerlimitTime($now);
 		}

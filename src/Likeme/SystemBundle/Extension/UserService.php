@@ -25,9 +25,29 @@ class UserService implements ContainerAwareInterface
 	 * 
 	 * @return integer
 	 */
+	public function getDailyLikeCount()
+	{
+		$i=5;
+		return $i;
+	}
+	/**
+	 * Get daily limit for current User
+	 * 
+	 * @throws AccessDeniedException if user is not found.
+	 * @return integer
+	 */
 	public function getMaxStranger()
 	{
-		$i=10;
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		
+		if (!is_object($user) || !$user instanceof UserInterface) {
+			throw new AccessDeniedException('This user does not have access to this section.');
+		}
+		
+		$i = self::getDailyLikeCount();
+		
+		$i = $i - $user->getStrangerLimitExact();
+		
 		return $i;
 	}
 	
@@ -224,7 +244,7 @@ class UserService implements ContainerAwareInterface
 		->setParameter('minbirthday', $prefAgeRangeDate[0])
 		->setParameter('maxbirthday', $prefAgeRangeDate[1])
 		->setParameter('user', $user->getId())
-		->setMaxResults(round(self::getMaxStranger()/2)); //10
+		->setMaxResults(floor(self::getMaxStranger()/2)); //10
 		if ($prefGender != 'both') {
 			$query->setParameter('prefgender', $prefGender);
 		}
@@ -308,7 +328,7 @@ class UserService implements ContainerAwareInterface
 			->setParameter('minbirthday', $prefAgeRangeDate[0])
 			->setParameter('maxbirthday', $prefAgeRangeDate[1])
 			->setParameter('user', $user->getId())
-			->setMaxResults(round(self::getMaxStranger()-$likedUserCount-$placeUserCount)); //Rest bis max.
+			->setMaxResults(self::getMaxStranger()-$likedUserCount-$placeUserCount); //Rest bis max.
 			if(!empty($likedUserID)) {
 				$query->andwhere("ru.id NOT IN (".$likedUserID.")");
 			}
@@ -359,19 +379,22 @@ class UserService implements ContainerAwareInterface
 	 * @param array $place = null
 	 * @return array|null
 	 */
-	public function mergeStranger($rest, $liked = null, $place = null)
+	public function mergeStranger($rest = null, $liked = null, $place = null)
 	{
 		
-		if(empty($rest)) {
-			return null;
-		}
 		// Merge all statements together
 		if (empty($place) && empty($liked)) {
 			$array = array($rest);
+		} elseif (empty($liked) && empty($rest)){
+			$array = array($place);
+		} elseif (empty($place) && empty($rest)){
+			$array = array($liked);
 		} elseif (empty($place)) {
 			$array = array($liked, $rest);
 		} elseif(empty($liked)) {
 			$array = array($place, $rest);
+		} elseif(empty($rest)) {
+			$array = array($place, $liked);
 		} else {
 			$array = array($liked, $place, $rest);
 		}
