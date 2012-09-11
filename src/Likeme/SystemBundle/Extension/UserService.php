@@ -27,7 +27,7 @@ class UserService implements ContainerAwareInterface
 	 */
 	public function getDailyLikeCount()
 	{
-		$i=5;
+		$i=20;
 		return $i;
 	}
 	/**
