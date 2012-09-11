@@ -46,17 +46,7 @@ class HomeController extends Controller
     	$strangers = $UserService->getStranger();
     	echo "<br />";
     	foreach($strangers as $stranger) {
-    		foreach ($stranger as $strangernew) {
-    			
-    			try {
-    				echo $strangernew->getFirstname().", ";
-    			}
-    			catch (Exception $e)
-    			{
-    			//	throw new Exception( 'Something really gone wrong', 0, $e);
-    			}
-    		}
-    		
+    			echo $stranger->getFirstname().", ";
     	}
     	 
     	// Get random user for current user ($curUser)

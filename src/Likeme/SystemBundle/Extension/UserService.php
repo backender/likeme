@@ -400,10 +400,19 @@ class UserService implements ContainerAwareInterface
 			$array = array($liked, $place, $rest);
 		}
 		
-		// Shuffle array()
-		shuffle($array);
+		$userarry = array();
+		$i = 0;
+		foreach($array as $stranger) {
+			foreach ($stranger as $strangernew) {
+				$userarry[$i] = $strangernew;
+				$i++;
+			}
+		}
 		
-		return $array;
+		// Shuffle array()
+		shuffle($userarry);
+		
+		return $userarry;
 	}
 	
 	/**
