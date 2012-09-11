@@ -190,9 +190,24 @@ class AfterLoginController extends Controller
     		$response = new Response('Fehler');
     	}
     	
+    	
+    	
+    	/**
+    	 * Save daily stranger array in session
+    	 */
+    	
+    	$session = $this->container->get('session');
+    	
+    	// UserService abrufen
+    	$UserService = $this->container->get('likeme.user.userservice');
+    	
+    	$strangers =  $UserService->getStranger();	   	
+    	
+    	$session->set('strangers', $strangers);
+    	
     	// Forward to Home
     	$response = new RedirectResponse($this->container->get('router')->generate('home'));
-    	
+
     	return $response;
     }    
     

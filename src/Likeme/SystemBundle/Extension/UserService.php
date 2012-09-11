@@ -237,8 +237,9 @@ class UserService implements ContainerAwareInterface
 		 *  Build query according statement 2 (StrangerAbfrage.mm)
 		 */
 		$query = $em->createQueryBuilder()
-		->select("lu")
+		->select("luser.id")
 		->from('Likeme\SystemBundle\Entity\Like', 'lu')
+			->leftJoin('lu.user', 'luser')
 		->where("lu.stranger = :user")
 		->andwhere($em->createQueryBuilder()->expr()->In('lu.user', $base))
 		->setParameter('minbirthday', $prefAgeRangeDate[0])
@@ -248,16 +249,24 @@ class UserService implements ContainerAwareInterface
 		if ($prefGender != 'both') {
 			$query->setParameter('prefgender', $prefGender);
 		}
-		$likedUser = $query->getQuery()->getResult();
-		$likedUserCount = count($likedUser);
+		$likers = $query->getQuery()->getResult();	
+		$likedUserCount = count($likers);
 		$likedUserID = '';
-		foreach($likedUser as $object) {
+		$likedUser = array();
+		$i = 0;
+		foreach($likers as $object) {
 			if($likedUserID == '') {
-				$likedUserID = $object->getUser()->getId();
+				$likedUserID = $object['id'];
 			} else {
-				$likedUserID = $likedUserID.", ".$object->getUser()->getId();
+				$likedUserID = $likedUserID.", ".$object['id'];;
 			}
+			
+			if(is_array($object)) {
+				$likedUser[$i] = $object['id'];
+			}
+			$i++;
 		}
+		
 		
 		// Get location from user
 		$location = $user->getLocation();
@@ -280,7 +289,7 @@ class UserService implements ContainerAwareInterface
 			 */
 			$query = $em->createQueryBuilder()
 			->select(
-				'uloc,
+				'uloc.id,
 				(acos(sin('.$latitude.'*'.pi().'/180)*sin(loc.lat*'.pi().'/180)+cos('.$latitude.'*'.pi().'/180)*cos(loc.lat*'.pi().'/180)*cos(('.$longitude.'-loc.lon)*'.pi().'/180))) as distance	
 			')
 			->from('LikemeSystemBundle:User', 'uloc')
@@ -300,29 +309,25 @@ class UserService implements ContainerAwareInterface
 			$places = $query->getQuery()->getResult();
 			$placeUserCount = count($places);
 			$placeUserID = '';
-			foreach($places as $object) {
-				if($placeUserID == '') {
-					$placeUserID = $object[0]->getId();
-				} else {
-					$placeUserID = $placeUserID.", ".$object[0]->getId();
-				}
-			}
-
 			$placeUser = array();
 			$i = 0;
-			foreach ($places as $place) {
-				if(is_array($place)) {
-					$placeUser[$i] = $place[0];
+			foreach($places as $object) {
+				if($placeUserID == '') {
+					$placeUserID = $object['id'];
+				} else {
+					$placeUserID = $placeUserID.", ".$object['id'];
+				}
+				
+				if(is_array($object)) {
+					$placeUser[$i] = $object['id'];
 				}
 				$i++;
 			}
-			
-			
 			/*
 			 *  Build query according statement 4 (StrangerAbfrage.mm)
 			 */
 			$query = $em->createQueryBuilder()
-			->select("ru")
+			->select("ru.id")
 			->from('LikemeSystemBundle:User', 'ru')
 			->where("ru.id IN (".$base.")")
 			->setParameter('minbirthday', $prefAgeRangeDate[0])
@@ -346,7 +351,7 @@ class UserService implements ContainerAwareInterface
 			 *  Build query according statement 5 (StrangerAbfrage.mm)
 			*/
 			$query = $em->createQueryBuilder()
-			->select("nlu")
+			->select("nlu.id")
 			->from('LikemeSystemBundle:User', 'nlu')
 			->where("nlu.id IN (".$base.")")
 			->setParameter('minbirthday', $prefAgeRangeDate[0])
@@ -398,6 +403,7 @@ class UserService implements ContainerAwareInterface
 		} else {
 			$array = array($liked, $place, $rest);
 		}
+
 		
 		$userarry = array();
 		$i = 0;

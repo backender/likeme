@@ -39,15 +39,15 @@ class HomeController extends Controller
     	// Get current User object
     	$user = $this->container->get('security.context')->getToken()->getUser();
     	
-    	// UserService abrufen  	 
-    	$UserService = $this->container->get('likeme.user.userservice');
+    	$session = $this->container->get('session');
+    	$strangers = $session->get('strangers');
     	
-    	// Strange statement 1
-    	$strangers = $UserService->getStranger();
+    	var_dump($strangers);
 
-    	foreach($strangers as $stranger) {
+    	/*foreach($strangers as $stranger) {
+    			var_dump($stranger);
     			echo $stranger->getFirstname().", ";
-    	}
+    	}*/
     	 
     	// Get random user for current user ($curUser)
     	//$rndUser = $UserService->getUserInRadius($user);
