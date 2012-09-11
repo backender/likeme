@@ -42,8 +42,6 @@ class HomeController extends Controller
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
     	
-    	var_dump($strangers);  	
-    	
     	$stranger = $this->getDoctrine()
     	->getRepository('LikemeSystemBundle:User')
     	->find($strangers[0]); //TODO: set session array count
