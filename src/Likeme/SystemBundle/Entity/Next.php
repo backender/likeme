@@ -35,6 +35,11 @@ class Next
 	 * @ORM\Column(name="created_at", type="datetime")
 	 */
 	private $created_at;
+	
+	public function __construct()
+	{
+		$this->created_at = new \DateTime();
+	}
 
     /**
      * Get id

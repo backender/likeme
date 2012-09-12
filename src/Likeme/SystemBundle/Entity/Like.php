@@ -38,6 +38,11 @@ class Like
 	 */
 	private $created_at;
 	
+	public function __construct()
+	{
+		$this->created_at = new \DateTime();
+	}
+	
     /**
      * Get id
      *
