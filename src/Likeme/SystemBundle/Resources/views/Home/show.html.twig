@@ -8,6 +8,9 @@
 			<div id="main">
 				<div class="box-top">{% block title %}Home{% endblock %}</div>
 				<div class="box-bottom">
+				<div class="box_likeme" style="width: 100px; float:left; margin-bottom: 10px;">Likeme</div>
+				<div class="box_next" style="width: 100px; float:right; margin-right: 100px;">Next</div>
+				{% if not stranger_pictures is empty %}
 					{% for picture in stranger_pictures if picture.position == 1 %}
 						<div class="likepic">
 							<img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" />
@@ -16,11 +19,15 @@
 							</div>
 						</div>
 					{% endfor %}
+				{% else %}
+						<div id="no-pic" class="likepic">Kein Bild</div>
+				{% endif %}
 					<div id="sortablepictures">
-					
+					{% if not stranger_pictures is empty %}
 						{% for picture in stranger_pictures %}
 							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
 						{% endfor %}
+					{% endif %}			
 					</div>
 					<div class="clear"></div>
 					<div id="about">
@@ -38,16 +45,14 @@
 					<div class="clear"></div>
 				</div>
 				
-				<div class="box-top">Wohnort</div>
+				<div class="box-top">Neuste likeme's</div>
 				<div class="box-bottom">
-					Like {{ stranger.firstname }} zuerst!
+					<span style="padding-bottom:10px;" class="profileinfo">User 1 <br /> aus F&uuml;dlisbach</span>
+					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">User 2 <br /> aus F&uuml;dlisbach</span>
+					<span style="margin-top:10px; border:none;" class="profileinfo">User 3 <br /> aus F&uuml;dlisbach</span>
+					<div class="clear"></div>
 				</div>
-		
-						
-				<div class="box-top">Pr&auml;ferenzen</div>
-				<div class="box-bottom">
-					Like {{ stranger.firstname }} zuerst!
-				</div>
+
 		</div>
    	
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
