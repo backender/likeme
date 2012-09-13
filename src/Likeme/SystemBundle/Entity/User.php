@@ -78,6 +78,15 @@ class User extends BaseUser
 	protected $location;
 	
 	/**
+	 * @var integer $pictures
+	 *
+	 * @ORM\ManyToOne(targetEntity="Pictures", inversedBy="id")
+	 * @ORM\JoinColumn(name="pictures", referencedColumnName="id")
+	 *
+	 */
+	protected $pictures;
+	
+	/**
 	 * @var text $aboutme
 	 *
 	 * @ORM\Column(name="aboutme", type="text", nullable=true)
@@ -499,5 +508,27 @@ class User extends BaseUser
     public function getStrangerlimit()
     {
         return $this->strangerlimit;
+    }
+
+    /**
+     * Set pictures
+     *
+     * @param Likeme\SystemBundle\Entity\Pictures $pictures
+     * @return User
+     */
+    public function setPictures(\Likeme\SystemBundle\Entity\Pictures $pictures = null)
+    {
+        $this->pictures = $pictures;
+        return $this;
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return Likeme\SystemBundle\Entity\Pictures 
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }
