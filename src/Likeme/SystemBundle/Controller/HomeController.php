@@ -46,6 +46,10 @@ class HomeController extends Controller
     	//Get Request
     	$request = $this->getRequest();
     	
+    	// Form names
+    	$likeFormName = "likeme_user_like";
+    	$nextFormName = "likeme_user_next";
+    	
     	// Get current User object
     	$user = $this->container->get('security.context')->getToken()->getUser();
     	
@@ -55,14 +59,18 @@ class HomeController extends Controller
     	// Get strangers from session
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
-
     	
+    	// 
     	if ($request->getMethod() == 'POST') {
-    		if ($request->request->has('likeme_user_like') || $request->request->has('likeme_user_next')){
+    		if ($request->request->has($likeFormName) || $request->request->has($nextFormName)){
     			// Remove liked user from strangers array in session
-    			unset($strangers[0]);
-    			$strangers = array_splice($strangers,0);
-    			$session->set('strangers',$strangers);
+    			if(count($strangers) > 1) {
+    				unset($strangers[0]);
+    				$strangers = array_splice($strangers,0);
+    				$session->set('strangers',$strangers);
+    			} else {
+    				$empty = 1;
+    			}
     		} 
     	}
     	$stranger = $this->getDoctrine()
@@ -73,20 +81,35 @@ class HomeController extends Controller
     	$textExtension = $this->container->get('likeme.twig.extension');
     	$strangerPictures = $textExtension->stranger_pictures($stranger);
     	
-    	// Build like form and check request
-    	$likeEntity = new Like();
     	
-    	$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
-    	
+    	$likeEntity = new Like(); // Build like form and check request
+    	$nextEntity = new Next(); // Build next form and check request
 
 		if ($request->getMethod() == 'POST') {
+			
+			// Handle request form and request stranger
+			if ($request->request->has($likeFormName)){
+				$formRequest = $request->request->get('likeme_user_like');
+			}
+			if ($request->request->has($nextFormName)) {
+				$formRequest = $request->request->get('likeme_user_next');
+			}
+			if(!empty($formRequest)) {
+				$request_stranger = $formRequest['stranger'];
+				$request_stranger = $this->getDoctrine()->getRepository('LikemeSystemBundle:User')->findOneById($request_stranger);
+			}
+				
+			$likeForm = $this->createForm(new LikeFormType(array('stranger' => $request_stranger, 'user' => $user)), $likeEntity);
+			$nextForm = $this->createForm(new NextFormType(array('stranger' => $request_stranger, 'user' => $user)), $nextEntity);
+			
+			// Check form likeme_user_like (Likeme)
 			if ($request->request->has($likeForm->getName())) {
 			    $likeForm->bindRequest($request);
+			    
 		    	if ($likeForm->isValid()) {
 		    		$em->persist($likeEntity);
 		    		$em->flush();
 		    		
-		    		$request_stranger = $likeForm->getData()->getStranger();
 		    		$matched = $userService->is_matched($user, $request_stranger);
 		    		
 		    		if ($matched == true) {
@@ -103,24 +126,20 @@ class HomeController extends Controller
 		    		}
 				}
 	    	}
-		}	 
-   	
-    	
-    	// Build next form and check request
-    	$nextEntity = new Next();
-    	 
-    	$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
-    	
-    	if ($request->getMethod() == 'POST') {
+	    	
+	    	// Check form likeme_user_next (Next)
 	    	if ($request->request->has($nextForm->getName())) {
 	    		$nextForm->bindRequest($request);
-		    	if ($nextForm->isValid()) {
-		    		$em->persist($nextEntity);
-		    		$em->flush();	
-		    	}
+	    		if ($nextForm->isValid()) {
+	    			$em->persist($nextEntity);
+	    			$em->flush();
+	    		}
 	    	}
-    	}
-    	
+		}
+
+		// Generate form with new stranger
+		$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
+		$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
     	
     	// Get user matches    	
     	$userMatches = $userService->getMatches($user);
