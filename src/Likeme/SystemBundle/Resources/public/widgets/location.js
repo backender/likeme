@@ -46,7 +46,9 @@ $.widget( "likeme.locationcomplete",  {
 										self.element.blur();
 									}
 							    }
-							} );
+							} ).blur(function() {
+								self.element.blur();
+							});
 			 
 	},
 	selectitem: function( id ) {
@@ -64,12 +66,12 @@ $.widget( "likeme.locationcomplete",  {
 					});
 				}
 			});
-		}
+		} 
 	}
 	
 });
 
-$('#likeme_user_profile_location').locationcomplete(); 	
 
+$('#likeme_user_profile_location').locationcomplete(); 	
 
 })( jQuery, window, document );
