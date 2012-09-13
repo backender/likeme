@@ -16,31 +16,37 @@ $.widget( "likeme.locationcomplete",  {
 							.insertAfter( select )
 							.val( value )
 							.autocomplete({
-			  
-			source: function( request, response ) {
-				$.ajax({
-					url: Routing.generate('location_get', { "input": request.term }),
-					dataType: "json",
-					data: {
-					
-					},
-					success: function( data ) {
-						response( $.map( data, function( item ) {
-							return {
-								label: item.postalcode + " " + item.placename + ", " + item.statecode,
-								value: item.postalcode + " " + item.placename + ", " + item.statecode,
-								id: item.id
-							};
-						}));
-					}
-				});
-			},
-			select: function( event, ui ) {
-					self.element.val(ui.item.id);
-				
-			}
-	 
-		} );
+								source: function( request, response ) {
+									$.ajax({
+										url: Routing.generate('location_get', { "input": request.term }),
+										dataType: "json",
+										data: {
+										
+										},
+										success: function( data ) {
+											response( $.map( data, function( item ) {
+												return {
+													label: item.postalcode + " " + item.placename + ", " + item.statecode,
+													value: item.postalcode + " " + item.placename + ", " + item.statecode,
+													id: item.id
+												};
+											}));
+										}
+									});
+								},
+								select: function( event, ui ) {
+										self.element.val(ui.item.id);		
+								},
+								change: function( event, ui ) {
+									if (!ui.item) {
+										self.element.val("");	
+										self.element.blur();
+										input.val("");
+									} else {
+										self.element.blur();
+									}
+							    }
+							} );
 			 
 	},
 	selectitem: function( id ) {
