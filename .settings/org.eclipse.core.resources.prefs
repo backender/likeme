@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/Likeme/SystemBundle/Controller/HomeController.php=UTF-8
 encoding//src/Likeme/SystemBundle/Entity/User.php=UTF-8
 encoding//src/Likeme/SystemBundle/Form/Type/LikeFormType.php=UTF-8
 encoding//src/Likeme/SystemBundle/Form/Type/NextFormType.php=UTF-8

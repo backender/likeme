@@ -201,7 +201,12 @@ class AfterLoginController extends Controller
     	// UserService abrufen
     	$UserService = $this->container->get('likeme.user.userservice');
     	
-    	$strangers =  $UserService->getStranger();	   	
+    	$strangers =  $UserService->getStranger();
+    	if (empty($strangers)) {
+    		$session->set('empty', '1');
+    	} else {
+    		$session->set('empty', '0');
+    	}	
     	
     	$session->set('strangers', $strangers);
     	

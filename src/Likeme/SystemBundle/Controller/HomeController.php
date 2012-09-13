@@ -33,6 +33,7 @@ class HomeController extends Controller
         return array();
     }
     
+    
     /**
      * @Secure(roles="ROLE_USER")
      * @Route("/home", name="user_home")
@@ -60,97 +61,109 @@ class HomeController extends Controller
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
     	
-    	// 
     	if ($request->getMethod() == 'POST') {
     		if ($request->request->has($likeFormName) || $request->request->has($nextFormName)){
+    			// Increase Stranger Limit
+    			$user->increaseStrangerlimit();
+    			
     			// Remove liked user from strangers array in session
     			if(count($strangers) > 1) {
     				unset($strangers[0]);
     				$strangers = array_splice($strangers,0);
     				$session->set('strangers',$strangers);
     			} else {
-    				$empty = 1;
+    				$session->set('empty', '1');
     			}
-    		} 
+    		}
     	}
-    	$stranger = $this->getDoctrine()
-    	->getRepository('LikemeSystemBundle:User')
-    	->find($strangers[0]); //TODO: set session array count
-
-    	// Get pictures from stranger
-    	$textExtension = $this->container->get('likeme.twig.extension');
-    	$strangerPictures = $textExtension->stranger_pictures($stranger);
     	
-    	
-    	$likeEntity = new Like(); // Build like form and check request
-    	$nextEntity = new Next(); // Build next form and check request
-
-		if ($request->getMethod() == 'POST') {
-			
-			// Handle request form and request stranger
-			if ($request->request->has($likeFormName)){
-				$formRequest = $request->request->get('likeme_user_like');
-			}
-			if ($request->request->has($nextFormName)) {
-				$formRequest = $request->request->get('likeme_user_next');
-			}
-			if(!empty($formRequest)) {
-				$request_stranger = $formRequest['stranger'];
-				$request_stranger = $this->getDoctrine()->getRepository('LikemeSystemBundle:User')->findOneById($request_stranger);
-			}
+    	if($session->get('empty') != 1) {
+	    	
+	    	// Like/Next Entity
+	    	$likeEntity = new Like(); // Build like form and check request
+	    	$nextEntity = new Next(); // Build next form and check request
+	    	
+	
+			if ($request->getMethod() == 'POST') {
 				
-			$likeForm = $this->createForm(new LikeFormType(array('stranger' => $request_stranger, 'user' => $user)), $likeEntity);
-			$nextForm = $this->createForm(new NextFormType(array('stranger' => $request_stranger, 'user' => $user)), $nextEntity);
+				// Handle request form and request stranger
+				if ($request->request->has($likeFormName)){
+					$formRequest = $request->request->get('likeme_user_like');
+				}
+				if ($request->request->has($nextFormName)) {
+					$formRequest = $request->request->get('likeme_user_next');
+				}
+				if(!empty($formRequest)) {
+					$request_stranger = $formRequest['stranger'];
+					$request_stranger = $this->getDoctrine()->getRepository('LikemeSystemBundle:User')->findOneById($request_stranger);
+				}
+					
+				$likeForm = $this->createForm(new LikeFormType(array('stranger' => $request_stranger, 'user' => $user)), $likeEntity);
+				$nextForm = $this->createForm(new NextFormType(array('stranger' => $request_stranger, 'user' => $user)), $nextEntity);
+				
+				// Check form likeme_user_like (Likeme)
+				if ($request->request->has($likeForm->getName())) {
+				    $likeForm->bindRequest($request);
+				    
+			    	if ($likeForm->isValid()) {
+			    		$em->persist($likeEntity);
+			    		$em->flush();
+			    		
+			    		$matched = $userService->is_matched($user, $request_stranger);
+			    		
+			    		if ($matched == true) {
+			    			
+			    			$userLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $user->getId(), 'stranger' => $request_stranger->getId()));
+			    			$strangerLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $request_stranger->getId(), 'stranger' => $user->getId()));
 			
-			// Check form likeme_user_like (Likeme)
-			if ($request->request->has($likeForm->getName())) {
-			    $likeForm->bindRequest($request);
-			    
-		    	if ($likeForm->isValid()) {
-		    		$em->persist($likeEntity);
-		    		$em->flush();
-		    		
-		    		$matched = $userService->is_matched($user, $request_stranger);
-		    		
-		    		if ($matched == true) {
-		    			
-		    			$userLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $user->getId(), 'stranger' => $request_stranger->getId()));
-		    			$strangerLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $request_stranger->getId(), 'stranger' => $user->getId()));
-		
-		    			$now = new \DateTime();
-		    			$userLike->setMatchedAt($now);
-		    			$strangerLike->setMatchedAt($now);
-		    			$em->persist($userLike);
-		    			$em->persist($strangerLike);
+			    			$now = new \DateTime();
+			    			$userLike->setMatchedAt($now);
+			    			$strangerLike->setMatchedAt($now);
+			    			$em->persist($userLike);
+			    			$em->persist($strangerLike);
+			    			$em->flush();
+			    		}
+					}
+		    	}
+		    	
+		    	// Check form likeme_user_next (Next)
+		    	if ($request->request->has($nextForm->getName())) {
+		    		$nextForm->bindRequest($request);
+		    		if ($nextForm->isValid()) {
+		    			$em->persist($nextEntity);
 		    			$em->flush();
 		    		}
-				}
-	    	}
-	    	
-	    	// Check form likeme_user_next (Next)
-	    	if ($request->request->has($nextForm->getName())) {
-	    		$nextForm->bindRequest($request);
-	    		if ($nextForm->isValid()) {
-	    			$em->persist($nextEntity);
-	    			$em->flush();
-	    		}
-	    	}
-		}
+		    	}
+			}
 
-		// Generate form with new stranger
-		$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
-		$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
-    	
-    	// Get user matches    	
-    	$userMatches = $userService->getMatches($user);
-    	
-    	// Return view with form
-    	return array('stranger' => $stranger, 
-    				 'stranger_pictures' => $strangerPictures, 
-    				 'likeForm' => $likeForm->createView(), 
-    				 'nextForm' => $nextForm->createView(),
-    				 'userMatches' => $userMatches
-    				 );
+		
+			$stranger = $this->getDoctrine()
+			->getRepository('LikemeSystemBundle:User')
+			->find($strangers[0]); //TODO: set session array count
+			
+			// Get pictures from stranger
+			$textExtension = $this->container->get('likeme.twig.extension');
+			$strangerPictures = $textExtension->stranger_pictures($stranger);
+			
+			
+			// Generate form with new stranger
+			$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
+			$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
+	    	
+	    	// Get user matches    	
+	    	$userMatches = $userService->getMatches($user);
+	    	
+	    	// Return view with form
+	    	return array('stranger' => $stranger, 
+	    				 'stranger_pictures' => $strangerPictures, 
+	    				 'likeForm' => $likeForm->createView(), 
+	    				 'nextForm' => $nextForm->createView(),
+	    				 'userMatches' => $userMatches
+	    				 );
+
+    	} else {
+    		echo "fertig luschtig :(";
+    	}
     }
     
 }
