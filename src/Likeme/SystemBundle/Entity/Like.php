@@ -38,6 +38,13 @@ class Like
 	 */
 	private $created_at;
 	
+	/**
+	 * @var datetime $matched_at
+	 *
+	 * @ORM\Column(name="matched_at", type="datetime", nullable=true)
+	 */
+	private $matched_at;
+	
 	public function __construct()
 	{
 		$this->created_at = new \DateTime();
@@ -111,5 +118,27 @@ class Like
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set matched_at
+     *
+     * @param datetime $matchedAt
+     * @return Like
+     */
+    public function setMatchedAt($matchedAt)
+    {
+        $this->matched_at = $matchedAt;
+        return $this;
+    }
+
+    /**
+     * Get matched_at
+     *
+     * @return datetime 
+     */
+    public function getMatchedAt()
+    {
+        return $this->matched_at;
     }
 }

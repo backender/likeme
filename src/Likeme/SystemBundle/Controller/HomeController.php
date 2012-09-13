@@ -77,10 +77,18 @@ class HomeController extends Controller
     		$matched = $userService->is_matched($user, $request_stranger);
     		
     		if ($matched == true) {
-    			//echo "ja";
-    		} else {
-    			//echo "nei";
+    			
+    			$userLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $user->getId(), 'stranger' => $request_stranger->getId()));
+    			$strangerLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $request_stranger->getId(), 'stranger' => $user->getId()));
+
+    			$now = new \DateTime();
+    			$userLike->setMatchedAt($now);
+    			$strangerLike->setMatchedAt($now);
+    			$em->persist($userLike);
+    			$em->persist($strangerLike);
+    			$em->flush();
     		}
+    		
     		return $this->redirect($this->generateUrl('after_login'));
     	}
     	
