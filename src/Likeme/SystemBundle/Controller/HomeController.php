@@ -55,6 +55,17 @@ class HomeController extends Controller
     	// Get strangers from session
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
+    	
+    	
+    	
+    	if ($request->getMethod() == 'POST') {
+    		if ($request->request->has('likeme_user_like') || $request->request->has('likeme_user_next')){
+    			// Remove liked user from strangers array in session
+    			unset($strangers[0]);
+    			$strangers = array_splice($strangers,0);
+    			$session->set('strangers',$strangers);
+    		} 
+    	}
     	$stranger = $this->getDoctrine()
     	->getRepository('LikemeSystemBundle:User')
     	->find($strangers[0]); //TODO: set session array count
@@ -67,35 +78,43 @@ class HomeController extends Controller
     	$likeEntity = new Like();
     	
     	$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
-    	$likeForm->bindRequest($request);
     	
-    	if ($likeForm->isValid()) {
-    		$em->persist($likeEntity);
-    		$em->flush();
-    		
-    		$request_stranger = $likeForm->getData()->getStranger();
-    		$matched = $userService->is_matched($user, $request_stranger);
-    		
-    		if ($matched == true) {
-    			//echo "ja";
-    		} else {
-    			//echo "nei";
-    		}
-    		return $this->redirect($this->generateUrl('after_login'));
+    	if ($request->getMethod() == 'POST') {
+	    	if ($request->request->has($likeForm->getName())) {
+	    		$likeForm->bindRequest($request);
+		    	if ($likeForm->isValid()) {
+		    		$em->persist($likeEntity);
+		    		$em->flush();
+		    		
+		    		$request_stranger = $likeForm->getData()->getStranger();
+		    		$matched = $userService->is_matched($user, $request_stranger);
+		    		
+		    		if ($matched == true) {
+		    			//echo "ja";
+		    		} else {
+		    			//echo "nei";
+		    		}	
+		    	}
+	    	}	 
     	}
+    	
+    	
     	
     	// Build next form and check request
     	$nextEntity = new Next();
     	 
     	$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
-    	$nextForm->bindRequest($request);
     	
-    	if ($nextForm->isValid()) {
-    		$em->persist($nextEntity);
-    		$em->flush();
-    		 
-    		return $this->redirect($this->generateUrl('after_login'));
+    	if ($request->getMethod() == 'POST') {
+	    	if ($request->request->has($nextForm->getName())) {
+	    		$nextForm->bindRequest($request);
+		    	if ($nextForm->isValid()) {
+		    		$em->persist($nextEntity);
+		    		$em->flush();	
+		    	}
+	    	}
     	}
+    	
     	
     	// Get user matches    	
     	$userMatches = $userService->getMatches($user);
