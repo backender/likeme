@@ -49,9 +49,12 @@ class HomeController extends Controller
     	// Get current User object
     	$user = $this->container->get('security.context')->getToken()->getUser();
     	
+    	// Get UserService
+    	$userService = $this->container->get('likeme.user.userservice');
+    	
+    	// Get strangers from session
     	$session = $this->container->get('session');
     	$strangers = $session->get('strangers');
-    	
     	$stranger = $this->getDoctrine()
     	->getRepository('LikemeSystemBundle:User')
     	->find($strangers[0]); //TODO: set session array count
@@ -69,7 +72,15 @@ class HomeController extends Controller
     	if ($likeForm->isValid()) {
     		$em->persist($likeEntity);
     		$em->flush();
-    	
+    		
+    		$request_stranger = $likeForm->getData()->getStranger();
+    		$matched = $userService->is_matched($user, $request_stranger);
+    		
+    		if ($matched == true) {
+    			//echo "ja";
+    		} else {
+    			//echo "nei";
+    		}
     		return $this->redirect($this->generateUrl('after_login'));
     	}
     	
@@ -86,10 +97,15 @@ class HomeController extends Controller
     		return $this->redirect($this->generateUrl('after_login'));
     	}
     	
+    	// Get user matches    	
+    	$userMatches = $userService->getMatches($user);
+    	
+    	// Return view with form
     	return array('stranger' => $stranger, 
     				 'stranger_pictures' => $strangerPictures, 
     				 'likeForm' => $likeForm->createView(), 
-    				 'nextForm' => $nextForm->createView()
+    				 'nextForm' => $nextForm->createView(),
+    				 'userMatches' => $userMatches
     				 );
     }
     

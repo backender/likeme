@@ -111,32 +111,72 @@ class UserService implements ContainerAwareInterface
 	}
 	
 	/**
-	 * User likes stranger
+	 * Matches (stranger likes user && user likes stranger)
 	 * 
 	 * @param object $stranger
-	 * @return True
-	 * @throws AccessDeniedException if user is not found.
+	 * @return object|false
 	 */
-	public function setLike($stranger)
+	public function getMatches($user)
 	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
 		
-		if (!is_object($user) || !$user instanceof UserInterface) {
-			throw new AccessDeniedException('This user does not have access to this section.');
+		if (empty($user)) {
+			return false;
 		}
 		
 		$em = $this->container->get('doctrine')->getEntityManager();
 		
-		$like = new Like();
+		// all user likes
+		$UserLikedStranger = $em->createQueryBuilder()
+		->select('ul.id')
+		->from('Likeme\SystemBundle\Entity\Like', 'l')
+		->innerJoin("l.stranger", "ul")
+		->where('l.user = :user')
+		->setParameter('user', $user);
+		$UserLikedStranger = $UserLikedStranger->getDQL();
 		
-		$like->setUser($user);
-		$like->setStranger($stranger);
-		$like->setCreatedAt(new \DateTime());
+		// all stranger likes with user liked already
+		$query = $em->createQueryBuilder()
+		->select("s")
+		->from('Likeme\SystemBundle\Entity\Like', 's')
+		->where("s.stranger = :user")
+		->andwhere($em->createQueryBuilder()->expr()->In('s.user', $UserLikedStranger))
+		->setParameter('user', $user);
+		$matches = $query->getQuery()->getResult();
 		
-		$em->persist($like);
-		$em->flush();
 		
-		return true;
+		return $matches;
+	}
+	
+	/**
+	 * Check if User and Stranger have a match
+	 * 
+	 * @param object $user
+	 * @param object $stranger
+	 * @return True|False
+	 */
+	public function is_matched($user, $stranger)
+	{
+		if (empty($user) || empty($stranger)) {
+			throw new ErrorException('User or Stranger Object empty.');
+		}
+
+		$em = $this->container->get('doctrine')->getEntityManager();
+		
+		// all stranger likes with user liked already
+		$query = $em->createQueryBuilder()
+		->select("s")
+		->from('Likeme\SystemBundle\Entity\Like', 's')
+		->where("s.stranger = :user AND s.user = :stranger")
+		->orwhere("s.stranger = :stranger AND s.user = :user")
+		->setParameter('user', $user)
+		->setParameter('stranger', $stranger);
+		$matches = $query->getQuery()->getResult();
+		
+		if(count($matches) == 2) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**
