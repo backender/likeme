@@ -118,10 +118,6 @@ class User extends BaseUser
 	{
 		parent::__construct();
 		
-		//Set default values for users preferences
-		if ($this->getPrefGender() == null) {
-			$this->setPrefGender(0);
-		}
 		if ($this->getPrefAgeRange() == NULL) {
 			$this->setPrefAgeRange("1-100");
 		}
@@ -348,6 +344,17 @@ class User extends BaseUser
 	    	if (isset($fbdata['gender'])) {
 	    		$this->setGender($fbdata['gender']);
 	    	}
+		}
+		
+		//Set default values for users preferences
+		if ($this->getPrefGender() == null) {
+			$this->setPrefGender(0);
+			if($this->getGender() == 'male') {
+				$this->setPrefGender(2);
+			}
+			if($this->getGender() == 'female') {
+				$this->setPrefGender(1);
+			}
 		}
 
     }

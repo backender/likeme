@@ -63,27 +63,27 @@ class HomeController extends Controller
     	// Build like form and check request
     	$likeEntity = new Like();
     	
-    	$likeForm = $this->createForm(new LikeFormType(), $likeEntity);
+    	$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
     	$likeForm->bindRequest($request);
     	
     	if ($likeForm->isValid()) {
     		$em->persist($likeEntity);
     		$em->flush();
     	
-    		return $this->redirect($this->generateUrl('user_home'));
+    		return $this->redirect($this->generateUrl('after_login'));
     	}
     	
     	// Build next form and check request
     	$nextEntity = new Next();
     	 
-    	$nextForm = $this->createForm(new NextFormType(), $nextEntity);
+    	$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
     	$nextForm->bindRequest($request);
     	
     	if ($nextForm->isValid()) {
     		$em->persist($nextEntity);
     		$em->flush();
     		 
-    		return $this->redirect($this->generateUrl('user_home'));
+    		return $this->redirect($this->generateUrl('after_login'));
     	}
     	
     	return array('stranger' => $stranger, 
