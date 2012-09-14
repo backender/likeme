@@ -1,0 +1,22 @@
+{% extends 'LikemeSystemBundle::layout.html.twig' %}
+
+{% set user = app.user %}
+
+{%block fos_user_content%}
+
+			<div id="main">
+				<div class="box-top">{% block title %}Home{% endblock %}</div>
+				<div class="box-bottom">
+					Kriterien anpassen!
+				</div>
+			</div>
+			
+			{% include 'LikemeSystemBundle:Home:sider.html.twig' with { 'userMatches': userMatches } %}
+			
+   	
+   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	
+{% endblock fos_user_content %}
+
+

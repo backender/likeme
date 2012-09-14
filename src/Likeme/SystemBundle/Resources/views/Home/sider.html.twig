@@ -1,0 +1,16 @@
+<div id="sider">
+	<div class="box-top">Neuste likeme's</div>
+	<div class="box-bottom">
+		{% for userMatch in userMatches %}
+			{#<span style="padding-bottom:10px;" class="profileinfo">User 1 <br /> aus F&uuml;dlisbach</span>#}
+			<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">
+			{% for picture in userMatch.user.pictures if picture.position == 1 %}
+				<img width="50px" height="50px" src="{{ picture.src }}" org="{{ picture.src }}"/>
+			{% endfor %}
+				{{ userMatch.user.Firstname }}, {{ userMatch.user.birthday | age }} ({{ userMatch.user.location.statecode }})
+			</span>
+			{#<span style="margin-top:10px; border:none;" class="profileinfo">User 3 <br /> aus F&uuml;dlisbach</span>#}
+		{% endfor %}
+		<div class="clear"></div>
+	</div>
+</div>

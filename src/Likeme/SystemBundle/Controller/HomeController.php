@@ -162,8 +162,25 @@ class HomeController extends Controller
 	    				 );
 
     	} else {
-    		echo "fertig luschtig :(";
+    		return $this->redirect($this->generateUrl('user_home_empty'));
     	}
+    }
+    
+    /**
+     * @Secure(roles="ROLE_USER")
+     * @Route("/home/empty", name="user_home_empty")
+     * @Template()
+     */
+    public function showEmptyAction()
+    {
+    	// Get current User object
+    	$user = $this->container->get('security.context')->getToken()->getUser();
+    	
+    	// Get user matches
+    	$userService = $this->container->get('likeme.user.userservice');
+    	$userMatches = $userService->getMatches($user);
+    	
+    	return $this->render('LikemeSystemBundle:Home:empty.html.twig', array('userMatches' => $userMatches));
     }
     
 }
