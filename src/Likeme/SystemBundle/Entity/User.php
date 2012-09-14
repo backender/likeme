@@ -70,7 +70,7 @@ class User extends BaseUser
 	/**
 	 * @var integer $location
 	 *
-	 * @Assert\NotBlank(message="Please enter location.")
+	 * @Assert\NotBlank(message="Bitte Wohnort angeben!")
 	 * @ORM\ManyToOne(targetEntity="Location", inversedBy="id")
 	 * @ORM\JoinColumn(name="location", referencedColumnName="id")
 	 *
