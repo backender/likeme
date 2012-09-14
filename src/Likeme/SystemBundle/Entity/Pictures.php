@@ -24,7 +24,6 @@ class Pictures
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\OneToMany(targetEntity="User", mappedBy="pictures")
      */
     private $id;
 
@@ -67,6 +66,7 @@ class Pictures
     /**
      * @ORM\ManyToOne(targetEntity="Likeme\SystemBundle\Entity\User", inversedBy="Pictures")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+     * @ORM\JoinColumn(name="pictures_user_id", referencedColumnName="pictures")
      */
     private $user;
 

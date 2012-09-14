@@ -80,9 +80,7 @@ class User extends BaseUser
 	/**
 	 * @var integer $pictures
 	 *
-	 * @ORM\ManyToOne(targetEntity="Pictures", inversedBy="id")
-	 * @ORM\JoinColumn(name="pictures", referencedColumnName="id")
-	 *
+	 * @ORM\OneToMany(targetEntity="Pictures", mappedBy="user")
 	 */
 	protected $pictures;
 	
