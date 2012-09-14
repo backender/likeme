@@ -59,7 +59,7 @@
 						{#<span style="padding-bottom:10px;" class="profileinfo">User 1 <br /> aus F&uuml;dlisbach</span>#}
 						<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">
 						{% for picture in userMatch.user.pictures if picture.position == 1 %}
-							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.src }}" org="{{ picture.src }}"/></div>
+							<img width="50px" height="50px" src="{{ picture.src }}" org="{{ picture.src }}"/>
 						{% endfor %}
 							{{ userMatch.user.Firstname }}, {{ userMatch.user.birthday | age }} ({{ userMatch.user.location.statecode }})
 						</span>
