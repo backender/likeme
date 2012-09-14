@@ -140,6 +140,7 @@ class UserService implements ContainerAwareInterface
 		->from('Likeme\SystemBundle\Entity\Like', 's')
 		->where("s.stranger = :user")
 		->andwhere($em->createQueryBuilder()->expr()->In('s.user', $UserLikedStranger))
+		->orderby('s.matched_at', 'DESC')
 		->setParameter('user', $user)
 		;
 		$matches = $query->getQuery()->getResult();
