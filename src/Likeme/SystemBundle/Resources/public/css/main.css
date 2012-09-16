@@ -32,6 +32,10 @@ line-height:60px;
 font-size:28px;
 font-weight:500;
 position:relative;
+box-shadow: 0 1px 0 0 #ffffff,
+			0 2px 0 0 #cccccc,
+			0 3px 0 0 #ffffff,
+			0 4px 0 0 #cccccc;
 }
 
 h1, h1 a
@@ -191,6 +195,10 @@ background-color:#fff;
 border:1px solid #ccc;
 border-radius:0 0 5px 5px;
 margin-bottom:20px;
+box-shadow: 0 1px 0 0 #ffffff,
+			0 2px 0 0 #cccccc,
+			0 3px 0 0 #ffffff,
+			0 4px 0 0 #cccccc;
 }
 
 
@@ -431,6 +439,10 @@ box-shadow: 0 1px 0 #6ac466 inset, 0 4px 0 0 #046a00, 0 5px 2px #999999;
 
 border:1px solid #046100;
 border-radius:5px;
+-webkit-transition-property:top, box-shadow;   
+-webkit-transition-duration: 0.1s, 0.1s;   
+-webkit-transition-timing-function: ease-in, ease-in; 
+
 }
 
 .save a:hover
