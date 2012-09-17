@@ -32,10 +32,10 @@ line-height:60px;
 font-size:28px;
 font-weight:500;
 position:relative;
-box-shadow: 0 1px 0 0 #ffffff,
-			0 2px 0 0 #cccccc,
-			0 3px 0 0 #ffffff,
-			0 4px 0 0 #cccccc;
+box-shadow: 0 4px 0 -3px #ffffff,
+			0 5px 0 -3px #cccccc,
+			0 9px 0 -6px #ffffff,
+			0 10px 0 -6px #cccccc;
 }
 
 h1, h1 a
@@ -195,10 +195,10 @@ background-color:#fff;
 border:1px solid #ccc;
 border-radius:0 0 5px 5px;
 margin-bottom:20px;
-box-shadow: 0 1px 0 0 #ffffff,
-			0 2px 0 0 #cccccc,
-			0 3px 0 0 #ffffff,
-			0 4px 0 0 #cccccc;
+box-shadow: 0 4px 0 -3px #ffffff,
+			0 5px 0 -3px #cccccc,
+			0 9px 0 -6px #ffffff,
+			0 10px 0 -6px #cccccc;
 }
 
 
