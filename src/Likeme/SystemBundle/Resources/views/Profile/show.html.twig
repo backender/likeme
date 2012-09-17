@@ -12,6 +12,7 @@
 		'bundles/likemesystem/poshytip/tip-twitter/tip-twitter.css'
 		'bundles/likemesystem/poshytip/tip-green/tip-green.css'
 		'bundles/likemesystem/photoselector/fcbklistselection.css'
+		'bundles/likemesystem/css/jquery.selectbox.css'
 	%}
 			
 	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
@@ -75,7 +76,7 @@
 				<div class="box-top">Pr&auml;ferenzen</div>
 				<div class="box-bottom">
 					{{ form_errors(form.pref_gender) }}
-					{{ form_widget(form.pref_gender) }}
+					<label class="drop">{{ form_widget(form.pref_gender) }}</label>
 					{{ form_errors(form.pref_age_range) }}
 					{{ form_widget(form.pref_age_range) }}
 					<div id="slider-range"></div>
@@ -124,6 +125,7 @@
    	'bundles/likemesystem/js/selectlocation.js'
    	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
    	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
+   	'bundles/likemesystem/js/jquery.selectbox-0.2.min.js'
    	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
    	'bundles/likemesystem/js/extensions.js'
    	output='web/bundles/likemesystem/compiled/profile_show.js'
