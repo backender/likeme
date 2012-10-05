@@ -98,6 +98,8 @@ class AfterLoginController extends Controller
     				// Loop trough albums and receive photos
     				$albums = $response['data'];
     		
+    				$foundonephoto = false;
+    				
     				foreach ($albums as $row)
     				{
     					// Only if Album is ProfilePictures
@@ -113,6 +115,9 @@ class AfterLoginController extends Controller
     						$photo = $photos['data'];
     							
     						if ($photo) {	
+    							
+    							// Min. 1 profile picture was found
+    							$foundonephoto = true;
     							
     							// Amazone Filesystem erstellen
     							define("AWS_CERTIFICATE_AUTHORITY", true);
@@ -154,9 +159,6 @@ class AfterLoginController extends Controller
     							// Save persists in Database
     							$em->flush();
     							
-    							
-    							// Thumbnails durch LiipImagineBundle erstellen
-    							
     								
     							// Get Pictures
     							$query = $em->createQueryBuilder()
@@ -181,6 +183,17 @@ class AfterLoginController extends Controller
     							}				
     						}
     					}
+    				}
+    				
+    				if ($foundonephoto == false) {
+    					//No profile photo has been found => deactivate User
+    					$user->setActive(false);
+    					
+    					// Persist object
+    					$em->persist($user);
+    						
+    					// Save persists in Database
+    					$em->flush();
     				}
     			}
     		} else {
