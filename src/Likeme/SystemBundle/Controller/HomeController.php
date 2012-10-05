@@ -105,10 +105,9 @@ class HomeController extends Controller
 				if ($request->request->has($likeForm->getName())) {
 				    $likeForm->bindRequest($request);
 				    
-			    	if ($likeForm->isValid()) {
 			    		$em->persist($likeEntity);
 			    		$em->flush();
-			    		
+			    	
 			    		$matched = $userService->is_matched($user, $request_stranger);
 			    		
 			    		if ($matched == true) {
@@ -123,16 +122,13 @@ class HomeController extends Controller
 			    			$em->persist($strangerLike);
 			    			$em->flush();
 			    		}
-					}
 		    	}
 		    	
 		    	// Check form likeme_user_next (Next)
 		    	if ($request->request->has($nextForm->getName())) {
 		    		$nextForm->bindRequest($request);
-		    		if ($nextForm->isValid()) {
 		    			$em->persist($nextEntity);
 		    			$em->flush();
-		    		}
 		    	}
 			}
 
