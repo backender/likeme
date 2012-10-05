@@ -2,6 +2,8 @@
 
 namespace Likeme\SystemBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+
 use Likeme\SystemBundle\Form\Type\NextFormType;
 
 use Likeme\SystemBundle\Form\Type\LikeFormType;
@@ -49,20 +51,29 @@ class StrangerController extends Controller
 			->getRepository('LikemeSystemBundle:User')
 			->find($strangerId);
 		
+		if($stranger) {
 		
-			// Get pictures from stranger
-			$textExtension = $this->container->get('likeme.twig.extension');
-			$strangerPictures = $textExtension->stranger_pictures($stranger);
-			
-			
-	    	
-	    	// Return view with form
-	    	return array('stranger' => $stranger, 
-	    				 'stranger_pictures' => $strangerPictures, 
-	    				 //'unlikeForm' => $unlikeForm->createView(),
-	    				 'userMatches' => $userMatches
-	    				 );
+			// Only display stranger if user-stranger have matched
+			if($userService->is_matched($user, $stranger)) {
+				// Get pictures from stranger
+				$textExtension = $this->container->get('likeme.twig.extension');
+				$strangerPictures = $textExtension->stranger_pictures($stranger);
+				
+				
+		    	
+		    	// Return view with form
+		    	return array('stranger' => $stranger, 
+		    				 'stranger_pictures' => $strangerPictures, 
+		    				 //'unlikeForm' => $unlikeForm->createView(),
+		    				 'userMatches' => $userMatches
+		    				 );
+			} else {
+				throw new AccessDeniedException('No match!');
+			}
 		
+		} else {
+			echo "not a valid stranger";
+		}
 
     }
 
