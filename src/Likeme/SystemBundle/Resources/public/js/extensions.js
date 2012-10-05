@@ -74,31 +74,33 @@ $(document).ready(function() {
 									.attr("style","margin-bottom: -3px; margin-right: -14px;")
 									.append("<div id='cropButton'><a href='#'>Speichern</a></div>")
 									.click(function(){
-										 $("#loading").css({"visibility":"visible"});
-										 $.ajax({
-											  type: "POST",
-											  url: Routing.generate('crop_pictures'),
-											  data: { 
-												  url: self.find('img').attr("org"),
-												  x: cropx, 
-												  y: cropy,
-												  w: cropw, 
-												  h: croph
-											  }
-										})
-										.done(function( msg ) {
-											  if (msg == 1) {
-												  var timestamp = new Date().getTime();
-												  // Update small picture
-												  $(self).find('img').attr('src', self.find('img').attr("src") + '?' + timestamp); 
-												  // Update big picture
-												  $('.likepic').find('img').attr('src', $(self).find('img').attr('src'));
-												  $("#loading").css({"visibility":"hidden"});
-												  $(self).poshytip('hide');
-											  } else {
-												  alert( msg );
-											  }
-										});
+										if (cropw != null) {
+											 $("#loading").css({"visibility":"visible"});
+											 $.ajax({
+												  type: "POST",
+												  url: Routing.generate('crop_pictures'),
+												  data: { 
+													  url: self.find('img').attr("org"),
+													  x: cropx, 
+													  y: cropy,
+													  w: cropw, 
+													  h: croph
+												  }
+											})
+											.done(function( msg ) {
+												  if (msg == 1) {
+													  var timestamp = new Date().getTime();
+													  // Update small picture
+													  $(self).find('img').attr('src', self.find('img').attr("src") + '?' + timestamp); 
+													  // Update big picture
+													  $('.likepic').find('img').attr('src', $(self).find('img').attr('src'));
+													  $("#loading").css({"visibility":"hidden"});
+													  $(self).poshytip('hide');
+												  } else {
+													  alert( msg );
+												  }
+											});
+										} 
 									})
 									.appendTo(footerdiv);
 	
