@@ -29,7 +29,7 @@ class ProfileFormType extends AbstractType
 		$transformer = new LocationToIdTransformer($entityManager);
 		
 		$gender_choices = array(
-				0 => 'Beide',
+				3 => 'Beide',
 				1 => 'Männer',
 				2 => 'Frauen'
 		);

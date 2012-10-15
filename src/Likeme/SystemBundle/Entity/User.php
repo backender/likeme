@@ -1,6 +1,8 @@
 <?php
 namespace Likeme\SystemBundle\Entity;
 
+use Doctrine\Tests\Common\Annotations\Null;
+
 use Likeme\SystemBundle\Controller\LocationController;
 
 use FOS\UserBundle\Entity\User as BaseUser;
@@ -354,7 +356,7 @@ class User extends BaseUser
 		}
 		
 		//Set default values for users preferences
-		if ($this->getPrefGender() == null) {
+		if ($this->getPrefGender() == Null) {
 			$this->setPrefGender(0);
 			if($this->getGender() == 'male') {
 				$this->setPrefGender(2);

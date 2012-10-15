@@ -54,7 +54,7 @@ class UserService implements ContainerAwareInterface
 	public function getPrefGender($pref_gender) {
 		// Get prefered gender from user
 		switch ($pref_gender) {
-			case 0:
+			case 3:
 				$gender = 'both';
 				break;
 			case 1:
