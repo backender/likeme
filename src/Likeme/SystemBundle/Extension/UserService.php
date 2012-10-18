@@ -472,10 +472,15 @@ class UserService implements ContainerAwareInterface
 			}
 		}
 		
-		// Shuffle array()
-		shuffle($userarry);
-		
 		return $userarry;
+	}
+	
+	/**
+	 * Shuffle Strangers
+	 */
+	public function shuffleStrangers()
+	{
+		shuffle($userarry);
 	}
 	
 	/**
@@ -497,6 +502,24 @@ class UserService implements ContainerAwareInterface
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Save daily stranger array in session 
+	 */
+	public function sessionUpdate()
+	{
+		$session = $this->container->get('session');
+
+		$strangers = $this->getStranger();
+		if (empty($strangers)) {
+			$session->set('empty', '1');
+		} else {
+			$session->set('empty', '0');
+		}
+		 
+		$session->set('strangers', $strangers);
+		
 	}
 
 }

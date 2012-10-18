@@ -22,6 +22,11 @@ class ProfileController extends Controller {
 	public function showAction() {
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$em = $this->container->get('doctrine')->getEntityManager();
+
+    	// UserService session update
+    	$UserService = $this->container->get('likeme.user.userservice');
+    	$UserService->sessionUpdate();
+    	
 		
 		if (!is_object($user) || !$user instanceof UserInterface) {
 			throw new AccessDeniedException('This user does not have access to this section.');
@@ -55,6 +60,7 @@ class ProfileController extends Controller {
 				
 				//Check if user is active
 				$user->setFBData();
+				
 				
 				//ajax form success
 				if ($this->container->get('request')->isXmlHttpRequest())
