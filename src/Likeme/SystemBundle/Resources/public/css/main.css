@@ -758,3 +758,92 @@ select {
     pointer-events:none;
     display:block;
 }​
+
+#likeme_user_profile_location{
+	display: none;
+}
+
+.btb-container{
+	height:50px;
+	float:left;
+}
+
+#likeme-btb{
+	font-weight:600;	
+	text-shadow:-1px -1px 1px #047000;
+	width:258px;
+	display:inline-block;
+	color:#fff;
+	text-decoration:none;
+	background: rgb(7,157,0); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(7,157,0,1) 0%, rgba(6,137,0,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(7,157,0,1)), color-stop(100%,rgba(6,137,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(7,157,0,1) 0%,rgba(6,137,0,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(7,157,0,1) 0%,rgba(6,137,0,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(7,157,0,1) 0%,rgba(6,137,0,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(7,157,0,1) 0%,rgba(6,137,0,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#079d00', endColorstr='#068900',GradientType=0 ); /* IE6-9 */
+	
+	box-shadow: 0 1px 0 #6ac466 inset, 0 4px 0 0 #046a00, 0 5px 2px #999999;
+	
+	border:1px solid #046100;
+	border-radius:5px;	
+}
+
+#likeme-btb:hover{
+	background: rgb(8,166,0); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(8,166,0,1) 0%, rgba(7,146,0,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(8,166,0,1)), color-stop(100%,rgba(7,146,0,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(8,166,0,1) 0%,rgba(7,146,0,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(8,166,0,1) 0%,rgba(7,146,0,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(8,166,0,1) 0%,rgba(7,146,0,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(8,166,0,1) 0%,rgba(7,146,0,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#08a600', endColorstr='#079200',GradientType=0 ); /* IE6-9 */
+	cursor:pointer;
+}
+
+#likeme-btb:active{
+	margin-top:3px;
+	box-shadow: 0 1px 0 #6ac466 inset, 0 1px 0 0 #046a00, 0 2px 2px #999999;
+}
+
+#next-btb{
+	font-weight:600;	
+	text-shadow:-1px -1px 1px #3e0000;
+	width:258px;
+	display:inline-block;
+	color:#fff;
+	text-decoration:none;
+
+	background: #ac0000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ac0000 0%, #880000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ac0000), color-stop(100%,#880000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ac0000 0%,#880000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ac0000 0%,#880000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ac0000 0%,#880000 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ac0000 0%,#880000 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ac0000', endColorstr='#880000',GradientType=0 ); /* IE6-9 */
+
+	box-shadow: 0 1px 0 #ce6666 inset, 0 4px 0 0 #6c0000, 0 5px 2px #999999;
+
+	border:1px solid #5c0000;
+	border-radius:5px;	
+}
+
+#next-btb:hover{
+	background: #bc0000; /* Old browsers */
+	background: -moz-linear-gradient(top,  #bc0000 0%, #9a0000 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bc0000), color-stop(100%,#9a0000)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #bc0000 0%,#9a0000 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #bc0000 0%,#9a0000 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #bc0000 0%,#9a0000 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #bc0000 0%,#9a0000 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bc0000', endColorstr='#9a0000',GradientType=0 ); /* IE6-9 */
+
+	cursor:pointer;
+}
+
+#next-btb:active{
+	margin-top:3px;
+	box-shadow: 0 1px 0 #ce6666 inset, 0 1px 0 0 #6c0000, 0 2px 2px #999999;
+}

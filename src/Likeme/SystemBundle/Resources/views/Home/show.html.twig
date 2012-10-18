@@ -7,15 +7,15 @@
 			<div id="main">
 				<div class="box-top">{% block title %}Home{% endblock %}</div>
 				<div class="box-bottom">
-					<form id="profileForm" action="{{ path('user_home') }}" {{ form_enctype(likeForm) }} method="POST">
+					<form action="{{ path('user_home') }}" {{ form_enctype(likeForm) }} method="POST">
 						{{ form_widget(likeForm._token) }}
 						{{ form_widget(likeForm) }}
-						<input type="submit" value="Likeme" />
+						<div class="btb-container"><input id="likeme-btb" type="submit" value="Likeme" /></div>
 					</form>
-					<form id="profileForm" action="{{ path('user_home') }}" {{ form_enctype(nextForm) }} method="POST">
+					<form action="{{ path('user_home') }}" {{ form_enctype(nextForm) }} method="POST">
 						{{ form_widget(nextForm._token) }}
 						{{ form_widget(nextForm) }}
-						<input type="submit" value="Next" />
+						<div class="btb-container" style="margin-left:20px;"><input id="next-btb" type="submit" value="Next" /></div>
 					</form>
 					{% if not stranger_pictures is empty %}
 						{% for picture in stranger_pictures if picture.position == 1 %}
