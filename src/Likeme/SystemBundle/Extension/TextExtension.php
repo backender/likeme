@@ -26,7 +26,8 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 			'comment_date' => new \Twig_Filter_Method($this, 'comment_date'),
 			'age' => new \Twig_Filter_Method($this, 'age'),
 			'fb_date' => new \Twig_Filter_Method($this, 'fb_date'),
-			'state' => new \Twig_Filter_Method($this, 'state')
+			'state' => new \Twig_Filter_Method($this, 'state'),
+			'thumb' => new \Twig_Filter_Method($this, 'thumb')
 		);
 	}
 	
@@ -81,6 +82,17 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 	{
 		$state = explode(" ", $state);
 		return $state[1];
+	}
+	
+	/**
+	 * Get thumbnail src from original src
+	 * @param string $src
+	 * @return string
+	 */
+	public function thumb($src)
+	{
+		$thumb_src = substr_replace($src, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0)."?".date('ymdHi');
+		return $thumb_src;
 	}
 	
 	
@@ -155,4 +167,5 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 			
 			return false;
 	}
+	
 }

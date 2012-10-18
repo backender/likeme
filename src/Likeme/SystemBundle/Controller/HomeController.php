@@ -139,7 +139,7 @@ class HomeController extends Controller
 			
 			// Get pictures from stranger
 			$textExtension = $this->container->get('likeme.twig.extension');
-			$strangerPictures = $textExtension->stranger_pictures($stranger);
+			$strangerPictures = $textExtension->stranger_pictures($stranger);				
 			
 			
 			// Generate form with new stranger
