@@ -34,7 +34,7 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 	public function getGlobals()
 	{
 		return array(
-			'user_pictures' => self::user_pictures()
+			//'user_pictures' => self::user_pictures()
 		);
 	}
 	
@@ -93,79 +93,6 @@ class TextExtension extends \Twig_Extension implements ContainerAwareInterface
 	{
 		$thumb_src = substr_replace($src, 'thumbnails/', strlen('http://likeme.s3.amazonaws.com/'), 0)."?".date('ymdHi');
 		return $thumb_src;
-	}
-	
-	
-	/**
-	 * Get all images from user
-	 * 
-	 * @throws AccessDeniedException
-	 * @return array|false
-	 */
-	public function user_pictures()
-	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
-		
-		if (!is_object($user) || !$user instanceof UserInterface) {
-			//throw new AccessDeniedException('This user does not have access to this section.');
-			return false;
-		}
-		
-		$em = $this->container->get('doctrine')->getEntityManager();
-			
-		// Get Pictures
-		$query = $em->createQueryBuilder()
-		->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-		->select("p.id, p.src, p.position")
-		->where("p.user = :userid AND p.type = :type")
-		->setParameter('userid', $user->getId())
-		->setParameter('type', 'original')
-		->orderBy('p.position', 'ASC');
-			
-		$allpictures = $query->getQuery()->getResult();
-			
-		// Edit picture links for LiipImagineBundle
-		$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-		$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
-			
-		if(!empty($imaginelinks)) {
-			return $imaginelinks;
-		}
-		
-		return false;
-	}
-	
-	
-	/**
-	 * Get all images from stranger
-	 * 
-	 * @param object $stranger
-	 * @return array|false
-	 */
-	public function stranger_pictures($stranger)
-	{
-			$em = $this->container->get('doctrine')->getEntityManager();
-				
-			// Get Pictures
-			$query = $em->createQueryBuilder()
-			->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-			->select("p.id, p.src, p.position")
-			->where("p.user = :userid AND p.type = :type")
-			->setParameter('userid', $stranger->getId())
-			->setParameter('type', 'original')
-			->orderBy('p.position', 'ASC');
-			
-			$allpictures = $query->getQuery()->getResult();
-				
-			// Edit picture links for LiipImagineBundle
-			$imagineservice = $this->container->get('likeme.liipimaginebundle.getlinks');
-			$imaginelinks = $imagineservice->editLinksForDisplay($allpictures);
-
-			if(!empty($imaginelinks)) {
-				return $imaginelinks;
-			}
-			
-			return false;
 	}
 	
 }

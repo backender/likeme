@@ -56,14 +56,10 @@ class StrangerController extends Controller
 			// Only display stranger if user-stranger have matched
 			if($userService->is_matched($user, $stranger)) {
 				// Get pictures from stranger
-				$textExtension = $this->container->get('likeme.twig.extension');
-				$strangerPictures = $textExtension->stranger_pictures($stranger);
-				
-				
+				$textExtension = $this->container->get('likeme.twig.extension');				
 		    	
 		    	// Return view with form
-		    	return array('stranger' => $stranger, 
-		    				 'stranger_pictures' => $strangerPictures, 
+		    	return array('stranger' => $stranger,  
 		    				 //'unlikeForm' => $unlikeForm->createView(),
 		    				 'userMatches' => $userMatches
 		    				 );

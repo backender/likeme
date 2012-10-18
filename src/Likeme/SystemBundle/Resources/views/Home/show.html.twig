@@ -17,10 +17,10 @@
 						{{ form_widget(nextForm) }}
 						<div class="btb-container" style="margin-left:20px;"><input id="next-btb" type="submit" value="Next" /></div>
 					</form>
-					{% if not stranger_pictures is empty %}
-						{% for picture in stranger_pictures if picture.position == 1 %}
+					{% if not stranger.pictures is empty %}
+						{% for picture in stranger.pictures if picture.position == 1 %}
 							<div class="likepic">
-								<img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" />
+								<img width="400px" height="400px" src="{{ picture.src | thumb }}" org="{{ picture.src }}" />
 								<div class="likeinfo">
 									<p>{{ stranger.firstname }}, {{ stranger.birthday | age }} {% if stranger.location != false %} ({{ stranger.location.statecode }}){% endif %}</p>
 								</div>
@@ -30,9 +30,9 @@
 							<div id="no-pic" class="likepic">Kein Bild<br />{{ stranger.firstname }}, {{ stranger.lastname }}</div>
 					{% endif %}
 						<div id="sortablepictures">
-						{% if not stranger_pictures is empty %}
-							{% for picture in stranger_pictures %}
-								<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/></div>
+						{% if not stranger.pictures is empty %}
+							{% for picture in stranger.pictures %}
+								<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.src | thumb }}" org="{{ picture.src }}"/></div>
 							{% endfor %}
 						{% endif %}			
 						</div>

@@ -137,10 +137,6 @@ class HomeController extends Controller
 			->getRepository('LikemeSystemBundle:User')
 			->find($strangers[0]); //TODO: set session array count
 			
-			// Get pictures from stranger
-			$textExtension = $this->container->get('likeme.twig.extension');
-			$strangerPictures = $textExtension->stranger_pictures($stranger);				
-			
 			
 			// Generate form with new stranger
 			$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
@@ -151,7 +147,6 @@ class HomeController extends Controller
 	    	
 	    	// Return view with form
 	    	return array('stranger' => $stranger, 
-	    				 'stranger_pictures' => $strangerPictures, 
 	    				 'likeForm' => $likeForm->createView(), 
 	    				 'nextForm' => $nextForm->createView(),
 	    				 'userMatches' => $userMatches

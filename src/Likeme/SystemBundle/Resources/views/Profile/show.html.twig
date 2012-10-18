@@ -32,12 +32,12 @@
 			<div id="main">
 				<div class="box-top">{% block title %}Profil{% endblock %} </div>
 				<div class="box-bottom">
-					{% for picture in user_pictures if picture.position == 1 %}
-						<div class="likepic"><img width="400px" height="400px" src="{{ picture.thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.statecode }}){% endif %}</p></div></div>
+					{% for picture in user.pictures if picture.position == 1 %}
+						<div class="likepic"><img width="400px" height="400px" src="{{ picture.src | thumb }}" org="{{ picture.src }}" /><div class="likeinfo"><p>{{ user.firstname }}, {{ user.birthday | age }} {% if location != false %}({{ location.statecode }}){% endif %}</p></div></div>
 					{% endfor %}
 					<div id="sortablepictures">
-						{% for picture in user_pictures %}
-							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.thumb }}" org="{{ picture.src }}"/><div class="likepic-crop"><a href="#">zuschneiden</a></div></div>
+						{% for picture in user.pictures %}
+							<div id="{{ picture.id }}" class="likepic-sm" style="margin-bottom:20px;"><img width="120px" height="120px" src="{{ picture.src | thumb }}" org="{{ picture.src }}"/><div class="likepic-crop"><a href="#">zuschneiden</a></div></div>
 						{% endfor %}
 					</div>
 					<div class="clear"></div>
