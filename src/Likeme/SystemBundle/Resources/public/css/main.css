@@ -770,8 +770,7 @@ select {
 
 #likeme-btb{
 	height:32px;
-	font-size:16px;
-	font-weight:600;	
+	font-size:16px;	
 	text-shadow:-1px -1px 1px #047000;
 	width:258px;
 	display:inline-block;
@@ -811,8 +810,7 @@ select {
 
 #next-btb{
 	font-size:16px;
-	height:32px;
-	font-weight:600;	
+	height:32px;	
 	text-shadow:-1px -1px 1px #3e0000;
 	width:258px;
 	display:inline-block;
