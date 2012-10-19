@@ -21,12 +21,11 @@
     <body>
 	<div id="loading"><div id="loading-floter"></div><div id="loading-inside"><span id="loading-text">Speichern...</span><div id="loading-bar"></div></div></div>    
     	<div id="container">
-      
-        <div id="header">
-        <h1><a href="{{ path('home') }}">likeme</a></h1>
+    	
+    	<div id="header">
+        <h1><a href="{{ path('home') }}">{% image '@LikemeSystemBundle/Resources/public/images/logo.png' output='/Resources/images/logo.png' %} <img src="{{ asset_url }}" alt="likeme.ch"/> {% endimage %}</a></h1>
         {% block head %} {% endblock %}
-
-
+        
         {% block navi %} 
         
 	        {% if not is_granted('ROLE_USER') %}

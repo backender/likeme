@@ -47,6 +47,7 @@ color:#333;
 text-decoration:none;
 font-weight:500;
 font-size:28px;
+line-height:65px;
 }
 
 h1 a:hover
@@ -905,7 +906,6 @@ select {
 #about-likeme{
 	border:1px solid #ccc;
 	padding:20px;
-	margin-top:20px;
 	border-radius:5px;
 }
 
