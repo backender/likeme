@@ -41,50 +41,59 @@ class HomeController extends Controller
      */
     public function showAction()
     {
-    	// Get EntityManager
-    	$em = $this->get('doctrine')->getEntityManager();
-    	
-    	//Get Request
-    	$request = $this->getRequest();
-    	
-    	// Form names
-    	$likeFormName = "likeme_user_like";
-    	$nextFormName = "likeme_user_next";
-    	
-    	// Get current User object
-    	$user = $this->container->get('security.context')->getToken()->getUser();
-    	
-    	// Get UserService
+    	// Get session
+    	$session = $this->container->get('session');
     	$userService = $this->container->get('likeme.user.userservice');
     	
-    	// Get strangers from session
-    	$session = $this->container->get('session');
-    	$strangers = $session->get('strangers');
+    	// Recalculate Stranger if array is empty(==1) #doublecheck
+    	if($session->get('empty') == 1) {
+    		
+	    	$strangers = $userService->getStranger();
+	    	if($userService->checkStrangerSessionEmpty($strangers) == false){
+	    		$strangers = $userService->shuffleStrangers($strangers);
+	    		$userService->setStrangers($strangers);
+	    	}
     	
-    	if ($request->getMethod() == 'POST') {
-    		if ($request->request->has($likeFormName) || $request->request->has($nextFormName)){
-    			// Increase Stranger Limit
-    			$user->increaseStrangerlimit();
-    			
-    			// Remove liked user from strangers array in session
-    			if(count($strangers) > 1) {
-    				unset($strangers[0]);
-    				$strangers = array_splice($strangers,0);
-    				$session->set('strangers',$strangers);
-    			} else {
-    				$session->set('empty', '1');
-    			}
-    		}
     	}
     	
-    	if($session->get('empty') != 1) {
-	    	
-	    	// Like/Next Entity
-	    	$likeEntity = new Like(); // Build like form and check request
-	    	$nextEntity = new Next(); // Build next form and check request
-	    	
-	
-			if ($request->getMethod() == 'POST') {
+    	
+    	if($session->get('empty') == 1) {
+    		
+    		return $this->redirect($this->generateUrl('user_home_empty'));
+    			
+    	} else {
+    		
+    		// Get EntityManager & ...
+    		$em = $this->get('doctrine')->getEntityManager();
+    		$user = $this->container->get('security.context')->getToken()->getUser();
+    		$request = $this->getRequest();
+    		$strangers = $session->get('strangers');
+    		
+    		// Form names
+    		$likeFormName = "likeme_user_like";
+    		$nextFormName = "likeme_user_next";
+    		
+    		// Like/Next Entity
+    		$likeEntity = new Like(); // Build like form and check request
+    		$nextEntity = new Next(); // Build next form and check request
+    		 
+    		
+    		if ($request->getMethod() == 'POST') {
+    			
+    			if ($request->request->has($likeFormName) || $request->request->has($nextFormName)){
+    				// Increase Stranger Limit
+    				$user->increaseStrangerlimit();
+    				 
+    				// Remove liked/nexted user from strangers array in session
+    				if(count($strangers) > 1) {
+    					unset($strangers[0]);
+    					$strangers = array_splice($strangers,0);
+    					$session->set('strangers',$strangers);
+    				} else {
+    					$session->set('empty', '1');
+    				}
+    			}
+
 				
 				// Handle request form and request stranger
 				if ($request->request->has($likeFormName)){
@@ -152,8 +161,6 @@ class HomeController extends Controller
 	    				 'userMatches' => $userMatches
 	    				 );
 
-    	} else {
-    		return $this->redirect($this->generateUrl('user_home_empty'));
     	}
     }
     

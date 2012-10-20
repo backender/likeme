@@ -505,21 +505,38 @@ class UserService implements ContainerAwareInterface
 	}
 	
 	/**
-	 * Save daily stranger array in session 
+	 * Check for available strangers
+	 * @param array $strangers
 	 */
-	public function sessionUpdate()
+	public function checkStrangerSessionEmpty($strangers)
 	{
 		$session = $this->container->get('session');
-
-		$strangers = $this->getStranger();
+		//$strangers = $this->getStranger();
 		if (empty($strangers)) {
 			$session->set('empty', '1');
+			return true;
 		} else {
 			$session->set('empty', '0');
+			return false;
 		}
-		 
+			
+	}
+	
+	/**
+	 * Set strangers to session
+	 * @param array $strangers
+	 */
+	public function setStrangers($strangers)
+	{
+		$session = $this->container->get('session');
 		$session->set('strangers', $strangers);
-		
+	}
+	
+	
+	public function updateStrangers() 
+	{
+		$strangers = $this->getStranger();
+		$this->setStrangers($strangers);
 	}
 
 }

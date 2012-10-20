@@ -22,10 +22,7 @@ class ProfileController extends Controller {
 	public function showAction() {
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$em = $this->container->get('doctrine')->getEntityManager();
-
-    	// UserService session update
     	$UserService = $this->container->get('likeme.user.userservice');
-    	$UserService->sessionUpdate();
     	
 		
 		if (!is_object($user) || !$user instanceof UserInterface) {
@@ -55,8 +52,15 @@ class ProfileController extends Controller {
 			$errors = $validator->validate($user);
 			
 			if ($form->isValid()) {
+				
 				$em->persist($user);
 				$em->flush();
+				
+				//Update Stranger array using new criteria
+				$strangers = $UserService->getStranger();
+				if($UserService->checkStrangerSessionEmpty($strangers) == false){
+					$UserService->setStrangers($strangers);
+				}
 				
 				//Check if user is active
 				$user->setFBData();

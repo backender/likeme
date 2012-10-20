@@ -211,9 +211,12 @@ class AfterLoginController extends Controller
 
     	// UserService abrufen
     	$UserService = $this->container->get('likeme.user.userservice');
+    	$strangers = $UserService->getStranger();
     	
     	//update session
-    	$UserService->sessionUpdate();
+    	if($UserService->checkStrangerSessionEmpty($strangers) == false){
+    		$UserService->setStrangers($strangers);
+    	}
     	
     	// Forward to Home
     	$funcresponse = new RedirectResponse($this->container->get('router')->generate('home'));
