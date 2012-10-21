@@ -142,6 +142,12 @@ class HomeController extends Controller
 			}
 
 		
+			//return empty if it was the last record
+			if($session->get('empty') == 1) {
+				return $this->redirect($this->generateUrl('user_home_empty'));
+			}
+			
+			
 			$stranger = $this->getDoctrine()
 			->getRepository('LikemeSystemBundle:User')
 			->find($strangers[0]); //TODO: set session array count
