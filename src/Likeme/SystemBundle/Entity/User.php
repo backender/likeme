@@ -9,6 +9,8 @@ use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Doctrine\ORM\Mapping\OrderBy;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
@@ -83,6 +85,7 @@ class User extends BaseUser
 	 * @var integer $pictures
 	 *
 	 * @ORM\OneToMany(targetEntity="Pictures", mappedBy="user")
+	 * @OrderBy({"position" = "ASC"})
 	 */
 	protected $pictures;
 	
@@ -529,6 +532,7 @@ class User extends BaseUser
      */
     public function getPictures()
     {
-        return $this->pictures;
+        
+    	return $this->pictures;
     }
 }
