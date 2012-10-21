@@ -33,7 +33,7 @@ class AfterLoginController extends Controller
     		$savedpictures[] = $pic->getSrc();
     	}
     	
-    	$savedpictures = $query->getQuery()->getResult();
+//    	$savedpictures = $query->getQuery()->getResult();
     	
     	// If not likeme automaticly takes one profile picture form facebook
     	if (!$savedpictures) {
