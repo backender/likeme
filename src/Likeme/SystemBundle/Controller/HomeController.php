@@ -41,133 +41,142 @@ class HomeController extends Controller
      */
     public function showAction()
     {
+    	/**
+    	 * 0. Requirements
+    	 */
+    	
     	// Get session
     	$session = $this->container->get('session');
     	$userService = $this->container->get('likeme.user.userservice');
     	
-    	// Recalculate Stranger if array is empty(==1) #doublecheck
-    	if($session->get('empty') == 1) {
-    		
-	    	$strangers = $userService->getStranger();
-	    	if($userService->checkStrangerSessionEmpty($strangers) == false){
-	    		$strangers = $userService->shuffleStrangers($strangers);
-	    		$userService->setStrangers($strangers);
-	    	}
+    	// Get EntityManager & ...
+    	$em = $this->get('doctrine')->getEntityManager();
+    	$user = $this->container->get('security.context')->getToken()->getUser();
+    	$request = $this->getRequest();
+    	$strangers = $session->get('strangers');
     	
-    	}
+    	// Form names
+    	$likeFormName = "likeme_user_like";
+    	$nextFormName = "likeme_user_next";
+    	
+    	// Like/Next Entity
+    	$likeEntity = new Like(); // Build like form and check request
+    	$nextEntity = new Next(); // Build next form and check request
     	
     	
-    	if($session->get('empty') == 1) {
-    		
-    		return $this->redirect($this->generateUrl('user_home_empty'));
-    			
-    	} else {
-    		
-    		// Get EntityManager & ...
-    		$em = $this->get('doctrine')->getEntityManager();
-    		$user = $this->container->get('security.context')->getToken()->getUser();
-    		$request = $this->getRequest();
-    		$strangers = $session->get('strangers');
-    		
-    		// Form names
-    		$likeFormName = "likeme_user_like";
-    		$nextFormName = "likeme_user_next";
-    		
-    		// Like/Next Entity
-    		$likeEntity = new Like(); // Build like form and check request
-    		$nextEntity = new Next(); // Build next form and check request
+    	/**
+    	 * 1. Check for post
+    	 */
+    	if ($request->getMethod() == 'POST') {
     		 
-    		
-    		if ($request->getMethod() == 'POST') {
-    			
-    			if ($request->request->has($likeFormName) || $request->request->has($nextFormName)){
-    				// Increase Stranger Limit
-    				$user->increaseStrangerlimit();
-    				 
-    				// Remove liked/nexted user from strangers array in session
-    				if(count($strangers) > 1) {
-    					unset($strangers[0]);
-    					$strangers = array_splice($strangers,0);
-    					$session->set('strangers',$strangers);
-    				} else {
-    					$session->set('empty', '1');
-    				}
-    			}
+    		if ($request->request->has($likeFormName) || $request->request->has($nextFormName)) {
 
-				
-				// Handle request form and request stranger
-				if ($request->request->has($likeFormName)){
-					$formRequest = $request->request->get('likeme_user_like');
-				}
-				if ($request->request->has($nextFormName)) {
-					$formRequest = $request->request->get('likeme_user_next');
-				}
-				if(!empty($formRequest)) {
-					$request_stranger = $formRequest['stranger'];
-					$request_stranger = $this->getDoctrine()->getRepository('LikemeSystemBundle:User')->findOneById($request_stranger);
-				}
-					
-				$likeForm = $this->createForm(new LikeFormType(array('stranger' => $request_stranger, 'user' => $user)), $likeEntity);
-				$nextForm = $this->createForm(new NextFormType(array('stranger' => $request_stranger, 'user' => $user)), $nextEntity);
-				
-				// Check form likeme_user_like (Likeme)
-				if ($request->request->has($likeForm->getName())) {
-				    $likeForm->bindRequest($request);
-				    
-			    		$em->persist($likeEntity);
-			    		$em->flush();
-			    	
-			    		$matched = $userService->is_matched($user, $request_stranger);
-			    		
-			    		if ($matched == true) {
-			    			
-			    			$userLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $user->getId(), 'stranger' => $request_stranger->getId()));
-			    			$strangerLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $request_stranger->getId(), 'stranger' => $user->getId()));
-			
-			    			$now = new \DateTime();
-			    			$userLike->setMatchedAt($now);
-			    			$strangerLike->setMatchedAt($now);
-			    			$em->persist($userLike);
-			    			$em->persist($strangerLike);
-			    			$em->flush();
-			    		}
-		    	}
-		    	
-		    	// Check form likeme_user_next (Next)
-		    	if ($request->request->has($nextForm->getName())) {
-		    		$nextForm->bindRequest($request);
-		    			$em->persist($nextEntity);
-		    			$em->flush();
-		    	}
-			}
-
-		
-			//return empty if it was the last record
-			if($session->get('empty') == 1) {
-				return $this->redirect($this->generateUrl('user_home_empty'));
-			}
-			
-			
-			$stranger = $this->getDoctrine()
-			->getRepository('LikemeSystemBundle:User')
-			->find($strangers[0]); //TODO: set session array count
-			
-			
-			// Generate form with new stranger
-			$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
-			$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
+    			// Increase daily clicked
+    			$user->increaseStrangerlimit();
+    	
+	    		// Handle request form and request stranger
+	    		if ($request->request->has($likeFormName)){
+	    			$formRequest = $request->request->get('likeme_user_like');
+	    		} elseif ($request->request->has($nextFormName)) {
+	    			$formRequest = $request->request->get('likeme_user_next');
+	    		}
+	    		
+	    		if(!empty($formRequest)) {
+	    			$request_stranger = $formRequest['stranger'];
+	    			$request_stranger = $this->getDoctrine()->getRepository('LikemeSystemBundle:User')->findOneById($request_stranger);
+	    		}
+	    			
+	    		$likeForm = $this->createForm(new LikeFormType(array('stranger' => $request_stranger, 'user' => $user)), $likeEntity);
+	    		$nextForm = $this->createForm(new NextFormType(array('stranger' => $request_stranger, 'user' => $user)), $nextEntity);
 	    	
-	    	// Get user matches    	
-	    	$userMatches = $userService->getMatches($user);
+	    		// Check form likeme_user_like (Likeme)
+	    		if ($request->request->has($likeForm->getName())) {
+	    			$likeForm->bindRequest($request);
 	    	
-	    	// Return view with form
-	    	return array('stranger' => $stranger, 
-	    				 'likeForm' => $likeForm->createView(), 
-	    				 'nextForm' => $nextForm->createView(),
-	    				 'userMatches' => $userMatches
-	    				 );
-
+	    			$em->persist($likeEntity);
+	    			$em->flush();
+	    	
+	    			// Check if this is a match
+	    			$matched = $userService->is_matched($user, $request_stranger);
+	    			if ($matched == true) {
+	    	
+	    				$userLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $user->getId(), 'stranger' => $request_stranger->getId()));
+	    				$strangerLike = $this->getDoctrine()->getRepository('LikemeSystemBundle:Like')->findOneBy(array('user' => $request_stranger->getId(), 'stranger' => $user->getId()));
+	    					
+	    				$now = new \DateTime();
+	    				$userLike->setMatchedAt($now);
+	    				$strangerLike->setMatchedAt($now);
+	    				$em->persist($userLike);
+	    				$em->persist($strangerLike);
+	    				$em->flush();
+	    			}
+	    		}
+	    		 
+	    		// Check form likeme_user_next (Next)
+	    		if ($request->request->has($nextForm->getName())) {
+	    			$nextForm->bindRequest($request);
+	    			$em->persist($nextEntity);
+	    			$em->flush();
+	    		}
+	    		
+	    		// Unset the flushed stranger from session
+	    		unset($strangers[0]);
+	    		$strangers = array_splice($strangers,0);
+	    		$session->set('strangers',$strangers);
+	    		
+	    		// Check if stranger array is empty now
+    			$userService->checkStrangerSessionEmpty($strangers);
+    		}
     	}
+    	
+    	
+    	
+    	/**
+    	 * 2. Reached daily limit?
+    	 */
+    	if($userService->getMaxStranger() == 0) {
+    		return $this->redirect($this->generateUrl('user_home_limit'));;
+    	}
+    	
+    	
+    	/**
+    	 * 3. No strangers for criteria left
+    	 */
+    	if(empty($strangers) || (!is_array($strangers))){
+    		$strangers = $userService->getStranger();
+    		if($strangers !== null){
+    			shuffle($strangers);
+    			$userService->setStrangers($strangers);
+    		} else {
+    			return $this->redirect($this->generateUrl('user_home_empty'));
+    		}
+    	}
+    	
+    	
+		/**
+		 * 4. Render Form
+		 */
+
+    	// Get the next stranger
+		$stranger = $this->getDoctrine()
+			->getRepository('LikemeSystemBundle:User')
+			->find($strangers[0]);
+			
+		// Generate form
+		$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
+		$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
+	    	
+	    // Get user matches    	
+	    $userMatches = $userService->getMatches($user);
+	    
+	    // Return view with form
+	    return array('stranger' => $stranger, 
+	    			 'likeForm' => $likeForm->createView(), 
+	    			 'nextForm' => $nextForm->createView(),
+	    			 'userMatches' => $userMatches
+	    			 );
+
+
     }
     
     /**
@@ -185,6 +194,25 @@ class HomeController extends Controller
     	$userMatches = $userService->getMatches($user);
     	
     	return $this->render('LikemeSystemBundle:Home:empty.html.twig', array('userMatches' => $userMatches));
+    }
+    
+    
+    /**
+     * @Secure(roles="ROLE_USER")
+     * @Route("/home/limit", name="user_home_limit")
+     * @Template()
+     */
+    public function showLimitAction()
+    {
+    	// Get current User object
+    	$user = $this->container->get('security.context')->getToken()->getUser();
+    	 
+    	// Get user matches
+    	$userService = $this->container->get('likeme.user.userservice');
+    	$userMatches = $userService->getMatches($user);
+    	$strangerLimit = $userService->getDailyLikeCount();
+    	 
+    	return $this->render('LikemeSystemBundle:Home:limit.html.twig', array('userMatches' => $userMatches, 'strangerLimit' => $strangerLimit));
     }
     
 }

@@ -475,13 +475,6 @@ class UserService implements ContainerAwareInterface
 		return $userarry;
 	}
 	
-	/**
-	 * Shuffle Strangers
-	 */
-	public function shuffleStrangers()
-	{
-		shuffle($userarry);
-	}
 	
 	/**
 	 * Check if daily limit for user is already reached
