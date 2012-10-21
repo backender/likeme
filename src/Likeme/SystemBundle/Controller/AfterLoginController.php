@@ -29,13 +29,9 @@ class AfterLoginController extends Controller
 
     	
     	// Check if user has already an image
-    	$query = $em->createQueryBuilder()
-    	->from('Likeme\SystemBundle\Entity\Pictures', 'p')
-    	->select("p")
-    	->where("p.user = :userid AND p.type = :type")
-    	->setParameter('userid', $user->getId())
-    	->setParameter('type', 'original')
-    	->setMaxResults(1);
+        foreach($user->getPictures() as $pic) {
+    		$savedpictures[] = $pic->getSrc();
+    	}
     	
     	$savedpictures = $query->getQuery()->getResult();
     	
@@ -159,8 +155,8 @@ class AfterLoginController extends Controller
     							// Save persists in Database
     							$em->flush();
     							
-    								
-    							// Get Pictures
+    							
+    							// Get updated pictures ($user obj isn't up to date)
     							$query = $em->createQueryBuilder()
     							->from('Likeme\SystemBundle\Entity\Pictures', 'p')
     							->select("p.src")
