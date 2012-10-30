@@ -142,9 +142,10 @@ class HomeController extends Controller
     	/**
     	 * 3. No strangers for criteria left
     	 */
+    	
     	if(empty($strangers) || (!is_array($strangers))){
     		$strangers = $userService->getStranger();
-    		if($strangers !== null){
+    		if(!empty($strangers)){
     			shuffle($strangers);
     			$userService->setStrangers($strangers);
     		} else {
