@@ -27,6 +27,8 @@ class AfterLoginController extends Controller
     	// Get Users current pictures on Amazon
     	$user = $this->container->get('security.context')->getToken()->getUser();
 
+    	//decalre pictures array
+    	$savedpictures = array();
     	
     	// Check if user has already an image
         foreach($user->getPictures() as $pic) {
