@@ -58,7 +58,7 @@
 					<span style="padding-bottom:10px; margin-top:10px;" class="profileinfo">{{ user.birthday | fb_date }}</span>
 					<span style="margin-top:10px; border:none;" class="profileinfo">
 					{% if user.active == 0 %}
-				    	<p><span style="background-color:rgba(255,0,0,0.3); border-radius:5px; padding:3px 5px;">Inaktiv <span style="font-size:11px;"> (Bitte alles ausfüllen!)</span></p>
+				    	<p><span id="inactive" style="background-color:rgba(255,0,0,0.3); border-radius:5px; padding:3px 5px;">Inaktiv <span style="font-size:11px;"> (Bitte alles ausfüllen!)</span></p>
 				    {% else %}
 				    	<p><span style="background-color:rgba(0,255,0,0.3); border-radius:5px; padding:3px 5px;">Aktiv</span></p>
 					{% endif %}
@@ -179,6 +179,10 @@
           //Gets the error and write into the .err div....
            $("#loading").css({"visibility":"hidden"});
            //alert(response);
+           if(response == 1) {
+           		$("#inactive").css('background', 'rgba(0,255,0,0.3)');
+           		$("#inactive").html('Aktiv');
+           }
          }
        });
        return false; 
