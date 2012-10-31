@@ -30,7 +30,7 @@ class HomeController extends Controller
     		return $response;
     	}
     	
-        return array();
+        return $this->render('LikemeSystemBundle:Home:start.html.twig');
     }
     
     

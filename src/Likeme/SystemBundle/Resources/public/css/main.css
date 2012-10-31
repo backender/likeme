@@ -919,3 +919,29 @@ select {
 #about-likeme p{
 	line-height:22px;
 }
+
+.welcome{
+	position:relative;
+	border-radius:10px;
+}
+
+.welcome h2{
+	font-size:32px;
+	font-weight:500;
+	margin-bottom:12px;
+}
+
+.welcome p{
+	font-size:18px;
+	font-weight:400;
+}
+
+.welcome .welcome-login{
+	position:absolute;
+	right:50px;
+	top:20px;
+}
+
+.welcome-login p{
+	font-size:18px;
+}
