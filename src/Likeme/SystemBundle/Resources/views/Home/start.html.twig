@@ -5,13 +5,30 @@
 
 				<div class="box-bottom welcome" style="width:860px;">
 					<h2>Wilkommen auf likeme.ch!</h2>
-					<p>Der einfachsten Platform um neue Personen <br>kennenzulernen und zu chatten.<br><br>Alles <strong>kostenlos!</strong></p>
-					<div class="welcome-login"><p>Melde dich jetzt ganz <strong>bequem</strong> <br>und einfach über <strong>Facebook</strong> an!</p></div>
+					<p>Was bietet likeme:</p>
+					<ul>
+						<li>Lerne <strong>einfach</strong> und rasch neue Personen kennen</li>
+						<li>Chatte mit interessanten Leuten</li>
+						<li>Alles <strong>kostenlos</strong>, für immer!</li>
+					</ul>
+					<p>Melde dich jetzt an!</p>
+					<div class="welcome-login">
+						<a href="#" onClick="FB.login();">{% image '@LikemeSystemBundle/Resources/public/images/fb.png' output='/Resources/images/fb.png' %} <img src="{{ asset_url }}" alt="Facebook Login"/> {% endimage %}</a>
+					</div>
 				</div>
 				
 				<div style="margin:100px auto; text-align:center;"><h3 style="font-size:24px; font-weight:400;">wie funktioniert likeme... ?</h3><br><br>.</div>
 	
-	{% image '@LikemeSystemBundle/Resources/public/images/welcome-likeme.png' output='/Resources/images/welcome-likeme.png' %} <img src="{{ asset_url }}" alt="likeme"/> {% endimage %}
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-register.png' output='/Resources/images/welcome-register.png' %} <img src="{{ asset_url }}" alt="Registrieren und Profil ausfüllen"/> {% endimage %}
+	
+	<br><br>
+	
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-likeme.png' output='/Resources/images/welcome-likeme.png' %} <img src="{{ asset_url }}" alt="klick auf likeme"/> {% endimage %}
+
+	<br><br><br><br>
+
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-next.png' output='/Resources/images/welcome-next.png' %} <img src="{{ asset_url }}" alt="klick auf next"/> {% endimage %}
+
 {% endblock fos_user_content %}
 
 

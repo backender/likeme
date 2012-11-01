@@ -928,7 +928,7 @@ select {
 .welcome h2{
 	font-size:28px;
 	font-weight:500;
-	margin-bottom:12px;
+	margin-bottom:18px;
 }
 
 .welcome p{
@@ -936,12 +936,33 @@ select {
 	font-weight:400;
 }
 
-.welcome .welcome-login{
-	position:absolute;
-	right:50px;
-	top:20px;
+.welcome ul{
+	margin:15px 0 15px 45px;
+	font-size:18px;
 }
 
-.welcome-login p{
-	font-size:18px;
+.welcome li{
+	margin-bottom:5px;
+	list-style-type:square;
+}
+
+.welcome-login{
+	position:absolute;
+	right:30px;
+	top:50%;
+	margin-top:-75px;
+	width:234px;
+	height:150px;
+	background-image:url('../images/fb-note.png');
+}
+
+.welcome-login img{
+	position:absolute;
+	bottom:18px;
+	left:30px;
+}
+
+.welcome-login a img:hover{
+	opacity:0.75;
+	box-shadow:0 0 4px 3px rgba(90,109,152,0.2);
 }
