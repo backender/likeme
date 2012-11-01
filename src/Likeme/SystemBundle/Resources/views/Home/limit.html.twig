@@ -7,12 +7,9 @@
 			<div id="main">
 				<div class="box-top">{% block title %}Home{% endblock %}</div>
 				<div class="box-bottom">
-					Limit von {{ strangerLimit }} Strangers pro Tag erreicht!
+					Limit pro Tag erreicht!
 				</div>
-			</div>
-			
-			{% include 'LikemeSystemBundle:Home:sider.html.twig' with { 'userMatches': userMatches } %}
-			
+			</div>			
    	
    	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>

@@ -197,7 +197,7 @@ class HomeController extends Controller
     public function showLimitAction()
     {
     	 
-    	return $this->render('LikemeSystemBundle:Home:limit.html.twig', array('strangerLimit' => $strangerLimit));
+    	return $this->render('LikemeSystemBundle:Home:limit.html.twig', array());
     }
     
 }
