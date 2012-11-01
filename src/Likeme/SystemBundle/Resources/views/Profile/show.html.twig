@@ -49,38 +49,6 @@
 					</div>
 				</div>
 			</div>
-
-		{{ form_errors(form)  }}
-		</form>
-
-   	
-   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-
-	<style>
-	
-		#sortablepictures {
-		    float: left;
-		    height: 400px;
-		    margin: 0;
-		    padding: 0;
-		    width: 120px;
-		    position: relative;
-		}
-		.ui-sortable-placeholder {
-		    border: 1px dotted black;
-		    height: 120px !important;
-		    visibility: visible !important;
-		    margin-bottom: 20px;
-		}
-		.ui-sortable-placeholder * {
-		    visibility: hidden;
-		}
-	</style>
-	
-{% endblock fos_user_content %}
-
-{% block sider %}
 			<div id="sider">
 				<div class="save"><a class="submit" href="#">Speichern</a></div>
 				<div class="box-top">Angaben <div class="info" title="Diese Angaben werden von Facebook übernommen und können nur dort geändert werden!"><a href="#"></a></div></div>
@@ -115,7 +83,39 @@
 				
 			</div>
 		</div>
-{% endblock sider %}
+
+		{{ form_errors(form)  }}
+		</form>
+
+	<div class="fos_user_user_show">
+	        
+	</div>
+   	
+   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+	<style>
+	
+		#sortablepictures {
+		    float: left;
+		    height: 400px;
+		    margin: 0;
+		    padding: 0;
+		    width: 120px;
+		    position: relative;
+		}
+		.ui-sortable-placeholder {
+		    border: 1px dotted black;
+		    height: 120px !important;
+		    visibility: visible !important;
+		    margin-bottom: 20px;
+		}
+		.ui-sortable-placeholder * {
+		    visibility: hidden;
+		}
+	</style>
+	
+{% endblock fos_user_content %}
 
 {% block javascripts %}
     {{ parent() }}
@@ -215,8 +215,8 @@
 		select = self.hide();
 		var input = this.input = $( "<input disabled='disabled'>" )
 		.attr("id", "show_location")
-               .insertAfter( select )
-               .val( self.val().replace("-", " - ") + " Jahre" );
+               .insertAfter( select )
+               .val( self.val().replace("-", " - ") + " Jahre" );
 
 		var n=self.val().split("-");
 		
