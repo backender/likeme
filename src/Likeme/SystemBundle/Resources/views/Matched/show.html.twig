@@ -1,0 +1,46 @@
+{% extends 'LikemeSystemBundle::layout.html.twig' %}
+
+{% set user = app.user %}
+
+{%block fos_user_content%}
+
+			<div id="main">
+				<div class="box-top">{% block title %}Alle Likeme's{% endblock %}</div>
+				<div class="box-bottom">
+				
+					{% for userMatch in userMatches %}
+						<span class="new-likemes">
+						{% for picture in userMatch.user.pictures if picture.position == 1 %}
+							<img width="50px" height="50px" src="{{ picture.src | thumb }}" org="{{ picture.src }}"/>
+						{% endfor %}
+							<a href="{{ path('stranger_view', { 'strangerId': userMatch.user.id }) }}">
+								{{ userMatch.user.Firstname }}, {{ userMatch.user.birthday | age }} ({{ userMatch.user.location.statecode }})
+							</a>
+						</span>
+					{% endfor %}
+				
+				</div>
+			</div>
+			
+   	
+   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+	
+		{% block javascripts %}
+
+	 {{ parent() }}
+	 
+	<script type="text/javascript">
+		$('.likepic-sm-no').click(function(){
+				$('.likepic').find('img').attr('src', $(this).find('img').attr('src'));
+			});	
+	</script>
+	{% endblock %}
+	
+{% endblock fos_user_content %}
+
+{%block sider %}
+	{% include 'LikemeSystemBundle:Sider:sider.html.twig' %}
+{%endblock sider %}
+
+
