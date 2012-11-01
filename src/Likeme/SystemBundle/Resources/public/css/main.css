@@ -966,3 +966,9 @@ select {
 	opacity:0.75;
 	box-shadow:0 0 4px 3px rgba(90,109,152,0.2);
 }
+
+.strangerlimit{
+	border-radius:5px;
+	border:1px solid #ccc;
+	margin-bottom:20px;
+}

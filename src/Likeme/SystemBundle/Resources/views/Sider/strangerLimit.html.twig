@@ -1,5 +1,4 @@
-	<div class="box-top">Strangerlimit</div>
-	<div class="box-bottom matched-bottom">
-		 <span class="new-likemes">Noch {{ strangerLimit }} Leute &uumlbrig!</span>
-		<div class="clear"></div>
-	</div>
+{% if strangerLimit > 0 %}
+	<div class="box-top strangerlimit">Noch <span style="background-color:rgba(0,255,0,0.3); border-radius:5px; padding:3px 5px;">{{ strangerLimit }}</span> Leute übrig!</div>			    {% else %}
+	<div class="box-top strangerlimit">Noch <span style="background-color:rgba(255,0,0,0.3); border-radius:5px; padding:3px 5px;">{{ strangerLimit }}</span> Leute übrig!</div>	
+{% endif %}
