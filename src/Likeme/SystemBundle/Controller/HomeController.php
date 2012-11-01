@@ -166,15 +166,12 @@ class HomeController extends Controller
 		// Generate form
 		$likeForm = $this->createForm(new LikeFormType(array('stranger' => $stranger, 'user' => $user)), $likeEntity);
 		$nextForm = $this->createForm(new NextFormType(array('stranger' => $stranger, 'user' => $user)), $nextEntity);
-	    	
-	    // Get user matches    	
-	    $userMatches = $userService->getMatches($user);
+
 	    
 	    // Return view with form
 	    return array('stranger' => $stranger, 
 	    			 'likeForm' => $likeForm->createView(), 
-	    			 'nextForm' => $nextForm->createView(),
-	    			 'userMatches' => $userMatches
+	    			 'nextForm' => $nextForm->createView()
 	    			 );
 
 
@@ -187,14 +184,8 @@ class HomeController extends Controller
      */
     public function showEmptyAction()
     {
-    	// Get current User object
-    	$user = $this->container->get('security.context')->getToken()->getUser();
     	
-    	// Get user matches
-    	$userService = $this->container->get('likeme.user.userservice');
-    	$userMatches = $userService->getMatches($user);
-    	
-    	return $this->render('LikemeSystemBundle:Home:empty.html.twig', array('userMatches' => $userMatches));
+    	return $this->render('LikemeSystemBundle:Home:empty.html.twig', array());
     }
     
     
@@ -205,15 +196,8 @@ class HomeController extends Controller
      */
     public function showLimitAction()
     {
-    	// Get current User object
-    	$user = $this->container->get('security.context')->getToken()->getUser();
     	 
-    	// Get user matches
-    	$userService = $this->container->get('likeme.user.userservice');
-    	$userMatches = $userService->getMatches($user);
-    	$strangerLimit = $userService->getDailyLikeCount();
-    	 
-    	return $this->render('LikemeSystemBundle:Home:limit.html.twig', array('userMatches' => $userMatches, 'strangerLimit' => $strangerLimit));
+    	return $this->render('LikemeSystemBundle:Home:limit.html.twig', array('strangerLimit' => $strangerLimit));
     }
     
 }

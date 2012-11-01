@@ -10,6 +10,10 @@
 
         <div id="content">
             {% block fos_user_content %}{% block title %}{% endblock %}{% endblock fos_user_content %}
+            
+            {%block sider %}
+				{% include 'LikemeSystemBundle:Sider:sider.html.twig' %}
+			{%endblock sider %}
         </div>
 
 {% endblock body %}
