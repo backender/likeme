@@ -205,8 +205,32 @@ box-shadow: 0 4px 0 -3px #ffffff,
 .matched-bottom{
 
 overflow:hidden;
-padding:0 0 20px 0;
+padding:0;
 
+}
+
+.matched-bottom-all{
+	width:100%;
+	height:60px;
+	text-align:center;
+	-webkit-transition: background 0.3s ease-in-out;
+	-moz-transition: background 0.3s ease-in-out;
+	-o-transition: background 0.3s ease-in-out;
+	transition: background 0.3s ease-in-out;
+}
+
+.matched-bottom-all a{
+	display:block;
+	width:100%;
+	height:100%;
+	line-height:60px;
+	color:#333;
+	font-weight: 500;
+	text-decoration:none;
+}
+
+.matched-bottom-all:hover{
+	background:rgba(0,125,255,0.1);
 }
 
 .likepic
@@ -973,11 +997,60 @@ select {
 	margin-bottom:20px;
 }
 
-a{
+p a{
 	color:#333;
 	font-weight:500;
 }
 
-a:hover{
+p a:hover{
 	color:#008aff;
+}
+
+.likeme-all{
+	width:100px;
+	height:100px;
+	float:left;
+	border:1px solid #ccc;
+	margin:15px;
+	border-radius:5px;
+	text-align:center;
+	position:relative;
+	-moz-transition:all 0.2s linear;
+	-webkit-transition: all 0.2s linear;
+	-o-transition:all 0.2s linear;
+	transition:all 0.2s linear;
+	overflow:hidden;
+}
+
+.likeme-all:hover{
+	opacity:0.7;
+}
+
+.likeme-all a{
+	display:block;
+	width:100%;
+	height:100%;
+	position:absolute;
+}
+
+.likeme-all span{
+	font-size:11px;
+	color:#fff;
+	text-decoration: none;
+	font-weight:500;
+	line-height:30px;
+	white-space: nowrap;
+}
+
+.likeme-all-info{
+	background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 5px 5px;
+    bottom: 0px;
+    color: #FFFFFF;
+    height: 30px;
+    left: 0px;
+    line-height: 30px;
+    position: absolute;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5), -1px -1px 1px rgba(0,0,0,0.5);
+    width: 100%;
 }

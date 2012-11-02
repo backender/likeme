@@ -9,15 +9,18 @@
 				<div class="box-bottom">
 				
 					{% for userMatch in userMatches %}
-						<span class="new-likemes">
+						<div class="likeme-all">
+						<a href="{{ path('stranger_view', { 'strangerId': userMatch.user.id }) }}"></a>
 						{% for picture in userMatch.user.pictures if picture.position == 1 %}
-							<img width="50px" height="50px" src="{{ picture.src | thumb }}" org="{{ picture.src }}"/>
+							<img width="100px" height="100px" src="{{ picture.src | thumb }}" org="{{ picture.src }}"/>
 						{% endfor %}
-							<a href="{{ path('stranger_view', { 'strangerId': userMatch.user.id }) }}">
-								{{ userMatch.user.Firstname }}, {{ userMatch.user.birthday | age }} ({{ userMatch.user.location.statecode }})
-							</a>
-						</span>
+							<div class="likeme-all-info">
+								<span>{{ userMatch.user.Firstname }}, {{ userMatch.user.birthday | age }} ({{ userMatch.user.location.statecode }})</span>
+							</div>
+						</div>
 					{% endfor %}
+				
+				<div style="clear:both;"></div>
 				
 				</div>
 			</div>
