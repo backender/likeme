@@ -26,6 +26,8 @@ class User extends BaseUser
 	 * @ORM\OneToMany(targetEntity="Like", mappedBy="stranger")
 	 * @ORM\OneToMany(targetEntity="Next", mappedBy="user")
 	 * @ORM\OneToMany(targetEntity="Next", mappedBy="stranger")
+	 * @ORM\OneToMany(targetEntity="Messages", mappedBy="user_send")
+	 * @ORM\OneToMany(targetEntity="Messages", mappedBy="user_receive")
 	 */
 	protected $id;
 	
