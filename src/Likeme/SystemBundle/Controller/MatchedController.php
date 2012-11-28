@@ -32,7 +32,7 @@ class MatchedController extends Controller {
     	// Get user matches
     	$userService = $this->container->get('likeme.user.userservice');
     	$userMatches = $userService->getMatches($user);
-		
+    	
 		return array('userMatches' => $userMatches);
     	
 	}

@@ -1,0 +1,14 @@
+<div id="sider">
+	<form id="profileForm" action="{{ path('message_create') }}" {{ form_enctype(messageForm) }} method="POST" class="fos_user_profile_edit">
+	<div class="box-top">{{ form_label(messageForm.message) }}</div>
+	<div class="box-bottom matched-bottom">
+		
+		<p>{{ form_widget(messageForm.message) }}</p>
+		<input type="submit">
+		
+		<div class="clear"></div>
+		<div class="matched-bottom-all"><a href="">Senden</a></div>
+		
+	</div>
+	</form>
+</div>

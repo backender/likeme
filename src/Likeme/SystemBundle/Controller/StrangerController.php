@@ -3,21 +3,13 @@
 namespace Likeme\SystemBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-
-use Likeme\SystemBundle\Form\Type\NextFormType;
-
-use Likeme\SystemBundle\Form\Type\LikeFormType;
-
 use Symfony\Component\Security\Core\SecurityContext;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Likeme\SystemBundle\Entity\Like;
-use Likeme\SystemBundle\Entity\Next;
 
 class StrangerController extends Controller
 {   
@@ -61,7 +53,7 @@ class StrangerController extends Controller
 		    	// Return view with form
 		    	return array('stranger' => $stranger,  
 		    				 //'unlikeForm' => $unlikeForm->createView(),
-		    				 'userMatches' => $userMatches
+		    				 'userMatches' => $userMatches,
 		    				 );
 			} else {
 				throw new AccessDeniedException('No match!');

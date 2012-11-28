@@ -30,9 +30,9 @@
         
 	        {% if not is_granted('ROLE_USER') %}
 	        	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}   
-	        	{# 		{{ facebook_login_button({'autologoutlink': false, 'size':'large' }) }} #}
 				<div id="facebook-login-btb"><a href="#" onclick="FB.login();"><span style="font-weight:400;">login mit </span>facebook</a></div>
 			{% endif %}
+	        	{{ facebook_login_button({'autologoutlink': true, 'size':'large' }) }}
 			
 			
 			<div id="menu-top">

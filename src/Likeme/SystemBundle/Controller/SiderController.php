@@ -1,6 +1,8 @@
 <?php
 namespace Likeme\SystemBundle\Controller;
 
+use Likeme\SystemBundle\Form\Type\MessageFormType;
+use Likeme\SystemBundle\Entity\Messages;
 use Symfony\Component\Security\Core\SecurityContext;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,5 +38,24 @@ class SiderController extends Controller
     	$userMatches = $userService->getMatches($user);
 	
 		return array('userMatches' => $userMatches);
+	}
+	
+	/**
+	 * @Template()
+	 */
+	public function newMessageAction($stranger, $user) 
+	{	
+		$em = $this->get('doctrine')->getEntityManager();
+		
+		$message = new Messages();
+		$message->setUserSend($user);
+		$message->setUserReceive($stranger);
+		$messageForm = $this->createForm(new MessageFormType(array('em' => $em,)), $message);
+	
+		return array(
+				'messageForm' => $messageForm->createView(),
+				'user' => $user,
+				'stranger' => $stranger,
+				);
 	}
 }

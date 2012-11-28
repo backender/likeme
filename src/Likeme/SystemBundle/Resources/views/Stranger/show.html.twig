@@ -52,6 +52,10 @@
 {% endblock fos_user_content %}
 
 {%block sider %}
-	{% include 'LikemeSystemBundle:Sider:sider.html.twig' %}
+	<div id="sider">
+		{% render 'LikemeSystemBundle:Sider:strangerLimit' %}
+		{% render 'LikemeSystemBundle:Sider:userMatches' %}
+		{% render 'LikemeSystemBundle:Sider:newMessage' with { 'stranger':stranger, 'user':user } %}
+	</div>
 {%endblock sider %}
 

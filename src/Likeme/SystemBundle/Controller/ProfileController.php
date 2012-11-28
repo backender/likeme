@@ -41,7 +41,7 @@ class ProfileController extends Controller {
 		// Build form
 		//$form = $this->container->get('form.factory')->create(new ProfileFormType(), $user, );
 		$form = $this->createForm(new ProfileFormType(array('em' => $em,)), $user);
-
+		
 		//Embedded Form Handler
 		$request = $this->getRequest();
 		

@@ -129,4 +129,48 @@ class Messages
     {
         return $this->time;
     }
+
+    /**
+     * Set user_send
+     *
+     * @param Likeme\SystemBundle\Entity\User $userSend
+     * @return Messages
+     */
+    public function setUserSend(\Likeme\SystemBundle\Entity\User $userSend = null)
+    {
+        $this->user_send = $userSend;
+        return $this;
+    }
+
+    /**
+     * Get user_send
+     *
+     * @return Likeme\SystemBundle\Entity\User 
+     */
+    public function getUserSend()
+    {
+        return $this->user_send;
+    }
+
+    /**
+     * Set user_receive
+     *
+     * @param Likeme\SystemBundle\Entity\User $userReceive
+     * @return Messages
+     */
+    public function setUserReceive(\Likeme\SystemBundle\Entity\User $userReceive = null)
+    {
+        $this->user_receive = $userReceive;
+        return $this;
+    }
+
+    /**
+     * Get user_receive
+     *
+     * @return Likeme\SystemBundle\Entity\User 
+     */
+    public function getUserReceive()
+    {
+        return $this->user_receive;
+    }
 }
