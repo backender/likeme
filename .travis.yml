@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+env:
+  - SYMFONY_VERSION=2.0.*
+  - SYMFONY_VERSION=dev-master
+
+notifications:
+  email:
+    - travis-ci@backender.ch
