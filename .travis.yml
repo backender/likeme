@@ -8,6 +8,8 @@ env:
   - SYMFONY_VERSION=2.0.*
   - SYMFONY_VERSION=dev-master
 
+script: phpunit
+
 notifications:
   email:
     - travis-ci@backender.ch
