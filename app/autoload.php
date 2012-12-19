@@ -26,6 +26,7 @@ $loader->registerNamespaces(array(
 	'Bazinga' 		   => __DIR__.'/../vendor/bundles',
 	'APY' 			   => __DIR__.'/../vendor/bundles',
 	'DoctrineExtension'=> __DIR__.'/../vendor/DoctrineExtensions/lib',
+    'Ornicar'          => __DIR__.'/../vendor/bundles',
 ));
 $loader->registerPrefixes(array(
     'Twig_Extensions_' => __DIR__.'/../vendor/twig-extensions/lib',

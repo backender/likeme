@@ -126,6 +126,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
+        mappings:
+          OrnicarMessageBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -180,4 +182,7 @@ apy_js_form_validation:
     validation_bundle: APYJsFormValidationBundle
     script_directory: bundles/jsformvalidation/js/
     
-    
+ornicar_message:
+    db_driver: orm
+    thread_class: Likeme\SystemBundle\Entity\Thread
+    message_class: Likeme\SystemBundle\Entity\Message

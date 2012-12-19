@@ -38,3 +38,6 @@ fos_js_routing:
 _bazinga_exposetranslation:
     resource: "@BazingaExposeTranslationBundle/Resources/config/routing/routing.yml"
 
+ornicar_message:
+    resource: "@OrnicarMessageBundle/Resources/config/routing.xml"
+    prefix: /message
