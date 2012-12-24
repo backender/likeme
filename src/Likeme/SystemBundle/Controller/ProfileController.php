@@ -3,8 +3,6 @@
 namespace Likeme\SystemBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-//use Likeme\SystemBundle\Form\Type\PreferenceFormType;
-//use FOS\UserBundle\Controller\ProfileController as BaseController;
 use Likeme\SystemBundle\Form\Type\ProfileFormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -39,7 +37,6 @@ class ProfileController extends Controller {
 			$userLocation = false;
 		}
 		// Build form
-		//$form = $this->container->get('form.factory')->create(new ProfileFormType(), $user, );
 		$form = $this->createForm(new ProfileFormType(array('em' => $em,)), $user);
 		
 		//Embedded Form Handler
@@ -58,10 +55,8 @@ class ProfileController extends Controller {
 				
 				//Update Stranger array using new criteria
 				$strangers = $UserService->getStranger();
-				if($UserService->checkStrangerSessionEmpty($strangers) == false){
-					$UserService->setStrangers($strangers);
-				}
-				
+				$UserService->setStrangers($strangers);
+
 				//Check if user is active
 				$user->setFBData();
 				
