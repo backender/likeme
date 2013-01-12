@@ -314,51 +314,45 @@ class User extends BaseUser
     {
     	$this->active = 1;
     	
-    	if($this->getUsername() == NULL) {
-	    	if (isset($fbdata['id'])) {
-	    		$this->setFacebookID($fbdata['id']);
-	    		$this->addRole('ROLE_FACEBOOK');
-	    	}
+    	if (isset($fbdata['id'])) {
+    		$this->setFacebookID($fbdata['id']);
+    		$this->addRole('ROLE_FACEBOOK');
     	}
-    	if($this->getFirstname() == NULL) {
-	    	if (isset($fbdata['first_name'])) {
-	    		$this->setFirstname($fbdata['first_name']);
-	    	}
-    	}
-    	if($this->getLastname() == NULL) {
-	    	if (isset($fbdata['last_name'])) {
-	    		$this->setLastname($fbdata['last_name']);
-	    	}
-    	}
-    	if($this->getEmail() == NULL) {
-	    	if (isset($fbdata['email'])) {
-	    		$this->setEmail($fbdata['email']);
-	    	}
-    	}
-    	if($this->getBirthday() == NULL) {
-	    	if (isset($fbdata['birthday'])) {
-	    		$this->setBirthday(new \DateTime(date("Y-m-d", strtotime($fbdata['birthday']))));
-	    	}
-    	}
-    	//facebook data could be empty
+
+	   	if (isset($fbdata['first_name'])) {
+	   		$this->setFirstname($fbdata['first_name']);
+	   	}
+
+	    if (isset($fbdata['last_name'])) {
+	    	$this->setLastname($fbdata['last_name']);
+	    }
+
+      	if (isset($fbdata['email'])) {
+	   		$this->setEmail($fbdata['email']);
+	   	}
+
+	   	if (isset($fbdata['birthday'])) {
+	   		$this->setBirthday(new \DateTime(date("Y-m-d", strtotime($fbdata['birthday']))));
+	   	}
+
+        if (isset($fbdata['gender'])) {
+            $this->setGender($fbdata['gender']);
+        }
+
+        //facebook data could be empty
     	if($this->getLocation() == NULL) {
     		//already checked on facebook user provider
 	    	$this->active = 0;
     	}
     	
     	//facebook data could be empty
-	    if($this->getAboutme() == '') {	
+	    if($this->getAboutme() == '') {
 	    	if (isset($fbdata['bio'])) {
 	    		$this->setAboutme($fbdata['bio']);
 	    	} else {
 	    		$this->active = 0;
 	    	}
 	    }
-		if($this->getGender() == NULL) {    
-	    	if (isset($fbdata['gender'])) {
-	    		$this->setGender($fbdata['gender']);
-	    	}
-		}
 		
 		//Set default values for users preferences
 		if ($this->getPrefGender() == Null) {
