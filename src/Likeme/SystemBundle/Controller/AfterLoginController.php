@@ -23,29 +23,19 @@ class AfterLoginController extends Controller
     public function afterloginAction()
     {
     	$em = $this->get('doctrine')->getEntityManager();
-    	
-    	// Get Users current pictures on Amazon
     	$user = $this->container->get('security.context')->getToken()->getUser();
 
-    	//decalre pictures array
-    	$savedpictures = array();
-    	
-    	// Check if user has already an image
+        // Check if user has already an image
+        $savedpictures = array();
         foreach($user->getPictures() as $pic) {
     		$savedpictures[] = $pic->getSrc();
     	}
-    	
-//    	$savedpictures = $query->getQuery()->getResult();
-    	
-    	// If not likeme automaticly takes one profile picture form facebook
+
+    	// If not, likeme takes one profile picture form facebook
     	if (!$savedpictures) {
-    		
-    		// Get User Profile Pictures
- 
+
     		// Get Facebook Service
     		$fosfbservice = $this->container->get('my.facebook.user');
-    		 
-    		// Create our Application instance (replace this with your appId and secret).
     		$facebook = $fosfbservice->getFacebookObj();
     		$user = $fosfbservice->loadUserByUsername($user->getUsername());
     		 
@@ -56,8 +46,6 @@ class AfterLoginController extends Controller
     			} catch (\Exception $e) {
 
     			}
-    		} else {
-
     		}
     		
     		//Get AccessToken
@@ -69,29 +57,18 @@ class AfterLoginController extends Controller
     		// Get Content also if there is a HTTP error code (ex. 400)
     		
     		//Set stream options
-    		$opts = array	(
-    				'http' => array('ignore_errors' => true)
+    		$opts = array(
+    			'http' => array('ignore_errors' => true)
     		);
-    		//Create the stream context
     		$context = stream_context_create($opts);
-    		
-    		//Open the file using the defined context
     		$content = file_get_contents($extAlbumUrl, false, $context);
-    		
-    		$actDateTime = new \DateTime();
-    		
-    		// Check if link correct
-    		if ($content) {
-    			// Save content in array
-    			$response = json_decode($content, true);
+   			$response = json_decode($content, true);
     			
     			// Check for errors
     			if (isset($response['error'])) {
-    				if ($response['error']['type'] == "OAuthException") {
-    		
-    				} else {
-    					echo "other error has happened";
-    				}
+    				//if ($response['error']['type'] == "OAuthException") {
+    		            throw new \OAuthException;
+    				//}
     			} else {
     				// Loop trough albums and receive photos
     				$albums = $response['data'];
@@ -143,18 +120,12 @@ class AfterLoginController extends Controller
     							
     							// Make a new picture object
     							$picture = new Pictures();
-    							
-    							// Save values in object
     							$picture->setSrc("http://likeme.s3.amazonaws.com/" . $userfcbkid."/images/profile/".$filenamewithtype);
-    							$picture->setTimestamp($actDateTime);
+    							$picture->setTimestamp(new \DateTime());
     							$picture->setType('original');
     							$picture->setUser($user);
     							$picture->setPosition(1);
-    							
-    							// Persist object
     							$em->persist($picture);
-    							
-    							// Save persists in Database
     							$em->flush();
     							
     							
@@ -182,23 +153,14 @@ class AfterLoginController extends Controller
     						}
     					}
     				}
-    				
+                    //No profile photo has been found => deactivate User
     				if ($foundonephoto == false) {
-    					//No profile photo has been found => deactivate User
-    					$user->setActive(false);
-    					
-    					// Persist object
+    					$user->setActive(0);
     					$em->persist($user);
-    						
-    					// Save persists in Database
     					$em->flush();
     				}
     			}
-    		} else {
-    			echo "other error has happened";
-    		}
-    		
-    		$funcresponse = new Response('Fehler');
+
     	}
     	
     	
@@ -215,11 +177,8 @@ class AfterLoginController extends Controller
     	if($UserService->checkStrangerSessionEmpty($strangers) == false){
     		$UserService->setStrangers($strangers);
     	}
-    	
-    	// Forward to Home
-    	$funcresponse = new RedirectResponse($this->container->get('router')->generate('home'));
 
-    	return $funcresponse;
+    	return new RedirectResponse($this->container->get('router')->generate('home'));
     }    
     
 }
