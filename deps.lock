@@ -8,7 +8,7 @@ swiftmailer v4.1.7
 assetic v1.0.3
 twig-extensions d1990ffaca93302709d1306d50ae153adb169f49
 metadata 1.0.0
-SensioFrameworkExtraBundle d2b84fa407ad6c10de8b13264e82da85dbbd35f9
+SensioFrameworkExtraBundle v2.0.20
 JMSSecurityExtraBundle e752f888c51425f71382c056961f10f2be642102
 SensioDistributionBundle v2.0.17
 SensioGeneratorBundle v2.0.19
@@ -19,14 +19,14 @@ FacebookSDK aecd4bfba0b5bd8e237269732cea7da2f8f1a34c
 KnpMenu 884131c2d8b14b8d6abf676d221439bfce7d73ab
 KnpMenuBundle dd699f6cde9cba3b0c67a1b4ea66356b4d975b7f
 Imagine v0.2.0
-LiipImagineBundle c5a00f33aaaf214a83254b4b4b523db01e18ea0e
+LiipImagineBundle f7d5e4db82066fcdd89151fbf30b2a3255e0fe1d
 gaufrette ea337f13b957834c755c3d9ce246ae3c5309c86a
 KnpGaufretteBundle 2a505d1b3015820c26ef8d8672a0f103110f193e
 aws-sdk 1.5.17.1
 doctrine-fixtures 84cd1ca060e06bf5eb7066adb334adea4bf29fe7
 DoctrineFixturesBundle 479f10d068bd0b01e055aa2f555946893322b79c
-FOSJsRoutingBundle 8d262cc1466ecfe98471680c1ad839ead2af7682
-ExposeTranslationBundle 0.1.1
+FOSJsRoutingBundle 49449cd5ecde0254fdc554068fe8c87470b1057d
+ExposeTranslationBundle 0.1.2
 JsFormValidationBundle v2.0
 DoctrineExtensions v0.1
 FOSMessageBundle 86b774668ddd1636bf51dc58ee7384f73987c5d3

@@ -8,6 +8,7 @@ use Likeme\SystemBundle\Controller\LocationController;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ornicar\MessageBundle\Model\ParticipantInterface;
 
 use Doctrine\ORM\Mapping\OrderBy;
 
@@ -16,7 +17,7 @@ use Doctrine\ORM\Mapping\OrderBy;
  * @ORM\Table(name="fos_user")
  * @ORM\Entity(repositoryClass="Likeme\SystemBundle\Entity\UserRepository")
  */
-class User extends BaseUser
+class User extends BaseUser implements ParticipantInterface
 {
 	/**
 	 * @ORM\Id

@@ -17,7 +17,7 @@ class SiderController extends Controller
 	public function strangerLimitAction()
 	{
 		$user = $this->container->get('security.context')->getToken()->getUser();
-		$strangerLimit = $user->getStrangerlimit();
+        $strangerLimit = $user->getStrangerLimitExact();
 		
 		$userService = $this->container->get('likeme.user.userservice');
 		$dailyCount = $userService->getDailyLikeCount();
@@ -51,6 +51,8 @@ class SiderController extends Controller
 		$message->setUserSend($user);
 		$message->setUserReceive($stranger);
 		$messageForm = $this->createForm(new MessageFormType(array('em' => $em,)), $message);
+
+
 	
 		return array(
 				'messageForm' => $messageForm->createView(),
