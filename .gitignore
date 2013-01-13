@@ -2,3 +2,6 @@
 /vendor
 /web/bundles/*
 /web/Resources
+/web/css
+/web/js
+/web/media
