@@ -26,27 +26,17 @@
         <h1><a href="{{ path('home') }}">{% image '@LikemeSystemBundle/Resources/public/images/logo.png' output='/Resources/images/logo.png' %} <img src="{{ asset_url }}" alt="likeme.ch"/> {% endimage %}</a></h1>
         {% block head %} {% endblock %}
         
-        {% block navi %} 
-        
-	        {% if not is_granted('ROLE_USER') %}
-	        	{{ facebook_initialize({'xfbml': true, 'fbAsyncInit': 'onFbInit();'}) }}   
-				<div id="facebook-login-btb"><a href="#" onclick="FB.login();"><span style="font-weight:400;">login mit </span>facebook</a></div>
-			{% endif %}
-	        	{{ facebook_login_button({'autologoutlink': true, 'size':'large' }) }}
-			
-			
+        {% block navi %}
+
 			<div id="menu-top">
 			{{ knp_menu_render('main') }}
-			</div>   
+			</div>
 
+            {% if is_granted("IS_AUTHENTICATED_FULLY")%}
+                <span id="hallo">Hallo, {{app.user.firstname}}!</span>
+            {%endif%}
 	    {% endblock %}
-      
-        
-        
-        {% if is_granted("IS_AUTHENTICATED_FULLY")%}
-	    <span id="hallo">Hallo, {{app.user.firstname}}!</span>
-	    {%endif%}
-	    
+
         </div>
 
             	
@@ -61,35 +51,9 @@
 	    	%}
 	    	
 	    	<script type="text/javascript" src="{{ asset_url }}"></script>
-	    	
-	    	<script>
-			  function goLogIn(){
-			      window.location = "{{ path('_security_check') }}";
-			  }
-			
-			  function onFbInit() {
-			      if (typeof(FB) != 'undefined' && FB != null ) {
-			          FB.Event.subscribe('auth.statusChange', function(response) {
-			              if (response.session || response.authResponse) {
-			                  setTimeout(goLogIn, 500);
-			              } else {
-			                  window.location = "{{ path('_security_logout') }}";
-			              }
-			          });
-			      }
-			  }
-			   FB.login(function(response) {
-			   if (response.authResponse) {
-			     FB.api('/me', function(response) {
-			       FB.logout(function(response) {
-			       });
-			     });
-			   }
-			 }, {scope: 'email,user_birthday,user_location,user_photos,user_about_me,user_location'});
-			  
-			</script>
-	    	
-	    	{% endjavascripts %}
+
+
+	    {% endjavascripts %}
 	    	
 		{% endblock %}
     	</div>

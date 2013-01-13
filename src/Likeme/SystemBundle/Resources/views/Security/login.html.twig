@@ -41,6 +41,14 @@
           });
       }
   }
+  FB.login(function(response) {
+      if (response.authResponse) {
+          FB.api('/me', function(response) {
+              FB.logout(function(response) {
+              });
+          });
+      }
+  }, {scope: 'email,user_birthday,user_location,user_photos,user_about_me,user_location'});
 </script>
 
 {% endblock body %}
