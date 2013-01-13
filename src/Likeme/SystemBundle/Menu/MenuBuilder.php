@@ -24,10 +24,8 @@ class MenuBuilder {
 		
 		$menu = $this->factory->createItem('root');
 
-		//$menu->addChild('Home', array('route' => 'home'));
-		//$menu->addChild('Profil', array('route' => 'fos_user_profile_show'));
-
 		if( $this->securityContext->isGranted('IS_AUTHENTICATED_FULLY') ){
+            $menu->addChild('Home', array('route' => 'home'));
 			$menu->addChild('Profil', array('route' => 'fos_user_profile_show'));
 			$menu->addChild('Logout', array('route' => '_security_logout'));
 		} else {
