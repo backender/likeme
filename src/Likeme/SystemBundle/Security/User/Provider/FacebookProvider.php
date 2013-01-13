@@ -61,30 +61,12 @@ class FacebookProvider extends BaseProvider implements UserProviderInterface
     return $this->userManager->findUserBy(array('facebookID' => $fbId));
   }
 
-	public function visited()
-	{
-		$session = $this->container->get('session');
-  		$visited = $session->get('visited', array());
-  		if(!in_array('visited', $visited)) {
-
-  			$visited[] = 'visited';
-  			$session->set('visited', $visited);
-  			return false;
-
-  		} else {
-  			return true;
-  		}
-	}
-
   public function loadUserByUsername($username)
   {
-
     $user = $this->findUserByFbId($username);
     try {
-      	// TODO: We have to exclude this after login, so it won't load fb data on every page
-      	//if (self::visited() == false) {
-    		$fbdata = $this->facebook->api('/me');
-      	//}
+  		$fbdata = $this->facebook->api('/me');
+
     } catch (FacebookApiException $e) {
       $fbdata = null;
     }
@@ -94,16 +76,6 @@ class FacebookProvider extends BaseProvider implements UserProviderInterface
         $user = $this->userManager->createUser();
         $user->setEnabled(true);
         $user->setPassword('');
-      }
-
-      //Get location for user
-      if($user->getLocation() == null) {
-      	if(!empty($fbdata['location'])) {
-	      	  $location = $this->container->get("likeme.facebook.location")->locationByFacebook($fbdata['location']['name']);
-			  if ($location !== false) {
-			  	$user->setLocation($location);
-			  }
-	      }
       }
 
       // TODO use http://developers.facebook.com/docs/api/realtime
