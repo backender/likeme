@@ -7,7 +7,9 @@
 			{% for photo in savedpictures %}
 			 	<li class="selected">    
 			 		<span style="font-weight:500; margin-top:8px;">Aktuelles Profilbild</span>
-			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;"><img src="{{ photo.src }}" style = "max-width: 110px; max-height: 120px; border-radius:5px;" align="middle" /></div>
+			        <div id="listimgdiv" style="height: 140px; display:table-cell; vertical-align:middle; text-align:center; width: 120px;">
+                        <img src="{{ photo.src }}" style = "max-width: 110px; max-height: 120px; border-radius:5px;" align="middle" />
+                    </div>
 			        <input type="hidden" name="fcbklist_value[]" value="{{ photo.src }}" />       
 			    </li>
 			{% endfor %} 
@@ -43,7 +45,6 @@
 	 	
 	    	{% javascripts 
 	    	'@LikemeSystemBundle/Resources/public/js/selectphotos.js'
-	    	output='web/bundles/likemesystem/compiled/picture_show.js'
 	    	%}
 	    	
 	    	<script type="text/javascript" src="{{ asset_url }}"></script>

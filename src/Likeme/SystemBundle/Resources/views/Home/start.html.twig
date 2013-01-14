@@ -26,49 +26,53 @@
 					</ul>
 					<p>Melde dich jetzt an!</p>
 					<div class="welcome-login">
-						<a href="#" onClick="FB.login();">{% image '@LikemeSystemBundle/Resources/public/images/fb.png' output='/Resources/images/fb.png' %} <img src="{{ asset_url }}" alt="Facebook Login"/> {% endimage %}</a>
+						<a href="#" onClick="FB.login();">{% image '@LikemeSystemBundle/Resources/public/images/fb.png' %} <img src="{{ asset_url }}" alt="Facebook Login"/> {% endimage %}</a>
 					</div>
 				</div>
 				
 				<div style="margin:100px auto; text-align:center;"><h3 style="font-size:24px; font-weight:400;">wie funktioniert likeme... ?</h3><br><br>.</div>
 	
-	{% image '@LikemeSystemBundle/Resources/public/images/welcome-register.png' output='/Resources/images/welcome-register.png' %} <img src="{{ asset_url }}" alt="Registrieren und Profil ausfüllen"/> {% endimage %}
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-register.png' %} <img src="{{ asset_url }}" alt="Registrieren und Profil ausfüllen"/> {% endimage %}
 	
 	<br><br>
 	
-	{% image '@LikemeSystemBundle/Resources/public/images/welcome-likeme.png' output='/Resources/images/welcome-likeme.png' %} <img src="{{ asset_url }}" alt="klick auf likeme"/> {% endimage %}
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-likeme.png' %} <img src="{{ asset_url }}" alt="klick auf likeme"/> {% endimage %}
 
 	<br><br><br><br>
 
-	{% image '@LikemeSystemBundle/Resources/public/images/welcome-next.png' output='/Resources/images/welcome-next.png' %} <img src="{{ asset_url }}" alt="klick auf next"/> {% endimage %}
+	{% image '@LikemeSystemBundle/Resources/public/images/welcome-next.png' %} <img src="{{ asset_url }}" alt="klick auf next"/> {% endimage %}
 
 {% endblock fos_user_content %}
 
 {% block javascripts %}
-<script>
-    function goLogIn(){
-        window.location = "{{ path('_security_check') }}";
-    }
 
-    function onFbInit() {
-        if (typeof(FB) != 'undefined' && FB != null ) {
-            FB.Event.subscribe('auth.statusChange', function(response) {
-                if (response.session || response.authResponse) {
-                    setTimeout(goLogIn, 500);
-                } else {
-                    window.location = "{{ path('_security_logout') }}";
-                }
-            });
+    <script>
+        function goLogIn(){
+            window.location = "{{ path('_security_check') }}";
         }
-    }
-    FB.login(function(response) {
-        if (response.authResponse) {
-            FB.api('/me', function(response) {
-                FB.logout(function(response) {
+
+        function onFbInit() {
+            if (typeof(FB) != 'undefined' && FB != null ) {
+                FB.Event.subscribe('auth.statusChange', function(response) {
+                    if (response.session || response.authResponse) {
+                        setTimeout(goLogIn, 500);
+                    } else {
+                        window.location = "{{ path('_security_logout') }}";
+                    }
                 });
-            });
+            }
         }
-    }, {scope: 'email,user_birthday,user_location,user_photos,user_about_me,user_location'});
-</script>
+        FB.login(function(response) {
+            if (response.authResponse) {
+                FB.api('/me', function(response) {
+                    FB.logout(function(response) {
+                    });
+                });
+            }
+        }, {scope: 'email,user_birthday,user_location,user_photos,user_about_me,user_location'});
+    </script>
+
+
+    {{ parent() }}
 
 {% endblock %}

@@ -8,11 +8,11 @@
 	{{ parent() }}
 	
 	{% stylesheets filter='cssrewrite'
-		'bundles/likemesystem/jcrop/css/jquery.Jcrop.css'
-		'bundles/likemesystem/poshytip/tip-twitter/tip-twitter.css'
-		'bundles/likemesystem/poshytip/tip-green/tip-green.css'
-		'bundles/likemesystem/photoselector/fcbklistselection.css'
-		'bundles/likemesystem/css/jquery.selectbox.css'
+		'@LikemeSystemBundle/Resources/public/jcrop/css/jquery.Jcrop.css'
+		'@LikemeSystemBundle/Resources/public/poshytip/tip-twitter/tip-twitter.css'
+		'@LikemeSystemBundle/Resources/public/poshytip/tip-green/tip-green.css'
+		'@LikemeSystemBundle/Resources/public/photoselector/fcbklistselection.css'
+		'@LikemeSystemBundle/Resources/public/css/jquery.selectbox.css'
 	%}
 			
 	<link href="{{ asset_url }}" rel="stylesheet" type="text/css">
@@ -121,14 +121,13 @@
     {{ parent() }}
     	
    	{% javascripts 
-   	'bundles/likemesystem/widgets/location.js'
-   	'bundles/likemesystem/js/selectlocation.js'
-   	'bundles/likemesystem/jcrop/js/jquery.Jcrop.min.js'
-   	'bundles/likemesystem/poshytip/jquery.poshytip.min.js'
-   	'bundles/likemesystem/js/jquery.selectbox-0.2.min.js'
+   	'@LikemeSystemBundle/Resources/public/widgets/location.js'
+   	'@LikemeSystemBundle/Resources/public/js/selectlocation.js'
+   	'@LikemeSystemBundle/Resources/public/jcrop/js/jquery.Jcrop.min.js'
+   	'@LikemeSystemBundle/Resources/public/poshytip/jquery.poshytip.min.js'
+   	'@LikemeSystemBundle/Resources/public/js/jquery.selectbox-0.2.min.js'
    	'@LikemeSystemBundle/Resources/public/photoselector/photoselector.js'
-   	'bundles/likemesystem/js/extensions.js'
-   	output='web/bundles/likemesystem/compiled/profile_show.js'
+   	'@LikemeSystemBundle/Resources/public/js/extensions.js'
 	%}
 	    	
 	<script type="text/javascript" src="{{ asset_url }}"></script>
@@ -137,7 +136,7 @@
 	<script type="text/javascript" src="{{ url('bazinga_exposetranslation_js') }}"></script>
 	
 	
-	{% endjavascripts %}
+{% endjavascripts %}
 
 	{{ JSFV(form) }}
 	

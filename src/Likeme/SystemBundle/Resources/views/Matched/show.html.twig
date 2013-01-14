@@ -24,23 +24,19 @@
 				
 				</div>
 			</div>
-			
-   	
-   	<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-	<script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-	
-		{% block javascripts %}
 
-	 {{ parent() }}
-	 
-	<script type="text/javascript">
-		$('.likepic-sm-no').click(function(){
-				$('.likepic').find('img').attr('src', $(this).find('img').attr('src'));
-			});	
-	</script>
-	{% endblock %}
-	
 {% endblock fos_user_content %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $('.likepic-sm-no').click(function(){
+            $('.likepic').find('img').attr('src', $(this).find('img').attr('src'));
+        });
+    </script>
+{% endblock %}
 
 {%block sider %}
 	{% include 'LikemeSystemBundle:Sider:sider.html.twig' %}
